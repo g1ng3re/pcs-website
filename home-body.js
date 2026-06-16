@@ -537,16 +537,31 @@
         boxShadow: "var(--shadow-md)"
       }
     }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        position: "relative"
-      }
-    }, /*#__PURE__*/React.createElement(W2.Photo, {
       className: "pcs-img-zoom",
-      id: "1511578314322-379afb476865",
-      alt: "A community property and finance event",
-      h: 210,
-      radius: 0,
-      tone: "ink"
+      style: {
+        position: "relative",
+        background: "var(--pcs-ink)",
+        height: 420,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }
+    }, /*#__PURE__*/React.createElement("img", {
+      src: "assets/photos/event-flyer.jpg",
+      alt: "Empowerment Through Property: Landlord and Investment Expo flyer",
+      onError: e => {
+        e.currentTarget.onerror = null;
+        e.currentTarget.src = "assets/photos/1511578314322-379afb476865.jpg";
+        e.currentTarget.style.objectFit = "cover";
+        e.currentTarget.style.height = "100%";
+        e.currentTarget.style.maxWidth = "100%";
+      },
+      style: {
+        maxHeight: "100%",
+        maxWidth: "100%",
+        objectFit: "contain",
+        display: "block"
+      }
     }), /*#__PURE__*/React.createElement("span", {
       style: {
         position: "absolute",
@@ -588,7 +603,7 @@
       style: {
         color: "var(--pcs-blue)"
       }
-    }), " Saturday 1 August 2026"), /*#__PURE__*/React.createElement("span", {
+    }), " Saturday 1 August 2026, 12 PM \u2013 6 PM"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "flex",
         alignItems: "flex-start",
