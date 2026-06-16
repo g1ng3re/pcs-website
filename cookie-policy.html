@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cookie Policy · Property Clinic Solutions</title>
+<meta name="description" content="The cookies Property Clinic Solutions uses, the categories you can control, and how to change your preferences." />
+<link rel="canonical" href="https://propertyclinicsolutions.com/cookie-policy" />
+<link rel="icon" href="assets/logos/pcs-favicon.svg" />
+
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
+<link rel="stylesheet" href="site.css?v=1781615003590" />
+
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
+<script src="icons.js?v=1781615003590"></script>
+<script src="home-parts.js?v=1781615003590"></script>
+<script src="page-kit.js?v=1781615003590"></script>
+</head>
+<body>
+<a href="#main" class="pcs-skip">Skip to content</a>
+<div id="root"></div>
+
+<script>const K = window.PCSKit;
+const {
+  Button
+} = window.PCSDesignSystem_269f6d;
+function ManageBtn() {
+  const clear = () => {
+    try {
+      localStorage.removeItem("pcs-cookie-consent-v1");
+    } catch (e) {}
+    location.reload();
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 14
+    }
+  }, /*#__PURE__*/React.createElement(Button, {
+    variant: "outline",
+    onClick: clear
+  }, "Change your cookie preferences"));
+}
+K.boot(/*#__PURE__*/React.createElement(K.Legal, {
+  eyebrow: "Legal",
+  title: "Cookie Policy",
+  updated: "June 2026",
+  intro: "Cookies are small text files stored on your device when you visit a website. This policy explains the categories of cookies we use and how you can control them. You can accept all, reject all, or choose per category, and you can change your mind at any time.",
+  sections: [{
+    h: "The categories we use",
+    list: [["Functional", "required for the site to work, such as remembering your cookie choices and saved calculator figures. These are always on and cannot be switched off."], ["Preferences", "remember choices you make, such as your region, to give you a more tailored experience."], ["Statistics", "anonymous analytics that help us understand how the site is used so we can improve it. Set only with your consent."], ["Marketing", "used to make any advertising more relevant to you. Set only with your consent."]]
+  }, {
+    h: "Your control",
+    paras: ["When you first visit the site, our cookie banner lets you accept all, reject all in one click, or choose which categories to allow. Functional cookies are the only ones that run without your consent, because the site cannot work without them."]
+  }, {
+    h: "Changing your mind",
+    paras: ["You can update your choices at any time using the button below, which reopens the cookie banner. You can also delete cookies through your browser settings."]
+  }, {
+    h: "Third parties",
+    paras: ["Where we use third-party services such as a booking calendar or privacy-friendly analytics, those providers may set their own cookies. We only load them in line with the consent you have given."]
+  }]
+}));
+setTimeout(() => {
+  const article = document.querySelector("article > div");
+  if (article) {
+    const holder = document.createElement("div");
+    article.appendChild(holder);
+    ReactDOM.createRoot(holder).render(/*#__PURE__*/React.createElement(ManageBtn, null));
+  }
+}, 300);</script>
+</body>
+</html>

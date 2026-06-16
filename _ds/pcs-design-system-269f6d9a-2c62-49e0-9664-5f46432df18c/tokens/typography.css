@@ -1,0 +1,43 @@
+/* PCS — Typography scale
+   Display & headings: Archivo (geometric grotesque, tight tracking, heavy weights).
+   Body, UI, labels: Hanken Grotesk (humanist, legible at small sizes).
+   Roles lifted from the brand guidelines type spec. */
+
+:root {
+  /* Families */
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* Display sizes (px). .pcs-hero scales fluidly via base.css.) */
+  --text-hero: 4.5rem;      /* 72 */
+  --text-display: 3.5rem;   /* 56 — Archivo 800 */
+  --text-h1: 2.5rem;        /* 40 */
+  --text-h2: 2.25rem;       /* 36 — Archivo 700 */
+  --text-h3: 1.75rem;       /* 28 */
+  --text-h4: 1.375rem;      /* 22 — Subhead, Hanken 600 */
+  --text-lg: 1.125rem;      /* 18 */
+  --text-base: 1rem;        /* 16 — Body, Hanken 400 */
+  --text-sm: 0.875rem;      /* 14 */
+  --text-xs: 0.75rem;       /* 12 — Label, Hanken 700 uppercase */
+
+  /* Line heights */
+  --leading-tight: 1.07;    /* display */
+  --leading-snug: 1.18;     /* headings */
+  --leading-normal: 1.4;    /* subheads */
+  --leading-relaxed: 1.625; /* body 16/26 */
+
+  /* Tracking */
+  --tracking-display: -0.02em;
+  --tracking-heading: -0.01em;
+  --tracking-normal: 0;
+  --tracking-label: 0.14em;  /* uppercase labels */
+  --tracking-wide: 0.04em;
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mortgage Calculator · Property Clinic Solutions</title>
+<meta name="description" content="Estimate. Compare. Plan. A quick way to see what you might borrow, what your repayments could look like, and how rate changes affect the numbers. Illustrative only." />
+<link rel="canonical" href="https://propertyclinicsolutions.com/calculator" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Mortgage Calculator · Property Clinic Solutions" />
+<meta property="og:description" content="See what you might borrow and how rate changes affect your repayments. No sign-up required." />
+<meta property="og:image" content="assets/logos/pcs-logo-horizontal.svg" />
+<link rel="icon" href="assets/logos/pcs-favicon.svg" />
+
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
+<link rel="stylesheet" href="site.css?v=1781615003590" />
+<style> input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; } input[type=number]{ -moz-appearance: textfield; } </style>
+
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
+<script src="icons.js?v=1781615003590"></script>
+<script src="home-parts.js?v=1781615003590"></script>
+<script src="page-kit.js?v=1781615003590"></script>
+<script src="calculator.js?v=1781615003590"></script>
+
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "FinancialService", "name": "Property Clinic Solutions Limited", "serviceType": "Mortgage calculator", "areaServed": "GB", "url": "https://propertyclinicsolutions.com/calculator", "disclaimer": "Your home may be repossessed if you do not keep up repayments on your mortgage." }
+</script>
+</head>
+<body>
+<a href="#main" class="pcs-skip">Skip to content</a>
+<div id="root"></div>
+
+<script>const K = window.PCSKit;
+const {
+  Calculator
+} = window.PCSCalc;
+K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(K.PageHero, {
+  eyebrow: "Mortgage Calculator",
+  title: "Estimate. Compare. Plan.",
+  sub: "A quick way to see what you might borrow, what your repayments could look like, and how rate changes affect the numbers. A starting point for the conversation, not a recommendation.",
+  primary: {
+    label: "Run a Free Affordability Check With an Adviser"
+  },
+  secondary: {
+    label: "Explore Mortgages",
+    href: "mortgages",
+    external: false,
+    iconName: "house2"
+  },
+  compliance: K.RISK,
+  accent: "var(--pcs-gold)"
+}), /*#__PURE__*/React.createElement(K.TrustStrip, {
+  items: ["No Sign-up Required", "Updated Rate Assumptions", "Indicative Figures Only", "Adviser Review on Request", "No Upfront Fees"]
+}), /*#__PURE__*/React.createElement(Calculator, null), /*#__PURE__*/React.createElement(K.Prose, {
+  eyebrow: "How To Use It",
+  title: "What the calculator does, and what it does not.",
+  paras: ["Enter the property price, deposit, term, and a sample interest rate. The calculator returns an estimated monthly repayment and total interest over the term. Useful for planning, not a replacement for a proper affordability assessment.", "Lenders calculate borrowing based on income, outgoings, credit profile, and the property itself. The calculator does not see any of that. For a real number you can rely on, book a free 15-minute call with an adviser."]
+}), /*#__PURE__*/React.createElement(K.IconCards, {
+  eyebrow: "What to Enter",
+  title: "The inputs we ask for.",
+  columns: 3,
+  bg: "var(--surface-page)",
+  items: [{
+    icon: "house2",
+    title: "Property price",
+    body: "What the property is worth or what you are looking to pay."
+  }, {
+    icon: "pound",
+    title: "Deposit",
+    body: "How much you are putting in. The bigger this is, the lower the loan-to-value and usually the better the rate."
+  }, {
+    icon: "calendar",
+    title: "Mortgage term",
+    body: "How long you want to repay the mortgage over, typically between 5 and 40 years."
+  }, {
+    icon: "trendingUp",
+    title: "Interest rate",
+    body: "A sample rate to model. We will recommend a realistic figure based on your case at consultation."
+  }, {
+    icon: "scale",
+    title: "Repayment type",
+    body: "Capital repayment or interest only. Interest only is rare for residential and standard for buy-to-let."
+  }]
+}), /*#__PURE__*/React.createElement(K.IconCards, {
+  eyebrow: "What You See",
+  title: "What the calculator gives you back.",
+  columns: 4,
+  bg: "#fff",
+  items: [{
+    icon: "pound",
+    title: "Monthly payment",
+    body: "Estimated capital and interest repayment per month at the rate you entered."
+  }, {
+    icon: "calculator",
+    title: "Total cost over term",
+    body: "Estimated total amount paid back over the life of the mortgage at the assumed rate."
+  }, {
+    icon: "scale",
+    title: "Loan-to-value",
+    body: "The ratio of your loan to the property value. Lenders price by LTV band."
+  }, {
+    icon: "trendingUp",
+    title: "Effect of rate change",
+    body: "A view of how monthly payments shift if the rate moves up or down."
+  }]
+}), /*#__PURE__*/React.createElement(K.ListBlock, {
+  eyebrow: "Important Limitations",
+  title: "Where a calculator stops being useful.",
+  icon: "x",
+  accent: "var(--pcs-gold)",
+  items: ["Whether a lender will actually offer you that loan.", "Your true affordability based on income and outgoings.", "The impact of credit profile, debt commitments, or dependants.", "Buy-to-let stress tests and rental coverage requirements.", "Product fees, valuation fees, legal fees, and other costs."],
+  outro: "For any of these, we run a proper affordability check on the call. Free, no obligation, and far more accurate than a calculator."
+}), /*#__PURE__*/React.createElement(K.FAQ, {
+  eyebrow: "Common Questions",
+  title: "Calculator FAQs.",
+  bg: "#fff",
+  items: [["Is this an affordability check?", "No. It is an illustrative repayment calculator. A real affordability check uses your income, outgoings, credit profile, and lender criteria."], ["Why does my real rate differ from the calculator?", "Rates depend on loan-to-value, product type, lender, fees, and credit profile. The calculator uses the rate you enter, not a quoted product rate."], ["Can I save the result?", "Yes. Take a screenshot, or just leave the page. Your figures are remembered on this device. To get a personalised quote, book a free 15-minute call."], ["Do I have to use the calculator before booking?", "No. The fastest route to a real answer is to book a call. We run the numbers properly with you."]]
+}), /*#__PURE__*/React.createElement(K.CTABand, {
+  eyebrow: "Take the Next Step",
+  title: "Want a real number?",
+  body: "Book a free 15-minute affordability check with an adviser. We run the numbers across multiple lenders and give you something you can rely on.",
+  primary: {
+    label: "Book a Free Affordability Check"
+  }
+})));</script>
+</body>
+</html>

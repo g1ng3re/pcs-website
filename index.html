@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Property Clinic Solutions · We advise. We protect. We teach.</title>
+<meta name="description" content="Independent UK mortgages and protection for first-time buyers, the self-employed, landlords, and complex cases. Whole of market, 90+ lenders, no upfront fees. For life, not just one transaction." />
+<link rel="canonical" href="https://propertyclinicsolutions.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Property Clinic Solutions · We advise. We protect. We teach." />
+<meta property="og:description" content="Independent UK mortgages and protection. Whole of market, 90+ lenders, no upfront fees." />
+<meta property="og:image" content="assets/logos/pcs-logo-horizontal.svg" />
+<link rel="icon" href="assets/logos/pcs-favicon.svg" />
+
+<!-- PCS design system tokens + bundle -->
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
+
+<style>
+  html, body { margin: 0; background: var(--surface-page); }
+  * { box-sizing: border-box; }
+  ::selection { background: var(--pcs-blue-tint); }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: none; box-shadow: var(--focus-ring); border-radius: 6px;
+  }
+
+  /* Skip link */
+  .pcs-skip { position: absolute; left: 12px; top: -60px; z-index: 200; background: var(--pcs-ink); color: #fff;
+    padding: 10px 16px; border-radius: 10px; font: 700 14px var(--font-sans); text-decoration: none; transition: top .2s; }
+  .pcs-skip:focus { top: 12px; }
+
+  /* Hero title */
+  .pcs-hero-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 5.6vw, 60px);
+    line-height: 1.04; letter-spacing: -.02em; }
+
+  /* Hover affordances */
+  .pcs-nav-btn:hover { background: var(--surface-sunken); color: var(--pcs-blue) !important; }
+  .pcs-mega-link:hover { background: var(--surface-sunken); }
+  .pcs-nav-phone:hover { color: var(--pcs-blue) !important; }
+  .pcs-foot-link:hover { color: #fff !important; }
+  .pcs-social:hover { border-color: rgba(255,255,255,.5) !important; color: #fff !important; }
+  .pcs-path-card { transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out), border-color .2s; }
+  .pcs-path-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--pcs-blue) !important; }
+
+  /* Subtle micro-interactions */
+  .pcs-nav-btn { position: relative; }
+  .pcs-nav-btn::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 5px; height: 2px;
+    background: var(--pcs-blue); border-radius: 2px; transform: scaleX(0); transform-origin: left;
+    transition: transform .22s var(--ease-out); }
+  .pcs-nav-btn:hover::after, .pcs-nav-btn[aria-expanded="true"]::after { transform: scaleX(1); }
+  .pcs-mega-link svg { transition: transform .2s var(--ease-out); }
+  .pcs-mega-link:hover svg { transform: translateX(3px); }
+  .pcs-foot-link { display: inline-block; transition: color .2s var(--ease-out), transform .2s var(--ease-out); }
+  .pcs-foot-link:hover { transform: translateX(3px); }
+  .pcs-social { transition: border-color .2s var(--ease-out), color .2s var(--ease-out), transform .2s var(--ease-out); }
+  .pcs-social:hover { transform: translateY(-2px); }
+  .pcs-link-row svg { transition: transform .2s var(--ease-out); }
+  .pcs-img-zoom img { transition: transform .6s var(--ease-out); }
+  .pcs-img-zoom:hover img { transform: scale(1.05); }
+  .pcs-story-card { transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out); }
+  .pcs-story-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+  /* Google reviews carousel */
+  .pcs-rev-track { scrollbar-width: none; -ms-overflow-style: none; }
+  .pcs-rev-track::-webkit-scrollbar { display: none; }
+  .pcs-rev-text { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .pcs-rev-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 44px; height: 44px;
+    border-radius: 50%; background: #fff; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-md);
+    color: var(--pcs-ink); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: background .2s var(--ease-out), color .2s var(--ease-out), border-color .2s; }
+  .pcs-rev-arrow:hover { background: var(--pcs-blue); color: #fff; border-color: var(--pcs-blue); }
+  @media (max-width: 620px) { .pcs-rev-arrow { display: none; } }
+
+  /* Marquee */
+  .pcs-marquee { display: flex; width: max-content; animation: pcs-scroll 32s linear infinite; }
+  .pcs-marquee-row { display: flex; align-items: center; }
+  @keyframes pcs-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+  .reveal.reveal--in { opacity: 1; transform: none; }
+
+  /* Staggered card reveals — cards in a grid cascade in once their section reveals */
+  .reveal .pcs-grid-2 > *, .reveal .pcs-grid-3 > *, .reveal .pcs-grid-4 > *, .reveal .pcs-why-points > * {
+    opacity: 0; transform: translateY(16px); transition: opacity .5s var(--ease-out), transform .5s var(--ease-out); }
+  .reveal.reveal--in .pcs-grid-2 > *, .reveal.reveal--in .pcs-grid-3 > *, .reveal.reveal--in .pcs-grid-4 > *, .reveal.reveal--in .pcs-why-points > * {
+    opacity: 1; transform: none; }
+  .pcs-grid-2 > *:nth-child(2), .pcs-grid-3 > *:nth-child(2), .pcs-grid-4 > *:nth-child(2), .pcs-why-points > *:nth-child(2) { transition-delay: .07s; }
+  .pcs-grid-2 > *:nth-child(3), .pcs-grid-3 > *:nth-child(3), .pcs-grid-4 > *:nth-child(3), .pcs-why-points > *:nth-child(3) { transition-delay: .14s; }
+  .pcs-grid-2 > *:nth-child(4), .pcs-grid-3 > *:nth-child(4), .pcs-grid-4 > *:nth-child(4), .pcs-why-points > *:nth-child(4) { transition-delay: .21s; }
+  .pcs-grid-3 > *:nth-child(5), .pcs-grid-4 > *:nth-child(5), .pcs-why-points > *:nth-child(5) { transition-delay: .28s; }
+  .pcs-grid-3 > *:nth-child(6), .pcs-grid-4 > *:nth-child(6) { transition-delay: .35s; }
+
+  /* Self-drawing timeline rule */
+  .pcs-timeline-rule { transform: scaleX(0); transform-origin: left; transition: transform .9s var(--ease-out) .15s; }
+  .reveal--in .pcs-timeline-rule { transform: scaleX(1); }
+
+  /* Marquee pauses on hover */
+  .pcs-marquee:hover { animation-play-state: paused; }
+
+  /* Hero entrance */
+  @keyframes pcs-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes pcs-fade-scale { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+  .pcs-hero-anim { opacity: 0; animation: pcs-rise .6s var(--ease-out) both; }
+  .pcs-hero-photo { animation: pcs-fade-scale .85s var(--ease-out) both; }
+
+  /* Stat count-up "pop" when it lands */
+  @keyframes pcs-pop { 0% { transform: scale(1); } 45% { transform: scale(1.09); } 100% { transform: scale(1); } }
+  .pcs-count-pop { animation: pcs-pop .38s var(--ease-out); }
+
+  /* Cursor-spotlight surfaces keep their background-color crisp under the glow */
+  .pcs-spotlight { transition: background-image .2s var(--ease-out); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+    .reveal .pcs-grid-2 > *, .reveal .pcs-grid-3 > *, .reveal .pcs-grid-4 > *, .reveal .pcs-why-points > * { opacity: 1 !important; transform: none !important; transition: none; }
+    .pcs-timeline-rule { transform: none !important; transition: none; }
+    .pcs-hero-anim, .pcs-hero-photo { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .pcs-mega-link svg, .pcs-foot-link, .pcs-social, .pcs-link-row svg, .pcs-img-zoom img, .pcs-story-card { transition: none !important; transform: none !important; }
+    .pcs-nav-btn::after { transition: none !important; }
+    .pcs-marquee { animation: none; }
+    * { scroll-behavior: auto !important; }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  /* Responsive */
+  @media (max-width: 980px) {
+    .pcs-nav, .pcs-mega, .pcs-nav-phone { display: none !important; }
+    .pcs-burger { display: inline-flex !important; }
+    .pcs-grid-4 { grid-template-columns: 1fr 1fr !important; }
+  }
+  @media (max-width: 920px) {
+    .pcs-hero-grid, .pcs-why-grid, .pcs-edu-grid, .pcs-cta-grid { grid-template-columns: 1fr !important; }
+    .pcs-why-head { position: static !important; }
+  }
+  @media (max-width: 860px) {
+    .pcs-grid-3 { grid-template-columns: 1fr !important; }
+    .pcs-timeline { grid-template-columns: 1fr !important; }
+    .pcs-timeline-rule { display: none !important; }
+    .pcs-footer-grid { grid-template-columns: 1fr 1fr !important; gap: 30px !important; }
+  }
+  @media (max-width: 620px) {
+    .pcs-grid-4 { grid-template-columns: 1fr !important; }
+    .pcs-why-points { grid-template-columns: 1fr !important; }
+    .pcs-edu-list { grid-template-columns: 1fr !important; }
+    .pcs-footer-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
+<script src="icons.js?v=1781615003590"></script>
+<script src="home-parts.js?v=1781615003590"></script>
+<script src="home-body.js?v=1781615003590"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FinancialService",
+  "name": "Property Clinic Solutions Limited",
+  "description": "Independent UK mortgage and protection brokerage. Whole of market advice for first-time buyers, the self-employed, landlords and complex cases.",
+  "url": "https://propertyclinicsolutions.com/",
+  "telephone": "+44 800 023 4567",
+  "areaServed": "GB",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1 Mychell House, Pincott Road",
+    "addressLocality": "London",
+    "postalCode": "SW19 2NN",
+    "addressCountry": "GB"
+  },
+  "disclaimer": "Property Clinic Solutions Limited is an Appointed Representative of BSL Financial Services Ltd, authorised and regulated by the Financial Conduct Authority under FRN 816566."
+}
+</script>
+</head>
+<body>
+<a href="#main" class="pcs-skip">Skip to content</a>
+<div id="root"></div>
+
+<script>const {
+  Header,
+  Hero,
+  TrustStrip,
+  Marquee,
+  Footer,
+  CookieBanner,
+  Services,
+  WhyPCS,
+  Numbers,
+  HowWeWork,
+  Education,
+  ClientStories,
+  FindYourPath,
+  Newsletter
+} = window.PCSHome;
+function App() {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Header, null), /*#__PURE__*/React.createElement("main", {
+    id: "main"
+  }, /*#__PURE__*/React.createElement(Hero, null), /*#__PURE__*/React.createElement(TrustStrip, null), /*#__PURE__*/React.createElement(Services, null), /*#__PURE__*/React.createElement(WhyPCS, null), /*#__PURE__*/React.createElement(Numbers, null), /*#__PURE__*/React.createElement(HowWeWork, null), /*#__PURE__*/React.createElement(Marquee, {
+    items: ["Whole of market", "No upfront fees", "Reviewed every year", "Independent advice", "90+ lenders"]
+  }), /*#__PURE__*/React.createElement(Education, null), /*#__PURE__*/React.createElement(ClientStories, null), /*#__PURE__*/React.createElement(FindYourPath, null), /*#__PURE__*/React.createElement(Newsletter, null)), /*#__PURE__*/React.createElement(Footer, null), /*#__PURE__*/React.createElement(CookieBanner, null));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
+
+/* Scroll reveal — reveals on intersect, with a safety net so nothing stays hidden. */
+function initReveal() {
+  const els = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) {
+    els.forEach(e => e.classList.add("reveal--in"));
+    return;
+  }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add("reveal--in");
+        io.unobserve(en.target);
+      }
+    });
+  }, {
+    rootMargin: "0px 0px -8% 0px",
+    threshold: 0.05
+  });
+  els.forEach(e => io.observe(e));
+  setTimeout(() => els.forEach(e => e.classList.add("reveal--in")), 2500);
+}
+setTimeout(initReveal, 120);</script>
+</body>
+</html>

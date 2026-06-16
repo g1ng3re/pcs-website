@@ -1,0 +1,74 @@
+/* PCS — Colour system
+   Source: PCS Brand Guidelines — Full System (June 2026).
+   Brand four: Royal Blue (primary), Ink (text/dark surface),
+   Emerald (secondary), Gold (accent). Plus tints + a navy-leaning neutral ramp. */
+
+:root {
+  /* ---- Brand core ---- */
+  --pcs-blue: #002AB1;          /* Royal Blue — primary, links, key actions */
+  --pcs-ink: #0C1A3A;           /* Ink — strongest text, dark surfaces */
+  --pcs-emerald: #109E6C;       /* Emerald — secondary, "solutions" green */
+  --pcs-gold: #DB9F1F;          /* Gold — accent, highlights, ratings */
+  --pcs-green-bright: #21C088;  /* Bright green — success, positive deltas */
+
+  /* ---- Brand tints (pale, for fills & wash backgrounds) ---- */
+  --pcs-blue-tint: #E7ECFA;
+  --pcs-emerald-tint: #E3F4EC;
+  --pcs-gold-tint: #FBF2DB;
+
+  /* ---- Hover/press shades (derived, used by components) ---- */
+  --pcs-blue-hover: #00239A;
+  --pcs-blue-press: #001C7E;
+  --pcs-emerald-hover: #0E8C60;
+  --pcs-emerald-press: #0B7551;
+  --pcs-gold-hover: #C58D14;
+
+  /* ---- Neutral ramp (warm-paper → cool-navy) ---- */
+  --pcs-neutral-0:   #FFFFFF;
+  --pcs-neutral-50:  #F7F7F4;   /* Paper — warm page background */
+  --pcs-neutral-100: #EEF0F4;   /* Sunken / hover wash */
+  --pcs-neutral-200: #E6E7EC;   /* Mist — hairline borders */
+  --pcs-neutral-300: #D3D7E0;   /* Default borders, dividers */
+  --pcs-neutral-400: #AEB4C2;   /* Disabled text, placeholders */
+  --pcs-neutral-500: #7E8699;   /* Muted text */
+  --pcs-neutral-600: #5A6173;   /* Secondary text */
+  --pcs-neutral-700: #3D4254;   /* Body on light (soft ink) */
+  --pcs-neutral-800: #232838;
+  --pcs-neutral-900: #0C1A3A;   /* = Ink */
+
+  /* ---- Semantic status ---- */
+  --pcs-success: #109E6C;
+  --pcs-success-tint: #E3F4EC;
+  --pcs-warning: #DB9F1F;
+  --pcs-warning-tint: #FBF2DB;
+  --pcs-danger: #C8362B;        /* Considered red — not in the brand four; see readme */
+  --pcs-danger-tint: #FBE9E7;
+  --pcs-info: #002AB1;
+  --pcs-info-tint: #E7ECFA;
+
+  /* ---- Semantic aliases (use these in product UI) ---- */
+  --text-strong: var(--pcs-ink);
+  --text-body: var(--pcs-neutral-700);
+  --text-muted: var(--pcs-neutral-600);
+  --text-subtle: var(--pcs-neutral-500);
+  --text-on-dark: #FFFFFF;
+  --text-on-brand: #FFFFFF;
+  --text-link: var(--pcs-blue);
+  --text-disabled: var(--pcs-neutral-400);
+
+  --surface-page: var(--pcs-neutral-50);
+  --surface-card: var(--pcs-neutral-0);
+  --surface-sunken: var(--pcs-neutral-100);
+  --surface-brand: var(--pcs-blue);
+  --surface-brand-soft: var(--pcs-blue-tint);
+  --surface-ink: var(--pcs-ink);
+  --surface-emerald: var(--pcs-emerald);
+  --surface-emerald-soft: var(--pcs-emerald-tint);
+
+  --border-subtle: var(--pcs-neutral-200);
+  --border-default: var(--pcs-neutral-300);
+  --border-strong: var(--pcs-ink);
+  --border-brand: var(--pcs-blue);
+
+  --focus-ring: 0 0 0 4px rgba(0, 42, 177, 0.20);
+}

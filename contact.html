@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contact · Property Clinic Solutions</title>
+<meta name="description" content="Get in touch. Get advice. Get moving. Book a free, no-obligation consultation. We will call you back within one working day." />
+<link rel="canonical" href="https://propertyclinicsolutions.com/contact" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Contact · Property Clinic Solutions" />
+<meta property="og:description" content="Mortgages, protection, events, or general enquiries, all start here." />
+<meta property="og:image" content="assets/logos/pcs-logo-horizontal.svg" />
+<link rel="icon" href="assets/logos/pcs-favicon.svg" />
+
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
+<link rel="stylesheet" href="site.css?v=1781615003590" />
+<style>
+  .pcs-textarea { width: 100%; min-height: 120px; resize: vertical; font: 400 16px/1.5 var(--font-sans); color: var(--text-strong);
+    background: #fff; border: 1px solid var(--border-strong, #D3D7E0); border-radius: 12px; padding: 12px 14px; }
+  .pcs-textarea::placeholder { color: var(--text-muted); }
+  .pcs-textarea:focus-visible { outline: none; box-shadow: var(--focus-ring); border-color: var(--pcs-blue); }
+  .pcs-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+</style>
+
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
+<script src="icons.js?v=1781615003590"></script>
+<script src="home-parts.js?v=1781615003590"></script>
+<script src="page-kit.js?v=1781615003590"></script>
+
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "FinancialService", "name": "Property Clinic Solutions Limited", "areaServed": "GB", "url": "https://propertyclinicsolutions.com/contact", "telephone": "+44 333 404 0589", "email": "info@propertyclinicsolutions.com", "address": { "@type": "PostalAddress", "streetAddress": "1 Mychell House, Pincott Road", "addressLocality": "London", "postalCode": "SW19 2NN", "addressCountry": "GB" } }
+</script>
+</head>
+<body>
+<a href="#main" class="pcs-skip">Skip to content</a>
+<div id="root"></div>
+
+<script>const K = window.PCSKit;
+const {
+  Button,
+  Input,
+  Select
+} = window.PCSDesignSystem_269f6d;
+const {
+  Icon
+} = window.PCSIcons;
+const {
+  CALENDLY
+} = window.PCSHome;
+function ContactForm() {
+  const [sent, setSent] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const honeyRef = React.useRef(null);
+  const onSubmit = async e => {
+    e.preventDefault();
+    if (honeyRef.current && honeyRef.current.value) return; // spam trap
+    setSubmitting(true);
+    setError("");
+    try {
+      const fd = new FormData(e.target);
+      fd.append("access_key", window.PCSHome.WEB3FORMS_KEY);
+      fd.append("subject", "New enquiry from the Property Clinic Solutions website");
+      fd.append("from_name", "Property Clinic Solutions website");
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: fd
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSent(true);
+      } else {
+        setError(data.message || "Something went wrong. Please call us on 0333 404 0589.");
+      }
+    } catch (err) {
+      setError("We could not send your message. Please check your connection, or call us on 0333 404 0589.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#fff",
+      border: "1px solid var(--border-subtle)",
+      borderRadius: 24,
+      padding: 34,
+      boxShadow: "var(--shadow-sm)"
+    }
+  }, sent ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "20px 0"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 64,
+      height: 64,
+      borderRadius: "50%",
+      background: "var(--pcs-emerald-tint)",
+      color: "var(--pcs-emerald)",
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "checkCircle",
+    size: 34
+  })), /*#__PURE__*/React.createElement("h3", {
+    style: {
+      font: "800 24px var(--font-display)",
+      color: "var(--pcs-ink)",
+      letterSpacing: "-.01em",
+      margin: "18px 0 0"
+    }
+  }, "Thank you. Your enquiry is in."), /*#__PURE__*/React.createElement("p", {
+    className: "pcs-body",
+    style: {
+      fontSize: 16,
+      margin: "10px auto 0",
+      maxWidth: 380
+    }
+  }, "One of our advisers will respond within one working day. If it is urgent, call us on 0333 404 0589."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 22,
+      display: "flex",
+      gap: 12,
+      justifyContent: "center",
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement(Button, {
+    href: CALENDLY,
+    target: "_blank",
+    rel: "noopener",
+    rightIcon: /*#__PURE__*/React.createElement(Icon, {
+      name: "arrowRight",
+      size: 17
+    })
+  }, "Book a call now"), /*#__PURE__*/React.createElement(Button, {
+    variant: "outline",
+    onClick: () => setSent(false)
+  }, "Send another message"))) : /*#__PURE__*/React.createElement("form", {
+    onSubmit: onSubmit,
+    noValidate: false
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 18
+    },
+    className: "pcs-grid-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      gridColumn: "1 / -1"
+    }
+  }, /*#__PURE__*/React.createElement(Input, {
+    label: "Full name",
+    name: "name",
+    placeholder: "Jane Homeowner",
+    required: true,
+    leftIcon: /*#__PURE__*/React.createElement(Icon, {
+      name: "user",
+      size: 18
+    })
+  })), /*#__PURE__*/React.createElement(Input, {
+    label: "Email address",
+    name: "email",
+    type: "email",
+    placeholder: "you@example.com",
+    required: true,
+    leftIcon: /*#__PURE__*/React.createElement(Icon, {
+      name: "mail",
+      size: 18
+    })
+  }), /*#__PURE__*/React.createElement(Input, {
+    label: "Phone number",
+    name: "phone",
+    type: "tel",
+    placeholder: "07000 000000",
+    required: true,
+    leftIcon: /*#__PURE__*/React.createElement(Icon, {
+      name: "phone",
+      size: 18
+    })
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      gridColumn: "1 / -1"
+    }
+  }, /*#__PURE__*/React.createElement(Select, {
+    label: "I am interested in",
+    name: "interest",
+    placeholder: "Choose one",
+    required: true,
+    options: ["Mortgages", "Protection", "Both", "Events", "Other"]
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      gridColumn: "1 / -1"
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    htmlFor: "message",
+    style: {
+      display: "block",
+      font: "600 14px var(--font-sans)",
+      color: "var(--text-strong)",
+      marginBottom: 7
+    }
+  }, "Tell us about your situation ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "var(--text-muted)",
+      fontWeight: 400
+    }
+  }, "(optional)")), /*#__PURE__*/React.createElement("textarea", {
+    id: "message",
+    name: "message",
+    className: "pcs-textarea",
+    placeholder: "A sentence or two about what you are looking for. No detail needed yet."
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "pcs-honeypot",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("label", {
+    htmlFor: "company"
+  }, "Company"), /*#__PURE__*/React.createElement("input", {
+    ref: honeyRef,
+    id: "company",
+    name: "company",
+    type: "text",
+    tabIndex: "-1",
+    autoComplete: "off"
+  })), error && /*#__PURE__*/React.createElement("div", {
+    role: "alert",
+    style: {
+      marginTop: 18,
+      padding: "12px 16px",
+      borderRadius: 12,
+      background: "rgba(219,159,31,.14)",
+      border: "1px solid rgba(219,159,31,.4)",
+      font: "500 14px/1.5 var(--font-sans)",
+      color: "var(--pcs-ink)"
+    }
+  }, error), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 22,
+      display: "flex",
+      alignItems: "center",
+      gap: 16,
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement(Button, {
+    type: "submit",
+    size: "lg",
+    disabled: submitting,
+    rightIcon: /*#__PURE__*/React.createElement(Icon, {
+      name: "arrowRight",
+      size: 18
+    })
+  }, submitting ? "Sending…" : "Send Enquiry"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      font: "400 13px var(--font-sans)",
+      color: "var(--text-muted)",
+      margin: 0
+    }
+  }, "By submitting this form you agree to our ", /*#__PURE__*/React.createElement("a", {
+    href: "privacy",
+    style: {
+      color: "var(--pcs-blue)"
+    }
+  }, "Privacy Policy"), "."))));
+}
+function GetInTouch() {
+  const items = [{
+    icon: "mail",
+    h: "Email",
+    v: "info@propertyclinicsolutions.com",
+    href: "mailto:info@propertyclinicsolutions.com"
+  }, {
+    icon: "phone",
+    h: "Phone",
+    v: "0333 404 0589",
+    href: "tel:03334040589"
+  }, {
+    icon: "calendar",
+    h: "Book Online",
+    v: "Schedule a call at a time that suits you.",
+    href: CALENDLY,
+    link: "Open the Booking Calendar"
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 4
+    }
+  }, /*#__PURE__*/React.createElement(K.Eyebrow, null, "Get In Touch"), /*#__PURE__*/React.createElement("h3", {
+    style: {
+      font: "800 24px var(--font-display)",
+      color: "var(--pcs-ink)",
+      letterSpacing: "-.01em",
+      margin: "10px 0 0"
+    }
+  }, "Prefer to reach us directly.")), items.map(it => /*#__PURE__*/React.createElement("div", {
+    key: it.h,
+    style: {
+      background: "#fff",
+      border: "1px solid var(--border-subtle)",
+      borderRadius: 16,
+      padding: 22,
+      display: "flex",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: "none",
+      width: 46,
+      height: 46,
+      borderRadius: 12,
+      background: "var(--pcs-blue-tint)",
+      color: "var(--pcs-blue)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: it.icon,
+    size: 22
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      font: "700 12px var(--font-sans)",
+      letterSpacing: ".12em",
+      textTransform: "uppercase",
+      color: "var(--text-muted)"
+    }
+  }, it.h), it.link ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      font: "400 14.5px var(--font-sans)",
+      color: "var(--text-body)",
+      margin: "4px 0 6px"
+    }
+  }, it.v), /*#__PURE__*/React.createElement("a", {
+    href: it.href,
+    target: "_blank",
+    rel: "noopener",
+    className: "pcs-link-row",
+    style: {
+      font: "700 14px var(--font-sans)",
+      color: "var(--pcs-blue)",
+      textDecoration: "none",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 6
+    }
+  }, it.link, " ", /*#__PURE__*/React.createElement(Icon, {
+    name: "arrowRight",
+    size: 15
+  }))) : /*#__PURE__*/React.createElement("a", {
+    href: it.href,
+    style: {
+      font: "700 16px var(--font-sans)",
+      color: "var(--pcs-ink)",
+      textDecoration: "none",
+      display: "block",
+      marginTop: 4
+    }
+  }, it.v)))));
+}
+function BookSection() {
+  return /*#__PURE__*/React.createElement("section", {
+    id: "form",
+    className: "reveal",
+    style: {
+      background: "var(--surface-page)",
+      padding: "80px 28px",
+      scrollMarginTop: 80
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 1200,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement(K.Head, {
+    eyebrow: "Book a Consultation",
+    title: "Tell us what you need and we will be in touch.",
+    lead: "Fill in the form and one of our advisers will respond within one working day. If you need to speak to someone urgently, please call us directly."
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1.45fr 1fr",
+      gap: 28,
+      alignItems: "start"
+    },
+    className: "pcs-cta-grid"
+  }, /*#__PURE__*/React.createElement(ContactForm, null), /*#__PURE__*/React.createElement(GetInTouch, null))));
+}
+K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(K.PageHero, {
+  eyebrow: "Contact",
+  title: "Get in touch. Get advice. Get moving.",
+  sub: "Book a free, no-obligation consultation. We will call you back within one working day. Mortgages, protection, events, or general enquiries, all start here.",
+  primary: {
+    label: "Book Online",
+    href: CALENDLY
+  },
+  secondary: {
+    label: "Send a Message",
+    href: "#form",
+    external: false,
+    iconName: "message"
+  },
+  photo: {
+    id: "1556761175-5973dc0f32e7",
+    alt: "A friendly PCS adviser ready to help",
+    tone: "blue",
+    badge: {
+      icon: "clock",
+      title: "Within 1 day",
+      sub: "We reply fast"
+    }
+  }
+}), /*#__PURE__*/React.createElement(K.TrustStrip, {
+  items: ["Response Within One Working Day", "Free Initial Consultation", "No Pressure, No Jargon", "UK-Wide Service", "Phone, Email, or Video"]
+}), /*#__PURE__*/React.createElement(BookSection, null), /*#__PURE__*/React.createElement(K.FAQ, {
+  eyebrow: "Quick Answers",
+  title: "Common questions.",
+  bg: "#fff",
+  items: [["How quickly will you get back to me?", "We aim to respond to every enquiry within one working day. If you need to speak to someone urgently, call us directly on 0333 404 0589."], ["Is the initial consultation really free?", "Yes. There is no charge for the initial conversation. We only charge a fee if you proceed with our services and your case completes."], ["What should I prepare before the call?", "Nothing formal. It helps to have a rough idea of your situation, whether you are buying, remortgaging, or looking at protection. We will guide you through the rest."], ["Do you work with clients outside London?", "Yes. We work with clients across the UK. Consultations can be held by phone or video where in-person is not practical."], ["Can you help with a case other brokers refused?", "Often, yes. Self-employed, adverse credit, unusual property, complex income. Tell us what happened and we will tell you honestly whether we can help."]]
+}), /*#__PURE__*/React.createElement(K.CTABand, {
+  eyebrow: "We Are Here to Help",
+  title: "No pressure. No jargon. Just honest advice.",
+  body: "Whether you are ready to proceed or just exploring your options, we are happy to help. Book a free 15-minute call and we will tell you honestly whether we can move things forward.",
+  primary: {
+    label: "Book Your Free Consultation"
+  }
+})));</script>
+</body>
+</html>
