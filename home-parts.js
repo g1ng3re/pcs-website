@@ -449,7 +449,9 @@
       style: {
         color: "rgba(255,255,255,.92)"
       }
-    }, "Empowerment Through Property: Wealth meets Health \xB7 Sat 1 August 2026, London"), /*#__PURE__*/React.createElement("span", {
+    }, "Empowerment Through Property: Wealth meets Health", /*#__PURE__*/React.createElement("span", {
+      className: "pcs-announce-meta"
+    }, " \xB7 Sat 1 August 2026, London")), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",

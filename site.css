@@ -150,4 +150,6 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
   .pcs-edu-list { grid-template-columns: 1fr !important; }
   .pcs-footer-grid { grid-template-columns: 1fr !important; }
   .pcs-trust-strip { gap: 10px 18px !important; }
+  .pcs-announce-meta { display: none; }
+  .pcs-speakers { grid-template-columns: 1fr !important; }
 }
