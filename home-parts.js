@@ -965,8 +965,8 @@
       }
     }, /*#__PURE__*/React.createElement(Photo, {
       className: "pcs-hero-photo",
-      id: "uk-home",
-      alt: "A classic British red-brick home in daylight",
+      id: "hero-townhouse",
+      alt: "A row of classic English red-brick Victorian townhouses",
       h: 480,
       radius: 28,
       eager: true
