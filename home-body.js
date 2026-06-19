@@ -212,8 +212,8 @@
       }
     }, /*#__PURE__*/React.createElement(W2.Photo, {
       className: "pcs-img-zoom",
-      id: "uk-home",
-      alt: "A classic British home",
+      id: "why-home",
+      alt: "A beautifully renovated UK home interior",
       h: 220,
       radius: 20,
       tone: "emerald"
