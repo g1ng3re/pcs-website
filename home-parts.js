@@ -965,8 +965,8 @@
       }
     }, /*#__PURE__*/React.createElement(Photo, {
       className: "pcs-hero-photo",
-      id: "1564013799919-ab600027ffc6",
-      alt: "A bright, modern UK home in daylight",
+      id: "uk-home",
+      alt: "A classic British red-brick home in daylight",
       h: 480,
       radius: 28,
       eager: true

@@ -212,8 +212,8 @@
       }
     }, /*#__PURE__*/React.createElement(W2.Photo, {
       className: "pcs-img-zoom",
-      id: "1600585154340-be6161a56a0c",
-      alt: "A warm, light-filled UK living room",
+      id: "uk-home",
+      alt: "A classic British home",
       h: 220,
       radius: 20,
       tone: "emerald"
