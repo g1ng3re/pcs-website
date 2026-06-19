@@ -180,6 +180,7 @@
       Icon
     } = window.PCSIcons;
     return /*#__PURE__*/React.createElement("section", {
+      className: "pcs-truststrip",
       style: {
         background: "#fff",
         borderTop: "1px solid var(--border-subtle)",

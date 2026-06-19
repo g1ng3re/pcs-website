@@ -603,7 +603,7 @@
       style: {
         color: "var(--pcs-blue)"
       }
-    }), " Saturday 1 August 2026, 12 PM \u2013 6 PM"), /*#__PURE__*/React.createElement("span", {
+    }), " Saturday 1 August 2026, 12 PM – 6 PM"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "flex",
         alignItems: "flex-start",

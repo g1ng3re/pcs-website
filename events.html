@@ -10,7 +10,12 @@
 <meta property="og:title" content="Events · Property Clinic Solutions" />
 <meta property="og:description" content="We gather. We teach. We equip. No pitch. No fluff." />
 <meta property="og:image" content="assets/logos/pcs-logo-horizontal.svg" />
-<link rel="icon" href="assets/logos/pcs-favicon.svg" />
+<link rel="icon" type="image/svg+xml" href="assets/logos/pcs-favicon.svg" />
+<link rel="icon" href="assets/favicon/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+<meta name="theme-color" content="#002AB1" />
 
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
@@ -18,14 +23,14 @@
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
-<link rel="stylesheet" href="site.css?v=1781706452817" />
+<link rel="stylesheet" href="site.css?v=1781872348266" />
 
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
 <script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="icons.js?v=1781706452817"></script>
-<script src="home-parts.js?v=1781706452817"></script>
-<script src="page-kit.js?v=1781706452817"></script>
+<script src="icons.js?v=1781872348266"></script>
+<script src="home-parts.js?v=1781872348266"></script>
+<script src="page-kit.js?v=1781872348266"></script>
 
 <script type="application/ld+json">
 { "@context": "https://schema.org", "@type": "Event", "name": "Empowerment Through Property: Wealth meets Health", "startDate": "2026-08-01", "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode", "eventStatus": "https://schema.org/EventScheduled", "location": { "@type": "Place", "name": "Grove House", "address": "76 Hammersmith Grove, London, W6 1NE" }, "organizer": { "@type": "Organization", "name": "Property Clinic Solutions Limited", "url": "https://propertyclinicsolutions.com" }, "description": "A live, in-person event built for landlords, investors, and anyone serious about building wealth through property without sacrificing their health." }
@@ -55,7 +60,7 @@ function FeaturedEvent() {
     className: "reveal",
     style: {
       background: "#fff",
-      padding: "80px 28px",
+      padding: "44px 28px 80px",
       scrollMarginTop: 80
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -129,7 +134,7 @@ function FeaturedEvent() {
       color: "var(--pcs-blue)",
       margin: "6px 0 0"
     }
-  }, "Landlord and Investment Expo \xB7 Theme: Wealth meets Health"), /*#__PURE__*/React.createElement("p", {
+  }, "Landlord and Investment Expo · Theme: Wealth meets Health"), /*#__PURE__*/React.createElement("p", {
     className: "pcs-body",
     style: {
       fontSize: 16,
@@ -157,7 +162,7 @@ function FeaturedEvent() {
       color: "var(--pcs-blue)",
       flex: "none"
     }
-  }), " Saturday 1 August 2026, 12 PM \u2013 6 PM"), /*#__PURE__*/React.createElement("span", {
+  }), " Saturday 1 August 2026, 12 PM – 6 PM"), /*#__PURE__*/React.createElement("span", {
     style: {
       display: "flex",
       alignItems: "flex-start",
@@ -302,7 +307,7 @@ function PastRooms() {
     }
   }, r.body)))))));
 }
-K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(K.PageHero, {
+K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FeaturedEvent, null), /*#__PURE__*/React.createElement(K.PageHero, {
   eyebrow: "Events",
   title: "We gather. We teach. We equip.",
   sub: "Free community evenings and ticketed deep-dive workshops across the UK. Real sessions on mortgages, credit, protection, and property investment, taught by working professionals. No pitch. No fluff.",
@@ -348,7 +353,7 @@ K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React
     title: "Real tools",
     body: "Every attendee leaves with checklists, guides, and frameworks they can actually apply. Calculators, document lists, and decision trees."
   }]
-}), /*#__PURE__*/React.createElement(FeaturedEvent, null), /*#__PURE__*/React.createElement(PastRooms, null), /*#__PURE__*/React.createElement("div", {
+}), /*#__PURE__*/React.createElement(PastRooms, null), /*#__PURE__*/React.createElement("div", {
   id: "partner",
   style: {
     scrollMarginTop: 80

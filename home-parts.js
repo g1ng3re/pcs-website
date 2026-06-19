@@ -394,49 +394,32 @@
         if (localStorage.getItem(KEY)) setShow(false);
       } catch (e) {}
     }, []);
-    const dismiss = () => {
+    const dismiss = e => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       try {
         localStorage.setItem(KEY, "1");
-      } catch (e) {}
+      } catch (e2) {}
       setShow(false);
     };
     if (!show) return null;
-    return /*#__PURE__*/React.createElement("div", {
-      style: {
-        background: "var(--pcs-ink)",
-        color: "#fff"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        maxWidth: 1200,
-        margin: "0 auto",
-        padding: "9px 48px 9px 28px",
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }
-    }, /*#__PURE__*/React.createElement("a", {
-      href: EVENTBRITE,
-      target: "_blank",
-      rel: "noopener",
-      className: "pcs-announce-link",
+    const Seg = () => /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
         gap: 12,
-        flexWrap: "wrap",
-        justifyContent: "center",
-        color: "#fff",
-        textDecoration: "none",
-        font: "600 14px var(--font-sans)"
+        padding: "0 14px",
+        whiteSpace: "nowrap",
+        font: "600 14px var(--font-sans)",
+        color: "rgba(255,255,255,.92)"
       }
     }, /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
         gap: 6,
-        flex: "none",
         font: "700 11px var(--font-sans)",
         letterSpacing: ".14em",
         textTransform: "uppercase",
@@ -444,44 +427,74 @@
       }
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "calendar",
-      size: 14
-    }), " Upcoming event"), /*#__PURE__*/React.createElement("span", {
-      style: {
-        color: "rgba(255,255,255,.92)"
-      }
-    }, "Empowerment Through Property: Wealth meets Health", /*#__PURE__*/React.createElement("span", {
-      className: "pcs-announce-meta"
-    }, " \xB7 Sat 1 August 2026, London")), /*#__PURE__*/React.createElement("span", {
+      size: 13
+    }), " Upcoming event"), /*#__PURE__*/React.createElement("span", null, "Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
         gap: 5,
-        flex: "none",
         fontWeight: 700,
         color: "#fff"
       }
     }, "Reserve your place ", /*#__PURE__*/React.createElement(Icon, {
       name: "arrowRight",
-      size: 14
-    }))), /*#__PURE__*/React.createElement("button", {
+      size: 13
+    })), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "var(--pcs-gold)",
+        padding: "0 4px"
+      },
+      "aria-hidden": "true"
+    }, "·"));
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: "var(--pcs-ink)",
+        color: "#fff",
+        position: "relative",
+        overflow: "hidden"
+      }
+    }, /*#__PURE__*/React.createElement("a", {
+      href: EVENTBRITE,
+      target: "_blank",
+      rel: "noopener",
+      "aria-label": "Reserve your place at Empowerment Through Property, Saturday 1 August 2026, London",
+      style: {
+        display: "block",
+        textDecoration: "none"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-annmarquee",
+      style: {
+        display: "flex",
+        width: "max-content",
+        padding: "9px 0"
+      }
+    }, Array.from({
+      length: 6
+    }).map((_, i) => /*#__PURE__*/React.createElement(Seg, {
+      key: i
+    })))), /*#__PURE__*/React.createElement("button", {
       "aria-label": "Dismiss announcement",
       onClick: dismiss,
       style: {
         position: "absolute",
-        right: 16,
-        top: "50%",
-        transform: "translateY(-50%)",
-        background: "none",
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: 42,
+        background: "var(--pcs-ink)",
         border: "none",
-        color: "rgba(255,255,255,.65)",
+        color: "rgba(255,255,255,.7)",
         cursor: "pointer",
-        padding: 4,
-        display: "inline-flex"
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 2
       }
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "x",
       size: 16
-    }))));
+    })));
   }
   W.AnnouncementBar = AnnouncementBar;
   function Header() {
@@ -690,9 +703,9 @@
       },
       footnote: "Independent across the whole UK protection market. Reviewed every year.",
       onNavigate: closeAll
-    })))), drawer && /*#__PURE__*/React.createElement(MobileDrawer, {
+    }))))), drawer && /*#__PURE__*/React.createElement(MobileDrawer, {
       onClose: () => setDrawer(false)
-    })));
+    }));
   }
   W.Header = Header;
   function MobileDrawer({
@@ -739,7 +752,7 @@
       style: {
         position: "fixed",
         inset: 0,
-        zIndex: 90
+        zIndex: 130
       }
     }, /*#__PURE__*/React.createElement("div", {
       onClick: onClose,
@@ -1034,6 +1047,7 @@
     } = window.PCSIcons;
     const items = ["Whole of Market", "90+ Lenders", "No Upfront Fees", "Independent Advice"];
     return /*#__PURE__*/React.createElement("section", {
+      className: "pcs-truststrip",
       style: {
         background: "#fff",
         borderTop: "1px solid var(--border-subtle)",
@@ -1093,7 +1107,7 @@
         fontSize: 18
       },
       "aria-hidden": "true"
-    }, "\xB7"))));
+    }, "·"))));
     return /*#__PURE__*/React.createElement("section", {
       style: {
         background: bg,
@@ -1191,7 +1205,7 @@
         color: "var(--text-muted)",
         fontWeight: 500
       }
-    }, " \xB7 always on")), /*#__PURE__*/React.createElement("span", {
+    }, " · always on")), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "block",
         font: "400 13px/1.45 var(--font-sans)",
@@ -1316,7 +1330,7 @@
       h: "Tools",
       links: [["Mortgage Calculator", "calculator"]]
     }];
-    const socials = [["facebook", "Facebook"], ["instagram", "Instagram"], ["linkedin", "LinkedIn"], ["twitter", "X"]];
+    const socials = [["facebook", "Facebook", "https://www.facebook.com/profile.php?id=61588038074490"], ["instagram", "Instagram", "https://www.instagram.com/propertyclinicsolutions/"], ["linkedin", "LinkedIn", "https://www.linkedin.com/company/property-clinic-solutions/"], ["tiktok", "TikTok", "https://www.tiktok.com/@propertyclinicsolutions"]];
     return /*#__PURE__*/React.createElement("footer", {
       style: {
         background: "var(--pcs-ink)",
@@ -1361,9 +1375,11 @@
         gap: 10,
         marginTop: 20
       }
-    }, socials.map(([icon, label]) => /*#__PURE__*/React.createElement("a", {
+    }, socials.map(([icon, label, url]) => /*#__PURE__*/React.createElement("a", {
       key: label,
-      href: "#",
+      href: url,
+      target: "_blank",
+      rel: "noopener",
       "aria-label": label,
       className: "pcs-social",
       style: {
@@ -1433,7 +1449,7 @@
         margin: 0,
         color: "rgba(255,255,255,.45)"
       }
-    }, "\xA9 ", new Date().getFullYear(), " Property Clinic Solutions Limited. All rights reserved."))));
+    }, "© ", new Date().getFullYear(), " Property Clinic Solutions Limited. All rights reserved."))));
   }
   W.Footer = Footer;
 

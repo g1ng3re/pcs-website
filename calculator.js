@@ -304,14 +304,14 @@
       onChange: set("price"),
       min: 0,
       step: 5000,
-      prefix: "\xA3"
+      prefix: "£"
     }), /*#__PURE__*/React.createElement(NumField, {
       label: "Deposit",
       value: s.deposit,
       onChange: set("deposit"),
       min: 0,
       step: 1000,
-      prefix: "\xA3",
+      prefix: "£",
       hint: "Loan to value: " + ltv.toFixed(0) + "%"
     }), /*#__PURE__*/React.createElement("div", {
       style: {
@@ -350,7 +350,7 @@
       onChange: set("income"),
       min: 0,
       step: 1000,
-      prefix: "\xA3",
+      prefix: "£",
       hint: "Used only for a rough affordability guide. Lenders typically lend up to ~4.5x income."
     })))), /*#__PURE__*/React.createElement("div", {
       style: {
@@ -503,6 +503,7 @@
       href: CALENDLY,
       target: "_blank",
       rel: "noopener",
+      className: "pcs-calc-cta",
       rightIcon: /*#__PURE__*/React.createElement(Icon, {
         name: "arrowRight",
         size: 18
