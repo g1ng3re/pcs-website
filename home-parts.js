@@ -1317,6 +1317,231 @@
     }, "Save choices"))));
   }
   W.CookieBanner = CookieBanner;
+
+  /* Newsletter popup — site-wide modal reusing the Brevo double-opt-in endpoint.
+     Shows once per visitor after a short delay, dismissible (X / Esc / backdrop /
+     "No thanks"), suppressed on the legal/utility pages. A dismissal or a signup
+     sets a localStorage flag so it never nags returning visitors. Lives here (in
+     the always-loaded parts file) so it works on the homepage and every K.Page. */
+  const NP_KEY = "pcs_newsletter_seen";
+  const NP_SUPPRESS = ["/privacy", "/complaints", "/cookie-policy"];
+  function NewsletterPopup() {
+    const {
+      Button,
+      Input
+    } = window.PCSDesignSystem_269f6d;
+    const {
+      Icon
+    } = window.PCSIcons;
+    const [open, setOpen] = React.useState(false);
+    const [sent, setSent] = React.useState(false);
+    const dialogRef = React.useRef(null);
+    const dismiss = React.useCallback(() => {
+      setOpen(false);
+      try {
+        localStorage.setItem(NP_KEY, "1");
+      } catch (e) {}
+    }, []);
+    React.useEffect(() => {
+      try {
+        const path = location.pathname.replace(/\.html$/, "");
+        if (NP_SUPPRESS.some(p => path === p || path.endsWith(p))) return;
+        if (localStorage.getItem(NP_KEY)) return;
+      } catch (e) {
+        return;
+      }
+      const t = setTimeout(() => setOpen(true), 9000);
+      return () => clearTimeout(t);
+    }, []);
+    React.useEffect(() => {
+      if (!open) return;
+      const prev = document.activeElement;
+      const onKey = e => {
+        if (e.key === "Escape") {
+          dismiss();
+          return;
+        }
+        if (e.key === "Tab" && dialogRef.current) {
+          const f = dialogRef.current.querySelectorAll('a[href],button,input,[tabindex]:not([tabindex="-1"])');
+          if (!f.length) return;
+          const first = f[0],
+            last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      };
+      document.addEventListener("keydown", onKey);
+      const t = setTimeout(() => {
+        const el = dialogRef.current && dialogRef.current.querySelector("input");
+        if (el) el.focus();
+      }, 60);
+      return () => {
+        document.removeEventListener("keydown", onKey);
+        clearTimeout(t);
+        if (prev && prev.focus) prev.focus();
+      };
+    }, [open, dismiss]);
+    if (!open) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      role: "presentation",
+      onMouseDown: e => {
+        if (e.target === e.currentTarget) dismiss();
+      },
+      style: {
+        position: "fixed",
+        inset: 0,
+        background: "rgba(8,12,28,.55)",
+        backdropFilter: "blur(2px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+        zIndex: 1000
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      ref: dialogRef,
+      role: "dialog",
+      "aria-modal": "true",
+      "aria-labelledby": "pcs-np-title",
+      style: {
+        background: "#fff",
+        borderRadius: 24,
+        padding: "34px 32px",
+        maxWidth: 460,
+        width: "100%",
+        boxShadow: "var(--shadow-lg, 0 30px 80px rgba(8,12,28,.35))",
+        position: "relative"
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: dismiss,
+      "aria-label": "Close",
+      style: {
+        position: "absolute",
+        top: 14,
+        right: 14,
+        width: 34,
+        height: 34,
+        borderRadius: 999,
+        border: "none",
+        background: "var(--surface-page, #f6f7fb)",
+        cursor: "pointer",
+        display: "grid",
+        placeItems: "center",
+        color: "var(--text-muted)"
+      }
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "x",
+      size: 18
+    })), sent ? /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        padding: "8px 4px"
+      }
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "checkCircle",
+      size: 40,
+      style: {
+        color: "var(--pcs-emerald)"
+      }
+    }), /*#__PURE__*/React.createElement("h2", {
+      id: "pcs-np-title",
+      style: {
+        font: "800 24px/1.15 var(--font-display)",
+        color: "var(--pcs-ink)",
+        margin: "14px 0 8px"
+      }
+    }, "Almost there"), /*#__PURE__*/React.createElement("p", {
+      className: "pcs-body",
+      style: {
+        fontSize: 15.5,
+        margin: 0
+      }
+    }, "We have sent a confirmation email. Please click the link in it to complete your subscription (double opt-in)."), /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 20
+      }
+    }, /*#__PURE__*/React.createElement(Button, {
+      onClick: dismiss
+    }, "Done"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-label",
+      style: {
+        color: "var(--pcs-emerald)"
+      }
+    }, "Stay Informed"), /*#__PURE__*/React.createElement("h2", {
+      id: "pcs-np-title",
+      style: {
+        font: "800 27px/1.12 var(--font-display)",
+        letterSpacing: "-.02em",
+        color: "var(--pcs-ink)",
+        margin: "10px 0 0"
+      }
+    }, "One email a month. Nothing more."), /*#__PURE__*/React.createElement("p", {
+      className: "pcs-body",
+      style: {
+        fontSize: 15.5,
+        marginTop: 10
+      }
+    }, "Mortgages, protection, market updates, and upcoming events. No spam. Unsubscribe any time."), /*#__PURE__*/React.createElement("form", {
+      onSubmit: async e => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        fd.append("email_address_check", "");
+        fd.append("locale", "en");
+        try {
+          await fetch(window.PCSHome.BREVO_NEWSLETTER_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: fd
+          });
+        } catch (err) {}
+        try {
+          localStorage.setItem(NP_KEY, "1");
+        } catch (err) {}
+        setSent(true);
+      },
+      style: {
+        marginTop: 20
+      }
+    }, /*#__PURE__*/React.createElement(Input, {
+      label: "Email address",
+      name: "EMAIL",
+      type: "email",
+      placeholder: "you@example.com",
+      required: true,
+      leftIcon: /*#__PURE__*/React.createElement(Icon, {
+        name: "mail",
+        size: 18
+      })
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 14,
+        display: "flex",
+        gap: 10,
+        flexWrap: "wrap"
+      }
+    }, /*#__PURE__*/React.createElement(Button, {
+      type: "submit",
+      size: "lg"
+    }, "Subscribe"), /*#__PURE__*/React.createElement(Button, {
+      type: "button",
+      variant: "ghost",
+      size: "lg",
+      onClick: dismiss
+    }, "No thanks")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        font: "400 12px var(--font-sans)",
+        color: "var(--text-muted)",
+        margin: "12px 0 0"
+      }
+    }, "By subscribing you agree to our Privacy Policy.")))));
+  }
+  W.NewsletterPopup = NewsletterPopup;
   function Footer() {
     const {
       Icon

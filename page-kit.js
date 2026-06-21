@@ -1178,11 +1178,12 @@
     const {
       Header,
       Footer,
-      CookieBanner
+      CookieBanner,
+      NewsletterPopup
     } = window.PCSHome;
     return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Header, null), /*#__PURE__*/React.createElement("main", {
       id: "main"
-    }, children), /*#__PURE__*/React.createElement(Footer, null), /*#__PURE__*/React.createElement(CookieBanner, null));
+    }, children), /*#__PURE__*/React.createElement(Footer, null), /*#__PURE__*/React.createElement(CookieBanner, null), NewsletterPopup && /*#__PURE__*/React.createElement(NewsletterPopup, null));
   }
   K.Page = Page;
   K.initReveal = function () {
