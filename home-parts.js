@@ -9,11 +9,15 @@
   /* Ticketing link for the featured event (Empowerment Through Property). */
   const EVENTBRITE = "https://www.eventbrite.com/e/empowerment-through-property-landlord-expo-wealth-meets-health-tickets-1990065361066?lid=zj5izzdshlrl";
   W.EVENTBRITE = EVENTBRITE;
-  /* Web3Forms access key for the contact + newsletter forms. Get a free key at
-     https://web3forms.com (enter your inbox email) and paste it here. Until you
-     do, form submissions will report an error rather than silently failing. */
+  /* Web3Forms access key for the contact form (form-to-email relay). Get a free
+     key at https://web3forms.com (enter your inbox email) and paste it here. */
   const WEB3FORMS_KEY = "d379e4a7-a1d0-46b7-b087-16db369a8d3f";
   W.WEB3FORMS_KEY = WEB3FORMS_KEY;
+  /* Brevo subscription-form endpoint for the newsletter signup. Created in Brevo
+     (Contacts > Forms) with double opt-in ON, so Brevo sends the confirmation
+     email and manages unsubscribes. The site posts the email here directly. */
+  const BREVO_NEWSLETTER_URL = "https://c781fac4.sibforms.com/serve/MUIFACFLwA9tG6K2st4h_ItOJxsNbHLveaCEKOFPZNvIazvaLT2FeVi8B7Iy5NcEHFz8Htt7zRhwTuksYaXc7BU-aFHhxojW-QoczOiDlJfXLAL9imdp5rhsLZDa3AGfG1Wqc7L21-MSee3jmUphcbszI0Qvceo-AbZY049sFRXZSKSRsKpvIPGJxlBdh0XShgUBxTjfoqRFDWrxgw==";
+  W.BREVO_NEWSLETTER_URL = BREVO_NEWSLETTER_URL;
 
   /* Google Analytics 4 — loaded only after the visitor accepts the "Statistics"
      cookie (GDPR). Cookieless Cloudflare analytics loads separately via the

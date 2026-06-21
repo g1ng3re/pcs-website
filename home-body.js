@@ -1203,18 +1203,20 @@
     }, "Almost there. We have sent a confirmation email. Please click the link in it to complete your subscription (double opt-in).")) : /*#__PURE__*/React.createElement("form", {
       onSubmit: async e => {
         e.preventDefault();
+        const fd = new FormData(e.target);
+        fd.append("email_address_check", ""); // Brevo honeypot — must stay empty
+        fd.append("locale", "en");
         try {
-          const fd = new FormData(e.target);
-          fd.append("access_key", window.PCSHome.WEB3FORMS_KEY);
-          fd.append("subject", "New newsletter signup from the PCS website");
-          fd.append("from_name", "Property Clinic Solutions newsletter");
-          const res = await fetch("https://api.web3forms.com/submit", {
+          // Fire-and-forget post to Brevo. mode:"no-cors" avoids the
+          // cross-origin block; Brevo sends the double opt-in email and
+          // only adds the contact once they confirm via that email.
+          await fetch(window.PCSHome.BREVO_NEWSLETTER_URL, {
             method: "POST",
+            mode: "no-cors",
             body: fd
           });
-          const data = await res.json();
-          if (data.success) setSent(true);
         } catch (err) {}
+        setSent(true);
       },
       style: {
         marginTop: 22
@@ -1232,7 +1234,7 @@
       }
     }, /*#__PURE__*/React.createElement(Input, {
       label: "Email address",
-      name: "email",
+      name: "EMAIL",
       type: "email",
       placeholder: "you@example.com",
       required: true,
