@@ -1119,7 +1119,55 @@
           color: "var(--pcs-ink)"
         }
       }, item[0], "."), " ", item[1]) : item[0]));
-    })))))));
+    })), sec.table && /*#__PURE__*/React.createElement("div", {
+      style: {
+        margin: "4px 0 14px",
+        overflowX: "auto",
+        border: "1px solid var(--pcs-line, #e6e8ef)",
+        borderRadius: 12
+      }
+    }, /*#__PURE__*/React.createElement("table", {
+      style: {
+        borderCollapse: "collapse",
+        width: "100%",
+        minWidth: sec.table.head.length > 2 ? 640 : 480,
+        font: "400 14.5px/1.55 var(--font-sans)"
+      }
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, sec.table.head.map((h, k) => /*#__PURE__*/React.createElement("th", {
+      key: k,
+      style: {
+        textAlign: "left",
+        verticalAlign: "top",
+        padding: "12px 14px",
+        background: "var(--pcs-ink)",
+        color: "#fff",
+        font: "700 14px var(--font-sans)",
+        borderRight: k < sec.table.head.length - 1 ? "1px solid rgba(255,255,255,.15)" : "none"
+      }
+    }, h)))), /*#__PURE__*/React.createElement("tbody", null, sec.table.rows.map((row, r) => /*#__PURE__*/React.createElement("tr", {
+      key: r,
+      style: {
+        background: r % 2 ? "var(--pcs-tint, #f6f7fb)" : "#fff"
+      }
+    }, row.map((cell, c) => {
+      const lines = Array.isArray(cell) ? cell : [cell];
+      return /*#__PURE__*/React.createElement("td", {
+        key: c,
+        style: {
+          textAlign: "left",
+          verticalAlign: "top",
+          padding: "11px 14px",
+          color: "var(--text-body)",
+          borderTop: "1px solid var(--pcs-line, #e6e8ef)",
+          borderRight: c < row.length - 1 ? "1px solid var(--pcs-line, #e6e8ef)" : "none"
+        }
+      }, lines.map((ln, li) => /*#__PURE__*/React.createElement("div", {
+        key: li,
+        style: {
+          margin: li ? "4px 0 0" : 0
+        }
+      }, ln)));
+    })))))))))));
   }
   K.Legal = Legal;
 
