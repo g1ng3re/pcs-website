@@ -45,4 +45,4 @@ DirectoryIndex index.html
 </IfModule>
 
 # Friendly 404 -> home (optional; static multipage so usually fine without)
-ErrorDocument 404 /index.html
+ErrorDocument 404 /404.html

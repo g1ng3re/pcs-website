@@ -619,7 +619,7 @@
         flex: "none",
         marginTop: 1
       }
-    }), " Grove House, 76 Hammersmith Grove, London, W6 1NE")), /*#__PURE__*/React.createElement("div", {
+    }), " Grove House, 76 Hammersmith Grove, London, W6 0NE")), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         gap: 12,
