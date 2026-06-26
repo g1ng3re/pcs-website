@@ -5,139 +5,244 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>PCS — Protection Meeting Guide</title>
 
-<!-- PWA: makes it installable as a standalone app on iPad -->
 <link rel="manifest" href="/guide/manifest.json" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="apple-mobile-web-app-title" content="Meeting Guide" />
-<meta name="theme-color" content="#1c1b18" />
+<meta name="theme-color" content="#0C1A3A" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-<!-- Don't index this page -->
 <meta name="robots" content="noindex, nofollow" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --paper:#f3efe6;--paper2:#ebe5d8;--card:#faf8f3;
-  --ink:#1c1b18;--ink-soft:#5c594f;--ink-faint:#9c9688;
-  --teal:#1f5d52;--teal-light:#e8f0ee;--teal-deep:#15433b;
-  --amber:#a06b1a;--amber-light:#fdf3e3;
-  --line:rgba(28,27,24,0.1);--line2:rgba(28,27,24,0.06);
+  --blue:#002AB1;--blue-h:#00239A;--blue-p:#001C7E;--blue-t:#E7ECFA;
+  --ink:#0C1A3A;--emerald:#109E6C;--emerald-t:#E3F4EC;--emerald-h:#0E8C60;
+  --gold:#DB9F1F;--gold-t:#FBF2DB;
+  --paper:#F7F7F4;--card:#FFFFFF;--sunken:#EEF0F4;
+  --n200:#E6E7EC;--n300:#D3D7E0;--n400:#AEB4C2;--n500:#7E8699;--n600:#5A6173;--n700:#3D4254;
+  --success:#109E6C;--danger:#C8362B;
+  --font:'Plus Jakarta Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
 }
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding-bottom:env(safe-area-inset-bottom, 40px);}
+body{font-family:var(--font);background:var(--paper);color:var(--ink);min-height:100vh;
+  padding-bottom:calc(32px + env(safe-area-inset-bottom,0px));}
 
-/* ── PASSWORD GATE ─────────────────────────────────────────────── */
-#gate{
-  position:fixed;inset:0;background:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-  z-index:999;padding:24px;
-}
+/* ── GATE ──────────────────────────────────────────────────────────── */
+#gate{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;
+  justify-content:center;z-index:999;padding:24px;}
 #gate.hidden{display:none;}
-.gate-box{width:100%;max-width:320px;text-align:center;}
-.gate-logo{font-family:'Fraunces',serif;font-weight:500;font-size:13px;letter-spacing:.08em;color:rgba(243,239,230,0.4);margin-bottom:6px;text-transform:uppercase;}
-.gate-title{font-family:'Fraunces',serif;font-weight:500;font-size:24px;color:#f3efe6;margin-bottom:28px;}
-.gate-input{
-  width:100%;padding:13px 16px;border-radius:10px;
-  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);
-  color:#f3efe6;font-family:'IBM Plex Sans',sans-serif;font-size:16px;
-  outline:none;text-align:center;letter-spacing:.1em;margin-bottom:12px;
-}
-.gate-input::placeholder{color:rgba(243,239,230,0.3);letter-spacing:0;}
-.gate-input:focus{border-color:rgba(255,255,255,0.35);}
-.gate-btn{
-  width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;
-  background:var(--teal);color:#f3efe6;font-family:'IBM Plex Sans',sans-serif;
-  font-size:15px;font-weight:600;transition:.15s;
-}
-.gate-btn:hover{background:var(--teal-deep);}
-.gate-error{font-size:12.5px;color:#e07070;margin-top:10px;height:18px;}
+.gate-box{width:100%;max-width:300px;text-align:center;}
+.gate-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:8px;font-weight:700;}
+.gate-title{font-size:26px;font-weight:800;color:#fff;margin-bottom:28px;letter-spacing:-.02em;}
+.gate-input{width:100%;padding:13px 16px;border-radius:10px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);color:#fff;font-family:var(--font);font-size:16px;
+  outline:none;text-align:center;letter-spacing:.08em;margin-bottom:10px;}
+.gate-input::placeholder{color:rgba(255,255,255,.25);letter-spacing:0;}
+.gate-input:focus{border-color:rgba(255,255,255,.4);}
+.gate-btn{width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;
+  background:var(--blue);color:#fff;font-family:var(--font);font-size:15px;font-weight:700;
+  transition:.15s;letter-spacing:.01em;}
+.gate-btn:hover{background:var(--blue-h);}
+.gate-err{font-size:12.5px;color:#f08080;margin-top:9px;height:18px;}
 
-/* ── MAIN APP ──────────────────────────────────────────────────── */
-#app{display:none;}
-#app.visible{display:block;}
+/* ── APP ───────────────────────────────────────────────────────────── */
+#app{display:none;}#app.visible{display:block;}
 
-.header{background:var(--ink);padding:20px 20px 0;position:sticky;top:0;z-index:10;
-  padding-top:calc(20px + env(safe-area-inset-top, 0px));}
+/* ── HEADER ────────────────────────────────────────────────────────── */
+.header{background:var(--ink);padding:0 16px;position:sticky;top:0;z-index:10;
+  padding-top:env(safe-area-inset-top,0px);}
 .header-inner{max-width:700px;margin:0 auto;}
-.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,239,230,0.45);margin-bottom:4px;}
-.header h1{font-family:'Fraunces',serif;font-weight:500;font-size:22px;color:#f3efe6;letter-spacing:-.01em;}
-.reset-btn{font-size:12px;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(243,239,230,0.6);cursor:pointer;font-family:inherit;}
-.reset-btn:hover{background:rgba(255,255,255,0.14);}
-.progress-bar{height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin-bottom:14px;}
-.progress-fill{height:100%;background:var(--teal);border-radius:2px;transition:.3s;}
+.header-top{display:flex;align-items:center;gap:12px;padding:14px 0 10px;}
+.rank-badge{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
+.rank-icon{font-size:20px;line-height:1;}
+.rank-info{min-width:0;}
+.rank-name{font-size:13px;font-weight:700;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.xp-label{font-size:10.5px;color:var(--gold);font-weight:600;letter-spacing:.04em;}
+.header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.xp-total{font-size:13px;font-weight:800;color:var(--gold);letter-spacing:.02em;}
+.reset-btn{font-size:11.5px;padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);cursor:pointer;
+  font-family:var(--font);font-weight:600;transition:.15s;}
+.reset-btn:hover{background:rgba(255,255,255,.13);}
+
+/* XP bar */
+.xp-bar-wrap{margin-bottom:10px;position:relative;}
+.xp-bar-track{height:4px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--emerald));
+  border-radius:3px;transition:.4s cubic-bezier(.34,1.56,.64,1);transform-origin:left;}
+.xp-bar-label{display:flex;justify-content:space-between;margin-top:4px;}
+.xp-bar-left{font-size:10px;color:rgba(255,255,255,.3);font-weight:600;}
+.xp-bar-right{font-size:10px;color:rgba(255,255,255,.3);font-weight:600;}
+
+/* tabs */
 .tabs{display:flex;gap:2px;}
-.tab-btn{flex:1;padding:9px 8px;border:none;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;font-weight:500;background:transparent;color:rgba(243,239,230,0.45);border-radius:8px 8px 0 0;transition:.15s;}
+.tab-btn{flex:1;padding:9px 8px;border:none;cursor:pointer;font-family:var(--font);
+  font-size:12px;font-weight:700;background:transparent;color:rgba(255,255,255,.4);
+  border-radius:8px 8px 0 0;transition:.15s;letter-spacing:.01em;}
 .tab-btn.active{background:var(--paper);color:var(--ink);}
-.tab-count{margin-left:5px;font-size:11px;color:rgba(243,239,230,0.3);}
-.tab-btn.active .tab-count{color:var(--teal);}
-.content{max-width:700px;margin:0 auto;padding:18px 16px;}
-.section-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:border-color .2s,background .2s;margin-bottom:8px;}
-.section-card.all-done{background:var(--teal-light);border-color:rgba(31,93,82,0.3);}
-.section-header{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;width:100%;background:none;border:none;text-align:left;}
-.section-icon{font-size:17px;min-width:22px;}
-.section-title{font-family:'Fraunces',serif;font-weight:500;font-size:16px;color:var(--ink);flex:1;}
-.all-done .section-title{color:var(--teal-deep);}
-.compliance-badge{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--amber-light);color:var(--amber);border:1px solid rgba(160,107,26,0.2);white-space:nowrap;}
-.section-count{font-size:12px;font-weight:600;color:var(--ink-soft);min-width:36px;text-align:right;}
-.all-done .section-count{color:var(--teal);}
-.chevron{font-size:10px;color:var(--ink-faint);transition:.2s;margin-left:4px;}
-.section-body{padding:0 16px 14px;border-top:1px solid var(--line2);display:none;}
+.tab-count{margin-left:4px;font-size:10.5px;opacity:.6;}
+.tab-btn.active .tab-count{color:var(--blue);opacity:1;}
+
+/* ── CONTENT ───────────────────────────────────────────────────────── */
+.content{max-width:700px;margin:0 auto;padding:16px;}
+
+/* ── SECTION CARD ──────────────────────────────────────────────────── */
+.section-card{background:var(--card);border:1.5px solid var(--n200);border-radius:14px;
+  overflow:hidden;transition:border-color .2s,background .2s,box-shadow .2s;margin-bottom:8px;}
+.section-card.all-done{background:var(--emerald-t);border-color:rgba(16,158,108,.35);
+  box-shadow:0 2px 12px rgba(16,158,108,.12);}
+.section-header{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;
+  width:100%;background:none;border:none;text-align:left;}
+.section-icon{font-size:18px;min-width:24px;}
+.section-title{font-size:15px;font-weight:700;color:var(--ink);flex:1;letter-spacing:-.01em;}
+.all-done .section-title{color:var(--emerald-h);}
+.compliance-badge{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 7px;border-radius:999px;background:var(--gold-t);color:var(--gold);
+  border:1px solid rgba(219,159,31,.25);white-space:nowrap;}
+.section-xp{font-size:11px;font-weight:700;color:var(--blue);opacity:.7;white-space:nowrap;}
+.all-done .section-xp{color:var(--emerald);opacity:1;}
+.section-count{font-size:12px;font-weight:700;color:var(--n500);min-width:32px;text-align:right;}
+.all-done .section-count{color:var(--emerald);}
+.chevron{font-size:9px;color:var(--n400);margin-left:4px;transition:.2s;}
+
+.section-body{padding:0 16px 14px;border-top:1.5px solid var(--n200);display:none;}
 .section-body.open{display:block;}
-.compliance-note{margin:10px 0;padding:8px 12px;border-radius:8px;background:var(--amber-light);border-left:3px solid var(--amber);font-size:12.5px;color:var(--amber);font-weight:500;line-height:1.5;}
-.info-note{margin:10px 0;padding:8px 12px;border-radius:8px;background:var(--paper2);font-size:12.5px;color:var(--ink-soft);line-height:1.5;font-style:italic;}
-.script-block{margin:8px 0;padding:10px 13px;border-radius:8px;background:var(--teal-light);border-left:3px solid var(--teal);font-size:13px;color:var(--teal-deep);line-height:1.6;font-family:'IBM Plex Mono',monospace;}
-.script-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:5px;font-family:'IBM Plex Sans',sans-serif;}
-.items-list{display:flex;flex-direction:column;gap:3px;margin-top:10px;}
-.item-row{display:flex;align-items:flex-start;gap:9px;padding:5px 8px;border-radius:7px;cursor:pointer;transition:background .12s;}
-.item-row:hover{background:rgba(28,27,24,0.04);}
-.item-row.checked{background:rgba(31,93,82,0.06);}
+.compliance-note{margin:10px 0;padding:8px 12px;border-radius:8px;background:var(--gold-t);
+  border-left:3px solid var(--gold);font-size:12px;color:#8a6310;font-weight:600;line-height:1.55;}
+.info-note{margin:10px 0;padding:8px 12px;border-radius:8px;background:var(--sunken);
+  font-size:12px;color:var(--n600);line-height:1.55;font-style:italic;}
+.script-label{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--blue);margin:10px 0 3px;font-family:var(--font);}
+.script-block{margin-bottom:6px;padding:10px 13px;border-radius:8px;background:var(--blue-t);
+  border-left:3px solid var(--blue);font-size:12.5px;color:#001a6e;line-height:1.65;
+  font-family:var(--mono);}
+
+/* items */
+.items-list{display:flex;flex-direction:column;gap:2px;margin-top:10px;}
+.item-row{display:flex;align-items:flex-start;gap:9px;padding:6px 8px;border-radius:8px;
+  cursor:pointer;transition:background .12s;position:relative;}
+.item-row:hover{background:var(--sunken);}
+.item-row.checked{background:rgba(16,158,108,.06);}
 .item-row.indent{padding-left:26px;}
-.item-cb{margin-top:2px;accent-color:var(--teal);cursor:pointer;min-width:15px;}
+.item-cb{margin-top:2px;accent-color:var(--emerald);cursor:pointer;min-width:15px;
+  width:15px;height:15px;}
 .item-content{flex:1;}
-.item-text{font-size:13.5px;line-height:1.5;color:var(--ink);}
-.item-row.checked .item-text{text-decoration:line-through;opacity:.5;}
-.item-text.bold{font-weight:600;}
-.item-arrow{color:var(--ink-faint);margin-right:4px;font-size:12px;}
-.item-script{margin-top:5px;padding:7px 10px;border-radius:6px;background:var(--teal-light);border-left:2px solid var(--teal);font-size:12px;color:var(--teal-deep);line-height:1.55;font-family:'IBM Plex Mono',monospace;}
-.post-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;background:var(--card);border:1px solid var(--line);margin-bottom:4px;transition:.12s;}
-.post-item.checked{background:rgba(31,93,82,0.07);border-color:rgba(31,93,82,0.2);}
-.post-item.checked .item-text{text-decoration:line-through;opacity:.5;}
-.c-dot{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:999px;background:var(--amber-light);color:var(--amber);border:1px solid rgba(160,107,26,0.2);margin-right:6px;}
+.item-text{font-size:13px;line-height:1.5;color:var(--ink);}
+.item-row.checked .item-text{text-decoration:line-through;opacity:.4;}
+.item-text.bold{font-weight:700;}
+.item-arrow{color:var(--n400);margin-right:4px;font-size:11px;}
+.item-xp{font-size:10px;font-weight:700;color:var(--blue);opacity:.45;margin-left:4px;white-space:nowrap;}
+.item-row.checked .item-xp{color:var(--emerald);opacity:.6;}
+
+/* post tab */
+.post-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:10px;
+  cursor:pointer;background:var(--card);border:1.5px solid var(--n200);margin-bottom:4px;
+  transition:.12s;position:relative;}
+.post-item.checked{background:rgba(16,158,108,.06);border-color:rgba(16,158,108,.25);}
+.post-item.checked .item-text{text-decoration:line-through;opacity:.4;}
+.c-dot{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:1px 6px;border-radius:999px;background:var(--gold-t);color:var(--gold);
+  border:1px solid rgba(219,159,31,.25);margin-right:6px;}
+
+/* ── XP POPUP ──────────────────────────────────────────────────────── */
+.xp-pop{position:fixed;pointer-events:none;font-size:13px;font-weight:800;
+  color:var(--gold);text-shadow:0 1px 4px rgba(0,0,0,.25);z-index:999;
+  transition:none;letter-spacing:.02em;}
+@keyframes xp-rise{
+  0%{opacity:1;transform:translateY(0) scale(1);}
+  60%{opacity:1;transform:translateY(-28px) scale(1.1);}
+  100%{opacity:0;transform:translateY(-52px) scale(.9);}
+}
+
+/* ── SECTION COMPLETE TOAST ────────────────────────────────────────── */
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;
+  transform:translateX(-50%) translateY(80px);z-index:100;
+  background:var(--ink);color:#fff;padding:11px 20px;border-radius:12px;
+  font-size:13.5px;font-weight:700;white-space:nowrap;pointer-events:none;
+  box-shadow:0 6px 24px rgba(12,26,58,.35);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+#toast.hide{transform:translateX(-50%) translateY(80px);opacity:0;}
+
+/* ── CONFETTI ──────────────────────────────────────────────────────── */
+.confetti-bit{position:fixed;top:-10px;pointer-events:none;z-index:200;
+  border-radius:2px;opacity:0;}
+@keyframes confetti-fall{
+  0%{opacity:1;transform:translateY(0) rotate(0deg);}
+  100%{opacity:0;transform:translateY(105vh) rotate(720deg);}
+}
+
+/* ── RANK BANNER ───────────────────────────────────────────────────── */
+#rank-up{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  z-index:300;pointer-events:none;opacity:0;transition:opacity .3s;}
+#rank-up.show{opacity:1;}
+.rank-up-box{background:var(--ink);border:2px solid var(--gold);border-radius:20px;
+  padding:28px 36px;text-align:center;transform:scale(.8);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+#rank-up.show .rank-up-box{transform:scale(1);}
+.rank-up-icon{font-size:48px;margin-bottom:8px;}
+.rank-up-label{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:4px;}
+.rank-up-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.01em;}
 </style>
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
+<!-- GATE -->
 <div id="gate">
   <div class="gate-box">
-    <div class="gate-logo">Property Clinic Solutions</div>
+    <div class="gate-eyebrow">Property Clinic Solutions</div>
     <div class="gate-title">Meeting Guide</div>
-    <input id="gate-pw" type="password" class="gate-input" placeholder="Enter password" autocomplete="current-password" />
+    <input id="gate-pw" type="password" class="gate-input" placeholder="Password" autocomplete="current-password" />
     <button class="gate-btn" onclick="checkPassword()">Unlock</button>
-    <div class="gate-error" id="gate-error"></div>
+    <div class="gate-err" id="gate-err"></div>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- RANK UP OVERLAY -->
+<div id="rank-up">
+  <div class="rank-up-box">
+    <div class="rank-up-icon" id="ru-icon"></div>
+    <div class="rank-up-label">Rank Up!</div>
+    <div class="rank-up-title" id="ru-title"></div>
+  </div>
+</div>
+
+<!-- APP -->
 <div id="app">
   <div class="header">
     <div class="header-inner">
       <div class="header-top">
-        <div>
-          <div class="kicker">Property Clinic Solutions</div>
-          <h1>Protection Meeting Guide</h1>
+        <div class="rank-badge">
+          <div class="rank-icon" id="hd-icon"></div>
+          <div class="rank-info">
+            <div class="rank-name" id="hd-rank"></div>
+            <div class="xp-label" id="hd-xp-label"></div>
+          </div>
         </div>
-        <button class="reset-btn" onclick="resetCurrent()">Reset tab</button>
+        <div class="header-actions">
+          <div class="xp-total" id="hd-xp"></div>
+          <button class="reset-btn" onclick="resetCurrent()">Reset</button>
+        </div>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="xp-bar-wrap">
+        <div class="xp-bar-track"><div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div></div>
+        <div class="xp-bar-label">
+          <span class="xp-bar-left" id="xp-bar-left"></span>
+          <span class="xp-bar-right" id="xp-bar-right"></span>
+        </div>
+      </div>
       <div class="tabs">
-        <button class="tab-btn active" onclick="setTab('m1')" id="tab-m1">Meeting One <span class="tab-count" id="count-m1"></span></button>
-        <button class="tab-btn" onclick="setTab('m2')" id="tab-m2">Meeting Two <span class="tab-count" id="count-m2"></span></button>
-        <button class="tab-btn" onclick="setTab('post')" id="tab-post">Post Meeting <span class="tab-count" id="count-post"></span></button>
+        <button class="tab-btn active" onclick="setTab('m1')" id="tab-m1">Meeting 1 <span class="tab-count" id="count-m1"></span></button>
+        <button class="tab-btn" onclick="setTab('m2')" id="tab-m2">Meeting 2 <span class="tab-count" id="count-m2"></span></button>
+        <button class="tab-btn" onclick="setTab('post')" id="tab-post">Post <span class="tab-count" id="count-post"></span></button>
       </div>
     </div>
   </div>
@@ -146,471 +251,508 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
 
 <script>
 // ─── PASSWORD ─────────────────────────────────────────────────────────────────
-// Change the password here:
 const PASSWORD = 'pcs-protect';
-
 function checkPassword(){
-  const val = document.getElementById('gate-pw').value;
-  if(val === PASSWORD){
+  if(document.getElementById('gate-pw').value === PASSWORD){
     sessionStorage.setItem('pcs_auth','1');
     document.getElementById('gate').classList.add('hidden');
     document.getElementById('app').classList.add('visible');
-    render();
+    render(); updateXP();
   } else {
-    document.getElementById('gate-error').textContent = 'Incorrect password.';
+    document.getElementById('gate-err').textContent = 'Incorrect password.';
     document.getElementById('gate-pw').value = '';
   }
 }
-document.getElementById('gate-pw').addEventListener('keydown', e => {
-  if(e.key === 'Enter') checkPassword();
-});
-
-// Auto-unlock if already authenticated this session
-if(sessionStorage.getItem('pcs_auth') === '1'){
+document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')checkPassword();});
+if(sessionStorage.getItem('pcs_auth')==='1'){
   document.getElementById('gate').classList.add('hidden');
   document.getElementById('app').classList.add('visible');
 }
 
+// ─── RANKS ───────────────────────────────────────────────────────────────────
+const RANKS = [
+  {name:'Getting Started',    icon:'🌱', min:0},
+  {name:'Building Confidence',icon:'📋', min:50},
+  {name:'Protection Adviser', icon:'🛡️', min:150},
+  {name:'Compliance Pro',     icon:'⚖️', min:300},
+  {name:'Client Champion',    icon:'🏆', min:500},
+  {name:'Meeting Legend',     icon:'🌟', min:750},
+];
+function getRank(xp){ let r=RANKS[0]; for(const rank of RANKS){ if(xp>=rank.min) r=rank; } return r; }
+function getNextRank(xp){ return RANKS.find(r=>r.min>xp)||null; }
+
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let currentTab = 'm1';
 let checked = {};
-try { checked = JSON.parse(localStorage.getItem('pcs_checks') || '{}'); } catch(e){}
-function save(){ try{ localStorage.setItem('pcs_checks', JSON.stringify(checked)); }catch(e){} }
+let lastRank = null;
+try{ checked = JSON.parse(localStorage.getItem('pcs_checks')||'{}'); }catch(e){}
+function save(){ try{ localStorage.setItem('pcs_checks',JSON.stringify(checked)); }catch(e){} }
 function resetCurrent(){
-  const ids = getAllIds(currentTab === 'm1' ? M1 : currentTab === 'm2' ? M2 : POST_ITEMS);
-  ids.forEach(id => delete checked[id]);
-  save(); render();
+  const data = currentTab==='m1'?M1:currentTab==='m2'?M2:POST_ITEMS;
+  getAllIds(data).forEach(id=>delete checked[id]);
+  save(); render(); updateXP();
+}
+
+// ─── XP CALC ─────────────────────────────────────────────────────────────────
+// Regular item = 5xp, compliance item = 10xp
+function itemXP(item){ return item.compliance ? 10 : 5; }
+function calcTotalXP(){
+  let xp = 0;
+  for(const s of M1) for(const i of s.items){ if(checked[i.id]) xp += s.compliance?10:5; }
+  for(const s of M2) for(const i of s.items){ if(checked[i.id]) xp += s.compliance?10:5; }
+  for(const i of POST_ITEMS){ if(checked[i.id]) xp += i.compliance?10:5; }
+  return xp;
+}
+function updateXP(){
+  const xp = calcTotalXP();
+  const rank = getRank(xp);
+  const next = getNextRank(xp);
+  document.getElementById('hd-icon').textContent = rank.icon;
+  document.getElementById('hd-rank').textContent = rank.name;
+  const pct = next ? Math.round(((xp-rank.min)/(next.min-rank.min))*100) : 100;
+  document.getElementById('xp-bar-fill').style.width = pct+'%';
+  document.getElementById('hd-xp').textContent = xp+' XP';
+  document.getElementById('hd-xp-label').textContent = next ? (next.min-xp)+' XP to '+next.name : '🏆 Max rank!';
+  document.getElementById('xp-bar-left').textContent = rank.name;
+  document.getElementById('xp-bar-right').textContent = next ? next.name : '';
+
+  // rank-up notification
+  if(lastRank && lastRank.name !== rank.name){
+    showRankUp(rank);
+  }
+  lastRank = rank;
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show'); t.classList.remove('hide');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.classList.remove('show'); t.classList.add('hide'); },2200);
+}
+
+// ─── RANK UP ─────────────────────────────────────────────────────────────────
+let rankUpTimer;
+function showRankUp(rank){
+  document.getElementById('ru-icon').textContent = rank.icon;
+  document.getElementById('ru-title').textContent = rank.name;
+  const el = document.getElementById('rank-up');
+  el.classList.add('show');
+  clearTimeout(rankUpTimer);
+  rankUpTimer = setTimeout(()=>el.classList.remove('show'), 2400);
+  confetti(12);
+}
+
+// ─── XP POP ──────────────────────────────────────────────────────────────────
+function xpPop(el, xp){
+  const rect = el.getBoundingClientRect();
+  const pop = document.createElement('div');
+  pop.className = 'xp-pop';
+  pop.textContent = '+'+xp+' XP';
+  pop.style.cssText = `left:${rect.right+6}px;top:${rect.top+4}px;`;
+  document.body.appendChild(pop);
+  pop.style.animation = 'xp-rise .75s ease-out forwards';
+  setTimeout(()=>pop.remove(), 800);
+}
+
+// ─── CONFETTI ────────────────────────────────────────────────────────────────
+const CONFETTI_COLORS = ['#002AB1','#109E6C','#DB9F1F','#E7ECFA','#E3F4EC','#fff'];
+function confetti(n=18){
+  for(let i=0;i<n;i++){
+    const bit = document.createElement('div');
+    bit.className = 'confetti-bit';
+    const w = 6+Math.random()*8, h = 6+Math.random()*8;
+    bit.style.cssText = `
+      left:${10+Math.random()*80}vw;
+      width:${w}px;height:${h}px;
+      background:${CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)]};
+      animation:confetti-fall ${1.2+Math.random()*1.2}s ${Math.random()*.4}s ease-in forwards;
+    `;
+    document.body.appendChild(bit);
+    setTimeout(()=>bit.remove(), 3000);
+  }
 }
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const M1 = [
-  {
-    id:"pre", title:"Before the Meeting", icon:"📋",
-    items:[
-      {id:"pre1", text:"Book appointment via Microsoft Teams — use client email for the invite"},
-      {id:"pre2", text:"Email the IDD to the client at the same time as the Teams invite"},
-      {id:"pre3", text:"Confirm the meeting time and Teams link in the email"},
-    ]
-  },
-  {
-    id:"transcript", title:"Transcript Consent", icon:"🎙", compliance:true,
+  {id:"pre",title:"Before the Meeting",icon:"📋",items:[
+    {id:"pre1",text:"Book appointment via Microsoft Teams — use client email for the invite"},
+    {id:"pre2",text:"Email the IDD to the client at the same time as the Teams invite"},
+    {id:"pre3",text:"Confirm the meeting time and Teams link in the email"},
+  ]},
+  {id:"transcript",title:"Transcript Consent",icon:"🎙",compliance:true,
     complianceNote:"Record verbal consent in file before proceeding.",
-    scripts:[
-      {label:"Say this", text:'"Before we get into anything, just so you know I am going to turn on the meeting transcript now. It just means I can focus on you properly rather than taking notes throughout. Are you happy with that?"'}
-    ],
+    scripts:[{label:"Say this",text:'"Before we get into anything, just so you know I am going to turn on the meeting transcript now. It just means I can focus on you properly rather than taking notes throughout. Are you happy with that?"'}],
     items:[
-      {id:"tr1", text:"Turn on transcript before the meeting begins"},
-      {id:"tr2", text:"Inform client and gain verbal permission"},
-      {id:"tr3", text:"Note consent in file"},
-    ]
-  },
-  {
-    id:"welcome", title:"Welcome", icon:"👋",
+      {id:"tr1",text:"Turn on transcript before the meeting begins"},
+      {id:"tr2",text:"Inform client and gain verbal permission"},
+      {id:"tr3",text:"Note consent in file"},
+  ]},
+  {id:"welcome",title:"Welcome",icon:"👋",
     note:"Do not rush this. A comfortable client is an honest client. The quality of your fact-find depends on it.",
     scripts:[
-      {label:"Example openers", text:'"How are you doing? How has the week been?"\n"How long have you been in the house now?"\n"How is the family? Kids keeping you busy?"'},
-      {label:"Accessibility check", text:'"Is there anything I need to consider in how the meeting runs today? Anything that would help you get the most out of it?"'}
+      {label:"Example openers",text:'"How are you doing? How has the week been?"\n"How long have you been in the house now?"\n"How is the family? Kids keeping you busy?"'},
+      {label:"Accessibility check",text:'"Is there anything I need to consider in how the meeting runs today? Anything that would help you get the most out of it?"'}
     ],
     items:[
-      {id:"w1", text:"Take genuine time — do not rush straight into the agenda"},
-      {id:"w2", text:"Make them feel comfortable and at ease"},
-      {id:"w3", text:"Ask if there is anything to consider in how the meeting runs"},
-    ]
-  },
-  {
-    id:"idd", title:"IDD Check", icon:"📄", compliance:true,
+      {id:"w1",text:"Take genuine time — do not rush straight into the agenda"},
+      {id:"w2",text:"Make them feel comfortable and at ease"},
+      {id:"w3",text:"Ask if there is anything to consider in how the meeting runs"},
+  ]},
+  {id:"idd",title:"IDD Check",icon:"📄",compliance:true,
     complianceNote:"IDD confirmed read or covered in full. Record in file.",
     scripts:[
-      {label:"Opening question", text:'"Before we started I sent over a document called the Initial Disclosure Document. Did you get a chance to read through that?"'},
-      {label:"If YES", text:'"Great. Any questions on anything in there, or are you happy with everything?"'},
-      {label:"If NO — GDPR", text:'"No problem. So in terms of your data, we take GDPR seriously. The information you share with me today will not be passed on to anyone except the insurer at the point we make an application on your behalf. That is it."'},
-      {label:"If NO — Fees", text:'"In terms of fees, we do not charge you anything for our advice. The way we are paid is through commission from the insurance company when a policy is placed. So this conversation, the research, all of it costs you nothing directly."'},
-      {label:"If NO — Provider", text:'"And in terms of who we work with, Property Clinic Solutions is independent. We are not tied to any single insurer. We search the whole market to find the best fit for your specific situation. So whatever I recommend comes from research, not from a deal with a particular provider."'},
-      {label:"Confirm", text:'"Are you happy with all of that before we move forward?"'}
+      {label:"Opening question",text:'"Before we started I sent over a document called the Initial Disclosure Document. Did you get a chance to read through that?"'},
+      {label:"If YES",text:'"Great. Any questions on anything in there, or are you happy with everything?"'},
+      {label:"If NO — GDPR",text:'"No problem. So in terms of your data, we take GDPR seriously. The information you share with me today will not be passed on to anyone except the insurer at the point we make an application on your behalf. That is it."'},
+      {label:"If NO — Fees",text:'"In terms of fees, we do not charge you anything for our advice. The way we are paid is through commission from the insurance company when a policy is placed. So this conversation, the research, all of it costs you nothing directly."'},
+      {label:"If NO — Provider",text:'"And in terms of who we work with, Property Clinic Solutions is independent. We are not tied to any single insurer. We search the whole market to find the best fit for your specific situation. So whatever I recommend comes from research, not from a deal with a particular provider."'},
+      {label:"Confirm",text:'"Are you happy with all of that before we move forward?"'}
     ],
     items:[
-      {id:"idd1", text:"Ask if client has read the IDD"},
-      {id:"idd2", text:"IF READ: any questions? Confirm happy", sub:true},
-      {id:"idd3", text:"IF NOT READ: cover the three points below", sub:true},
-      {id:"idd4", text:"GDPR — info only goes to insurer at application", sub:true, indent:true},
-      {id:"idd5", text:"Fees — no charge to client, insurer pays commission", sub:true, indent:true},
-      {id:"idd6", text:"Provider — PCS is whole of market, not tied to any single insurer", sub:true, indent:true},
-      {id:"idd7", text:"Confirm client is happy before moving on"},
-    ]
-  },
-  {
-    id:"agenda", title:"Set the Agenda", icon:"🗓",
+      {id:"idd1",text:"Ask if client has read the IDD"},
+      {id:"idd2",text:"IF READ: any questions? Confirm happy",sub:true},
+      {id:"idd3",text:"IF NOT READ: cover the three points below",sub:true},
+      {id:"idd4",text:"GDPR — info only goes to insurer at application",sub:true,indent:true},
+      {id:"idd5",text:"Fees — no charge to client, insurer pays commission",sub:true,indent:true},
+      {id:"idd6",text:"Provider — PCS is whole of market, not tied to any single insurer",sub:true,indent:true},
+      {id:"idd7",text:"Confirm client is happy before moving on"},
+  ]},
+  {id:"agenda",title:"Set the Agenda",icon:"🗓",
     scripts:[
-      {label:"Full agenda script", text:'"Here is how today runs. I am going to ask you some questions to get a proper picture of your situation. Then we will work out what your actual needs are. I will summarise where we are, and then I will go away and do my research. When we speak again I will bring a recommendation and you can decide whether you want to go ahead or take some time. No recommendation today, nothing to sign. We are looking at around 30 to 60 minutes. Does that work?"'},
-      {label:"Referral plant", text:'"And at the end, if today goes well, I would love to ask you about people you know who might benefit from the same conversation — but we will get to that."'}
+      {label:"Full agenda script",text:'"Here is how today runs. I am going to ask you some questions to get a proper picture of your situation. Then we will work out what your actual needs are. I will summarise where we are, and then I will go away and do my research. When we speak again I will bring a recommendation and you can decide whether you want to go ahead or take some time. No recommendation today, nothing to sign. We are looking at around 30 to 60 minutes. Does that work?"'},
+      {label:"Referral plant",text:'"And at the end, if today goes well, I would love to ask you about people you know who might benefit from the same conversation — but we will get to that."'}
     ],
     items:[
-      {id:"ag1", text:"Meeting will take 30 to 60 minutes"},
-      {id:"ag2", text:"No recommendation today and nothing to sign — state this clearly"},
-      {id:"ag3", text:"Stage 1: Understand the situation"},
-      {id:"ag4", text:"Stage 2: Identify needs"},
-      {id:"ag5", text:"Stage 3: Research and come back with options"},
-      {id:"ag6", text:"Stage 4: Recommend, apply, referrals"},
-      {id:"ag7", text:"Confirm client is clear and happy to proceed"},
-    ]
-  },
-  {
-    id:"factfind", title:"Fact Find", icon:"🔍", compliance:true,
+      {id:"ag1",text:"Meeting will take 30 to 60 minutes"},
+      {id:"ag2",text:"No recommendation today and nothing to sign — state this clearly"},
+      {id:"ag3",text:"Stage 1: Understand the situation"},
+      {id:"ag4",text:"Stage 2: Identify needs"},
+      {id:"ag5",text:"Stage 3: Research and come back with options"},
+      {id:"ag6",text:"Stage 4: Recommend, apply, referrals"},
+      {id:"ag7",text:"Confirm client is clear and happy to proceed"},
+  ]},
+  {id:"factfind",title:"Fact Find",icon:"🔍",compliance:true,
     complianceNote:"Read duty of care disclosure verbatim before starting. Record in file.",
     scripts:[
-      {label:"Duty of care — read verbatim", text:'"You are under a duty to take reasonable care not to make any misrepresentation of the facts; failure to take reasonable care may affect any future claims."'},
-      {label:"Sick pay — key question", text:'"This one is really important. If you were off sick tomorrow, what would your employer actually pay you? And how long for? What happens after that?"'},
-      {label:"Existing cover", text:'"Do you have any life insurance, critical illness, or income protection anywhere at all? Either through work — things like death in service — or anything you have set up personally?"'},
-      {label:"Savings context", text:'"And if you had to dip into savings, how much is there and how accessible is it? Not investments — just money you could get to quickly."'},
-      {label:"Medical history", text:'"Any significant medical history I should know about? Anything you have been diagnosed with, treated for, or are currently taking medication for?"'},
-      {label:"Mental health (ask directly)", text:'"And mental health — any history of anxiety, depression, stress-related conditions? I need to ask because it comes up in the application and we want to make sure everything is disclosed accurately."'}
+      {label:"Duty of care — read verbatim",text:'"You are under a duty to take reasonable care not to make any misrepresentation of the facts; failure to take reasonable care may affect any future claims."'},
+      {label:"Sick pay — key question",text:'"This one is really important. If you were off sick tomorrow, what would your employer actually pay you? And how long for? What happens after that?"'},
+      {label:"Existing cover",text:'"Do you have any life insurance, critical illness, or income protection anywhere at all? Either through work — things like death in service — or anything you have set up personally?"'},
+      {label:"Savings context",text:'"And if you had to dip into savings, how much is there and how accessible is it? Not investments — just money you could get to quickly."'},
+      {label:"Medical history",text:'"Any significant medical history I should know about? Anything you have been diagnosed with, treated for, or are currently taking medication for?"'},
+      {label:"Mental health (ask directly)",text:'"And mental health — any history of anxiety, depression, stress-related conditions? I need to ask because it comes up in the application and we want to make sure everything is disclosed accurately."'}
     ],
     items:[
-      {id:"ff0", text:"Read duty of care disclosure verbatim before any questions", bold:true},
-      {id:"ff1", text:"Full name(s)"},
-      {id:"ff2", text:"Date(s) of birth"},
-      {id:"ff3", text:"Address"},
-      {id:"ff4", text:"Dependants — who, ages"},
-      {id:"ff5", text:"Job role and employment type (PAYE / self-employed / director)"},
-      {id:"ff6", text:"Annual income before tax"},
-      {id:"ff7", text:"Work benefits — death in service, private health, anything?"},
-      {id:"ff8", text:"Any additional income — side work, rental, dividends"},
-      {id:"ff9", text:"SICK PAY — full pay, half pay, SSP, then nothing?", bold:true},
-      {id:"ff10", text:"Mortgage or rent — monthly amount"},
-      {id:"ff11", text:"Mortgage outstanding balance and remaining term"},
-      {id:"ff12", text:"Other debts — car finance, loans, leases"},
-      {id:"ff13", text:"Living costs — utilities, council tax, childcare, school fees"},
-      {id:"ff14", text:"Total essential monthly outgoings"},
-      {id:"ff15", text:"Savings — how much, how accessible"},
-      {id:"ff16", text:"Investments or ISAs"},
-      {id:"ff17", text:"Existing cover — life, CI, IP anywhere (work or personal)?"},
-      {id:"ff18", text:"Smoker in last 12 months?"},
-      {id:"ff19", text:"Medical history — diagnosed, treated, on medication?"},
-      {id:"ff20", text:"Mental health history — ask directly"},
-      {id:"ff21", text:"Height and weight"},
-    ]
-  },
-  {
-    id:"abcdef", title:"ABCDEF — Picture Painting", icon:"🎨",
+      {id:"ff0",text:"Read duty of care disclosure verbatim before any questions",bold:true},
+      {id:"ff1",text:"Full name(s)"},{id:"ff2",text:"Date(s) of birth"},{id:"ff3",text:"Address"},
+      {id:"ff4",text:"Dependants — who, ages"},
+      {id:"ff5",text:"Job role and employment type (PAYE / self-employed / director)"},
+      {id:"ff6",text:"Annual income before tax"},
+      {id:"ff7",text:"Work benefits — death in service, private health, anything?"},
+      {id:"ff8",text:"Any additional income — side work, rental, dividends"},
+      {id:"ff9",text:"SICK PAY — full pay, half pay, SSP, then nothing?",bold:true},
+      {id:"ff10",text:"Mortgage or rent — monthly amount"},
+      {id:"ff11",text:"Mortgage outstanding balance and remaining term"},
+      {id:"ff12",text:"Other debts — car finance, loans, leases"},
+      {id:"ff13",text:"Living costs — utilities, council tax, childcare, school fees"},
+      {id:"ff14",text:"Total essential monthly outgoings"},
+      {id:"ff15",text:"Savings — how much, how accessible"},{id:"ff16",text:"Investments or ISAs"},
+      {id:"ff17",text:"Existing cover — life, CI, IP anywhere (work or personal)?"},
+      {id:"ff18",text:"Smoker in last 12 months?"},
+      {id:"ff19",text:"Medical history — diagnosed, treated, on medication?"},
+      {id:"ff20",text:"Mental health history — ask directly"},{id:"ff21",text:"Height and weight"},
+  ]},
+  {id:"abcdef",title:"ABCDEF — Picture Painting",icon:"🎨",
     note:"Lead with consequences, never products. Use their numbers throughout. Do not name a product until the priority question in F. Let the client do the maths out loud.",
     scripts:[
-      {label:"A — Anchor income", text:'"When you applied for your mortgage, what was the one thing the lender cared most about? Your income is the engine. The [£X] you bring home every month is what pays the mortgage, covers the kids, runs the car, all of it. So everything I want to walk through today comes down to one question: what happens to all of that if the engine stops?"'},
-      {label:"B — Open", text:'"Let me start with something completely ordinary. Nothing dramatic. Say you wake up tomorrow and your back has gone. You cannot sit, cannot drive, cannot work. The doctor signs you off for three months. It happens to people in your trade all the time."'},
-      {label:"B — The gap", text:'"Your full sick pay runs for [X weeks]. After that you drop to Statutory Sick Pay — that is around £118 a week, so about £510 a month. But your essential outgoings are still [£X] every month. So from week [X], there is a gap of around [£X] a month going out with almost nothing coming in."'},
-      {label:"B — Let them do the maths", text:'"How long do you think your savings would realistically cover that gap?"'},
-      {label:"C — Transition", text:'"That was the ordinary version. Now let me change one thing. Same person, same situation, off work — but this time it is something serious. A diagnosis. Treatment. Months, not weeks."'},
-      {label:"C — The difference", text:'"The income gap from before is still there, but it runs far longer. On top of that come the costs nobody plans for: getting to appointments, a partner maybe cutting their hours to help, wanting to clear some financial pressure so you can just focus on getting well rather than staring at the bills every morning. This is not about replacing your wage month by month. It is about a single sum of money that takes the financial worry completely off the table."'},
-      {label:"D — Transition", text:'"Those last two, you are still here. Now the hardest one. I will be straight with you because that is more useful. What happens if you are not here."'},
-      {label:"D — The numbers", text:'"If something happened to you tomorrow, that [£X] mortgage does not go anywhere. [Partner] is left on [£X] a month with [children / dependants]. Right now, is there enough there to clear the house and give them room to breathe?"'},
-      {label:"D — No dependants version", text:'"You do not have dependants relying on your income, so this is less urgent than it would be for someone with a family. The mortgage sits against the estate, but there is no one who loses their livelihood if you are gone. I want to be honest about that — it changes the priority order."'},
-      {label:"E — Brief", text:'"Whatever we look at, there are features that make cover actually work when it is needed. Locking the premium in so it can never go up. Making sure the cover pays for itself if you are too ill to work. I will factor those into the research."'},
-      {label:"F — Summary", text:'"Let me pull the whole thing together on your numbers. If you are off for a few months with something ordinary, there is a gap of [£X] a month and savings that last about [X months]. If something serious happens, that gap runs far longer with extra costs piling on. And if the worst happens, there is a [£X] mortgage and a family who still need that home. At the moment, all of that sits on your shoulders alone. Is that a fair picture?"'},
-      {label:"F — Priority question", text:'"Put those three risks in order for me. Income risk, serious illness risk, death risk. Most important to least, and tell me why."'},
-      {label:"F — Pushback if death first (employed, low sick pay)", text:'"I hear you, and the instinct to protect the family is exactly right. But can I push back on that order? You are [age], non-smoker, in good health. The statistical likelihood of you dying before the end of that mortgage is relatively low. The far more likely scenario is that at some point in the next [X] years you cannot work. Your sick pay runs out in [X weeks] and your savings last [X months]. If you are off for 6 months, your family is in the same position as if you died. The mortgage does not get paid either way. The outcome is identical. The route is just different, and statistically far more probable."'},
-      {label:"F — Confirm revised order", text:'"So does that change the order for you? I want the recommendation I bring back to reflect the actual risk, not just what feels most dramatic."'}
+      {label:"A — Anchor income",text:'"When you applied for your mortgage, what was the one thing the lender cared most about? Your income is the engine. The [£X] you bring home every month is what pays the mortgage, covers the kids, runs the car, all of it. So everything I want to walk through today comes down to one question: what happens to all of that if the engine stops?"'},
+      {label:"B — Open",text:'"Let me start with something completely ordinary. Nothing dramatic. Say you wake up tomorrow and your back has gone. You cannot sit, cannot drive, cannot work. The doctor signs you off for three months. It happens to people in your trade all the time."'},
+      {label:"B — The gap",text:'"Your full sick pay runs for [X weeks]. After that you drop to Statutory Sick Pay — that is around £118 a week, so about £510 a month. But your essential outgoings are still [£X] every month. So from week [X], there is a gap of around [£X] a month going out with almost nothing coming in."'},
+      {label:"B — Let them do the maths",text:'"How long do you think your savings would realistically cover that gap?"'},
+      {label:"C — Transition",text:'"That was the ordinary version. Now let me change one thing. Same person, same situation, off work — but this time it is something serious. A diagnosis. Treatment. Months, not weeks."'},
+      {label:"C — The difference",text:'"The income gap from before is still there, but it runs far longer. On top of that come the costs nobody plans for: getting to appointments, a partner maybe cutting their hours to help, wanting to clear some financial pressure so you can just focus on getting well rather than staring at the bills every morning. This is not about replacing your wage month by month. It is about a single sum of money that takes the financial worry completely off the table."'},
+      {label:"D — Transition",text:'"Those last two, you are still here. Now the hardest one. I will be straight with you because that is more useful. What happens if you are not here."'},
+      {label:"D — The numbers",text:'"If something happened to you tomorrow, that [£X] mortgage does not go anywhere. [Partner] is left on [£X] a month with [children / dependants]. Right now, is there enough there to clear the house and give them room to breathe?"'},
+      {label:"D — No dependants version",text:'"You do not have dependants relying on your income, so this is less urgent than it would be for someone with a family. The mortgage sits against the estate, but there is no one who loses their livelihood if you are gone. I want to be honest about that — it changes the priority order."'},
+      {label:"E — Brief",text:'"Whatever we look at, there are features that make cover actually work when it is needed. Locking the premium in so it can never go up. Making sure the cover pays for itself if you are too ill to work. I will factor those into the research."'},
+      {label:"F — Summary",text:'"Let me pull the whole thing together on your numbers. If you are off for a few months with something ordinary, there is a gap of [£X] a month and savings that last about [X months]. If something serious happens, that gap runs far longer with extra costs piling on. And if the worst happens, there is a [£X] mortgage and a family who still need that home. At the moment, all of that sits on your shoulders alone. Is that a fair picture?"'},
+      {label:"F — Priority question",text:'"Put those three risks in order for me. Income risk, serious illness risk, death risk. Most important to least, and tell me why."'},
+      {label:"F — Pushback if death first",text:'"I hear you, and the instinct to protect the family is exactly right. But can I push back on that order? You are [age], non-smoker, in good health. The statistical likelihood of you dying before the end of that mortgage is relatively low. The far more likely scenario is that at some point in the next [X] years you cannot work. Your sick pay runs out in [X weeks] and your savings last [X months]. If you are off for 6 months, your family is in the same position as if you died. The mortgage does not get paid either way. The outcome is identical. The route is just different, and statistically far more probable."'},
+      {label:"F — Confirm revised order",text:'"So does that change the order for you? I want the recommendation I bring back to reflect the actual risk, not just what feels most dramatic."'}
     ],
     items:[
-      {id:"a1", text:"A — Anchor income. Use the mortgage application as the hook.", bold:true},
-      {id:"b1", text:"B — Paint the ordinary illness or injury scenario", bold:true},
-      {id:"b2", text:"Use their actual sick pay and outgoings to show the monthly gap"},
-      {id:"b3", text:"Ask: how long do their savings cover that gap?"},
-      {id:"b4", text:"Let them do the maths out loud — do not answer for them"},
-      {id:"c1", text:"C — Upgrade to serious diagnosis", bold:true},
-      {id:"c2", text:"Income gap still there but longer. Plus the extra costs pile on"},
-      {id:"c3", text:"Frame C as a lump sum need, not income replacement — different problem"},
-      {id:"d1", text:"D — Death. Be direct, not dramatic", bold:true},
-      {id:"d2", text:"Use their mortgage balance and household income to show the gap"},
-      {id:"d3", text:"If no dependants: be honest this is lower priority and explain why"},
-      {id:"e1", text:"E — Briefly mention guaranteed premiums and waiver of premium"},
-      {id:"f1", text:"F — Summarise all three risks on their actual numbers", bold:true},
-      {id:"f2", text:"Ask: put those three risks in order and tell me why", bold:true},
-      {id:"f3", text:"Listen to the answer — then push back if the data supports a different order"},
-      {id:"f4", text:"If death first and they have low sick pay: challenge with the statistics"},
-      {id:"f5", text:"Agree the revised priority together"},
-      {id:"f6", text:"Record BOTH the initial answer and the revised priority in the file", bold:true},
-    ]
-  },
-  {
-    id:"budget", title:"Budget", icon:"💷", compliance:true,
+      {id:"a1",text:"A — Anchor income. Use the mortgage application as the hook.",bold:true},
+      {id:"b1",text:"B — Paint the ordinary illness or injury scenario",bold:true},
+      {id:"b2",text:"Use their actual sick pay and outgoings to show the monthly gap"},
+      {id:"b3",text:"Ask: how long do their savings cover that gap?"},
+      {id:"b4",text:"Let them do the maths out loud — do not answer for them"},
+      {id:"c1",text:"C — Upgrade to serious diagnosis",bold:true},
+      {id:"c2",text:"Income gap still there but longer. Plus the extra costs pile on"},
+      {id:"c3",text:"Frame C as a lump sum need, not income replacement — different problem"},
+      {id:"d1",text:"D — Death. Be direct, not dramatic",bold:true},
+      {id:"d2",text:"Use their mortgage balance and household income to show the gap"},
+      {id:"d3",text:"If no dependants: be honest this is lower priority and explain why"},
+      {id:"e1",text:"E — Briefly mention guaranteed premiums and waiver of premium"},
+      {id:"f1",text:"F — Summarise all three risks on their actual numbers",bold:true},
+      {id:"f2",text:"Ask: put those three risks in order and tell me why",bold:true},
+      {id:"f3",text:"Listen to the answer — then push back if the data supports a different order"},
+      {id:"f4",text:"If death first and they have low sick pay: challenge with the statistics"},
+      {id:"f5",text:"Agree the revised priority together"},
+      {id:"f6",text:"Record BOTH the initial answer and the revised priority in the file",bold:true},
+  ]},
+  {id:"budget",title:"Budget",icon:"💷",compliance:true,
     complianceNote:"Confirmed budget must be recorded in file.",
     note:"Budget is based on HOUSEHOLD disposable income. Always include partner income if applicable. Do not just accept the first number they give.",
     scripts:[
-      {label:"Budget question", text:'"Based on everything you have told me, if we could put something in place that covers the most important risk first — what monthly figure would feel comfortable without being a stretch?"'},
-      {label:"If the answer seems low — challenge it", text:'"You mentioned Priya brings in [£X] a month. So between the two of you the household is bringing in [£X] against outgoings of [£X]. That gives you around [£X] of disposable income. Is [£40] really the ceiling, or is there a bit more room than that if we are protecting the most important things?"'},
-      {label:"If self-employed", text:'"You are self-employed so income can vary. Is [£X] comfortable on a slower month, or is that based on a good month? I want to make sure whatever we put in place stays in place."'}
+      {label:"Budget question",text:'"Based on everything you have told me, if we could put something in place that covers the most important risk first — what monthly figure would feel comfortable without being a stretch?"'},
+      {label:"If the answer seems low",text:'"You mentioned Priya brings in [£X] a month. So between the two of you the household is bringing in [£X] against outgoings of [£X]. That gives you around [£X] of disposable income. Is [£40] really the ceiling, or is there a bit more room than that if we are protecting the most important things?"'},
+      {label:"If self-employed",text:'"You are self-employed so income can vary. Is [£X] comfortable on a slower month, or is that based on a good month? I want to make sure whatever we put in place stays in place."'}
     ],
     items:[
-      {id:"bu1", text:"Calculate household disposable income: total net income minus essential outgoings"},
-      {id:"bu2", text:"Include partner income in the household total", bold:true},
-      {id:"bu3", text:"Ask the budget question — what feels comfortable without being a stretch"},
-      {id:"bu4", text:"If the answer seems low, challenge it against the household disposable figure"},
-      {id:"bu5", text:"For self-employed: base it on a slower month, not the best month"},
-      {id:"bu6", text:"Record the confirmed budget in file"},
-    ]
-  },
-  {
-    id:"close1", title:"Close Meeting One", icon:"📅",
+      {id:"bu1",text:"Calculate household disposable income: total net income minus essential outgoings"},
+      {id:"bu2",text:"Include partner income in the household total",bold:true},
+      {id:"bu3",text:"Ask the budget question — what feels comfortable without being a stretch"},
+      {id:"bu4",text:"If the answer seems low, challenge it against the household disposable figure"},
+      {id:"bu5",text:"For self-employed: base it on a slower month, not the best month"},
+      {id:"bu6",text:"Record the confirmed budget in file"},
+  ]},
+  {id:"close1",title:"Close Meeting One",icon:"📅",
     scripts:[
-      {label:"Close script", text:'"Right. I am going to take everything you have told me today, do my research across the whole market, and come back with a small number of options built around what you said matters most and the budget we agreed. I will bring two options so you can see what you get at different levels. Nothing to sign today. Can we get a follow-up booked before I let you go?"'},
-      {label:"If they say they will call you", text:'"I would rather lock something in now while we are both here — I find it is much easier than trying to find a time later. What does next week look like for you?"'}
+      {label:"Close script",text:'"Right. I am going to take everything you have told me today, do my research across the whole market, and come back with a small number of options built around what you said matters most and the budget we agreed. I will bring two options so you can see what you get at different levels. Nothing to sign today. Can we get a follow-up booked before I let you go?"'},
+      {label:"If they say they will call you",text:'"I would rather lock something in now while we are both here — I find it is much easier than trying to find a time later. What does next week look like for you?"'}
     ],
     items:[
-      {id:"cl1", text:"Confirm no recommendation is being made today"},
-      {id:"cl2", text:"Mention you will bring two illustrations — within budget and full stack"},
-      {id:"cl3", text:"Book the follow-up before ending the call — do not leave it open", bold:true},
-      {id:"cl4", text:"Send calendar confirmation after the call"},
-      {id:"cl5", text:"Update Smartr365 fact-find within 24 hours"},
-    ]
-  },
+      {id:"cl1",text:"Confirm no recommendation is being made today"},
+      {id:"cl2",text:"Mention you will bring two illustrations — within budget and full stack"},
+      {id:"cl3",text:"Book the follow-up before ending the call — do not leave it open",bold:true},
+      {id:"cl4",text:"Send calendar confirmation after the call"},
+      {id:"cl5",text:"Update Smartr365 fact-find within 24 hours"},
+  ]},
 ];
 
 const M2 = [
-  {
-    id:"open2", title:"Open and Recap", icon:"🔄",
+  {id:"open2",title:"Open and Recap",icon:"🔄",
     scripts:[
-      {label:"Open", text:'"Hey [name], good to speak to you again. How has the week been?"'},
-      {label:"Recap", text:'"Just to recap where we left things. You told me the risk that worried you most was [their answer]. We agreed the priority order as [1, 2, 3]. And the budget you were comfortable with was [£X] a month. I have built everything around that. Does that still make sense to you?"'}
+      {label:"Open",text:'"Hey [name], good to speak to you again. How has the week been?"'},
+      {label:"Recap",text:'"Just to recap where we left things. You told me the risk that worried you most was [their answer]. We agreed the priority order as [1, 2, 3]. And the budget you were comfortable with was [£X] a month. I have built everything around that. Does that still make sense to you?"'}
     ],
     items:[
-      {id:"o1", text:"Brief rapport — how has the week been"},
-      {id:"o2", text:"Recap the agreed priority order from Meeting One"},
-      {id:"o3", text:"Recap the confirmed budget"},
-      {id:"o4", text:"Confirm client has the illustration open — email at start if not sent ahead"},
-    ]
-  },
-  {
-    id:"sourcing", title:"Sourcing", icon:"🔎",
+      {id:"o1",text:"Brief rapport — how has the week been"},
+      {id:"o2",text:"Recap the agreed priority order from Meeting One"},
+      {id:"o3",text:"Recap the confirmed budget"},
+      {id:"o4",text:"Confirm client has the illustration open — email at start if not sent ahead"},
+  ]},
+  {id:"sourcing",title:"Sourcing",icon:"🔎",
     note:"Always completed via Smartr linked to Solution Builder. Pull back documents and details to Smartr before the meeting.",
     items:[
-      {id:"s1", text:"Research completed via Solution Builder across the whole market"},
-      {id:"s2", text:"Two illustrations prepared — Option A (within budget) and Option B (full stack)"},
-      {id:"s3", text:"Illustration emailed to client — confirm they can see it at the start"},
-    ]
-  },
-  {
-    id:"illustrations", title:"Two Illustrations", icon:"📊",
+      {id:"s1",text:"Research completed via Solution Builder across the whole market"},
+      {id:"s2",text:"Two illustrations prepared — Option A (within budget) and Option B (full stack)"},
+      {id:"s3",text:"Illustration emailed to client — confirm they can see it at the start"},
+  ]},
+  {id:"illustrations",title:"Two Illustrations",icon:"📊",
     note:"Always present two options. The client should choose with full information, not a limited view.",
     scripts:[
-      {label:"Frame the two options", text:'"I have brought two options back. I want you to see both before we decide anything."'},
-      {label:"Option A — within budget", text:'"Option A fits within the [£X] a month we discussed. It covers [priority 1] and [priority 2] properly. [Priority 3] is noted as an outstanding need we come back to when there is more room. This is the sensible starting point."'},
-      {label:"Option B — full stack", text:'"Option B shows you what full coverage looks like — all three risks covered. The cost is [£X] a month. I want you to see this so you know exactly what you are choosing between. Sometimes the gap between A and B is smaller than people expect."'},
-      {label:"If the gap is small", text:'"The difference between the two is [£X] a month. That is worth knowing before you decide — sometimes it is worth stretching slightly to close the gap properly."'},
-      {label:"Let them choose", text:'"Which one would you like to go with, or do you have any questions before you decide?"'}
+      {label:"Frame the two options",text:'"I have brought two options back. I want you to see both before we decide anything."'},
+      {label:"Option A — within budget",text:'"Option A fits within the [£X] a month we discussed. It covers [priority 1] and [priority 2] properly. [Priority 3] is noted as an outstanding need we come back to when there is more room. This is the sensible starting point."'},
+      {label:"Option B — full stack",text:'"Option B shows you what full coverage looks like — all three risks covered. The cost is [£X] a month. I want you to see this so you know exactly what you are choosing between. Sometimes the gap between A and B is smaller than people expect."'},
+      {label:"If the gap is small",text:'"The difference between the two is [£X] a month. That is worth knowing before you decide — sometimes it is worth stretching slightly to close the gap properly."'},
+      {label:"Let them choose",text:'"Which one would you like to go with, or do you have any questions before you decide?"'}
     ],
     items:[
-      {id:"il1", text:"Present Option A — within stated budget, covers priority 1 and 2", bold:true},
-      {id:"il2", text:"Present Option B — full stack, all three risks covered", bold:true},
-      {id:"il3", text:"Show both before asking which they want to proceed with"},
-      {id:"il4", text:"If the gap is small, highlight it — they may stretch to full cover"},
-      {id:"il5", text:"Record which option they chose and why in the file"},
-    ]
-  },
-  {
-    id:"rec", title:"Recommendation", icon:"✅", compliance:true,
+      {id:"il1",text:"Present Option A — within stated budget, covers priority 1 and 2",bold:true},
+      {id:"il2",text:"Present Option B — full stack, all three risks covered",bold:true},
+      {id:"il3",text:"Show both before asking which they want to proceed with"},
+      {id:"il4",text:"If the gap is small, highlight it — they may stretch to full cover"},
+      {id:"il5",text:"Record which option they chose and why in the file"},
+  ]},
+  {id:"rec",title:"Recommendation",icon:"✅",compliance:true,
     complianceNote:"All three needs must be considered and documented. Anything deferred must be recorded as an outstanding need in the suitability letter — never omitted.",
     scripts:[
-      {label:"Link recommendation to the scenario", text:'"Do you remember the [bad back / serious diagnosis / death] scenario we talked through last week? This is the policy that closes that gap."'},
-      {label:"Explaining IP", text:'"Income protection pays you a monthly income if you cannot work due to illness or injury. Not just named conditions — back problems, mental health, anything that stops you working. The deferred period is set at [X weeks] to line up with your sick pay. So it kicks in exactly when your employer stops paying."'},
-      {label:"Explaining life cover — level vs decreasing", text:'"I am recommending level term rather than decreasing. Decreasing tracks the mortgage balance down and is cheaper, but level keeps the sum assured fixed. With [dependants / children], the surplus above the mortgage matters — they need more than just the debt cleared."'},
-      {label:"Explaining CI", text:'"Critical illness pays a lump sum if you are diagnosed with one of the listed conditions and it meets the definition. It is not the same as being ill — it has to be a specific condition at a specific severity. I will send you the Key Facts document which lists every condition covered. Have a read so you know exactly what is and is not included."'},
-      {label:"Deferred cover", text:'"[Priority 3] is not in today\'s recommendation because I want to keep this within your budget rather than overstretch you and risk you cancelling everything in six months. But the gap is real and I am noting it in your suitability letter. We come back to it."'}
+      {label:"Link recommendation to the scenario",text:'"Do you remember the [bad back / serious diagnosis / death] scenario we talked through last week? This is the policy that closes that gap."'},
+      {label:"Explaining IP",text:'"Income protection pays you a monthly income if you cannot work due to illness or injury. Not just named conditions — back problems, mental health, anything that stops you working. The deferred period is set at [X weeks] to line up with your sick pay. So it kicks in exactly when your employer stops paying."'},
+      {label:"Explaining life cover — level vs decreasing",text:'"I am recommending level term rather than decreasing. Decreasing tracks the mortgage balance down and is cheaper, but level keeps the sum assured fixed. With [dependants / children], the surplus above the mortgage matters — they need more than just the debt cleared."'},
+      {label:"Explaining CI",text:'"Critical illness pays a lump sum if you are diagnosed with one of the listed conditions and it meets the definition. It is not the same as being ill — it has to be a specific condition at a specific severity. I will send you the Key Facts document which lists every condition covered. Have a read so you know exactly what is and is not included."'},
+      {label:"Deferred cover",text:'"[Priority 3] is not in today\'s recommendation because I want to keep this within your budget rather than overstretch you and risk you cancelling everything in six months. But the gap is real and I am noting it in your suitability letter. We come back to it."'}
     ],
     items:[
-      {id:"r1", text:"Present priority 1 policy — benefit, term, deferred period if IP, definition"},
-      {id:"r2", text:"Link it back to the specific scenario from Meeting One", bold:true},
-      {id:"r3", text:"Present priority 2 policy — sum assured, term, why this type"},
-      {id:"r4", text:"Link it back to its scenario"},
-      {id:"r5", text:"Present priority 3 or acknowledge the gap honestly"},
-      {id:"r6", text:"Explain the cost of each policy individually, then the combined total"},
-      {id:"r7", text:"Re-explain how each policy covers the need identified", bold:true},
-    ]
-  },
-  {
-    id:"cooling", title:"Cooling Off Period", icon:"❄️", compliance:true,
+      {id:"r1",text:"Present priority 1 policy — benefit, term, deferred period if IP, definition"},
+      {id:"r2",text:"Link it back to the specific scenario from Meeting One",bold:true},
+      {id:"r3",text:"Present priority 2 policy — sum assured, term, why this type"},
+      {id:"r4",text:"Link it back to its scenario"},
+      {id:"r5",text:"Present priority 3 or acknowledge the gap honestly"},
+      {id:"r6",text:"Explain the cost of each policy individually, then the combined total"},
+      {id:"r7",text:"Re-explain how each policy covers the need identified",bold:true},
+  ]},
+  {id:"cooling",title:"Cooling Off Period",icon:"❄️",compliance:true,
     complianceNote:"Must be explained before application. Client should only proceed if intending to keep long term.",
-    scripts:[
-      {label:"Cooling off explanation", text:'"Once the policy is in place you have a 14-day cooling off period. If you change your mind for any reason you can cancel and get a full refund. But I want to be clear: only go ahead if you are genuinely planning to keep this long term. Cancelling early can affect your ability to get cover again in the future. So only proceed if you are committed to it."'}
-    ],
+    scripts:[{label:"Cooling off explanation",text:'"Once the policy is in place you have a 14-day cooling off period. If you change your mind for any reason you can cancel and get a full refund. But I want to be clear: only go ahead if you are genuinely planning to keep this long term. Cancelling early can affect your ability to get cover again in the future. So only proceed if you are committed to it."'}],
     items:[
-      {id:"co1", text:"Explain the 14-day cooling off period"},
-      {id:"co2", text:"Be clear: only go ahead if intending to keep the policy long term"},
-    ]
-  },
-  {
-    id:"close2", title:"Close", icon:"🤝", compliance:true,
+      {id:"co1",text:"Explain the 14-day cooling off period"},
+      {id:"co2",text:"Be clear: only go ahead if intending to keep the policy long term"},
+  ]},
+  {id:"close2",title:"Close",icon:"🤝",compliance:true,
     complianceNote:"Client email confirmation required before starting application. Save to Smartr365.",
     scripts:[
-      {label:"Close question", text:'"Are you happy for me to go ahead and apply?"'},
-      {label:"Email confirmation", text:'"I am emailing you the illustration now. Can you reply to that email while we are on the call to confirm you are happy to proceed? I just need that in writing before we start the application."'},
-      {label:"Income proof — if IP or premium over £150/month", text:'"Because we are putting income protection in place, I will need proof of your income. If you are employed, a recent payslip. If you are self-employed, your last tax return or SA302. Can you email that across while we are on the call or straight after?"'}
+      {label:"Close question",text:'"Are you happy for me to go ahead and apply?"'},
+      {label:"Email confirmation",text:'"I am emailing you the illustration now. Can you reply to that email while we are on the call to confirm you are happy to proceed? I just need that in writing before we start the application."'},
+      {label:"Income proof",text:'"Because we are putting income protection in place, I will need proof of your income. If you are employed, a recent payslip. If you are self-employed, your last tax return or SA302. Can you email that across while we are on the call or straight after?"'}
     ],
     items:[
-      {id:"cl1", text:"Ask: are you happy for me to go ahead and apply?"},
-      {id:"cl2", text:"Email the illustration immediately"},
-      {id:"cl3", text:"Ask client to reply by email confirming happy to proceed"},
-      {id:"cl4", text:"Wait for the email reply before starting the application", bold:true},
-      {id:"cl5", text:"Save email confirmation to Smartr365"},
-      {id:"cl6", text:"IF IP OR PREMIUM OVER £150/MONTH: request income proof now", bold:true},
-      {id:"cl7", text:"Employed: recent payslip. Self-employed: tax return or SA302", sub:true, indent:true},
-    ]
-  },
-  {
-    id:"disclaimer", title:"Medical Disclaimer Disclosure", icon:"⚠️", compliance:true,
+      {id:"cl1m2",text:"Ask: are you happy for me to go ahead and apply?"},
+      {id:"cl2m2",text:"Email the illustration immediately"},
+      {id:"cl3m2",text:"Ask client to reply by email confirming happy to proceed"},
+      {id:"cl4m2",text:"Wait for the email reply before starting the application",bold:true},
+      {id:"cl5m2",text:"Save email confirmation to Smartr365"},
+      {id:"cl6m2",text:"IF IP OR PREMIUM OVER £150/MONTH: request income proof now",bold:true},
+      {id:"cl7m2",text:"Employed: recent payslip. Self-employed: tax return or SA302",sub:true,indent:true},
+  ]},
+  {id:"disclaimer",title:"Medical Disclaimer Disclosure",icon:"⚠️",compliance:true,
     complianceNote:"Send form and obtain reply confirming understanding. Save to Smartr365. NOT required for MetLife.",
     scripts:[
-      {label:"Explanation", text:'"Before we go into the application, there is a form I need to send you. It is called the Medical Disclaimer Disclosure. What it confirms is that you understand your duty to disclose everything accurately."'},
-      {label:"Why it matters — consequence 1", text:'"If something is misrepresented, the insurer can refuse to pay a claim. You could be paying premiums for years, something happens, your family makes a claim, and it gets declined because something was left out. That is the worst possible outcome and it is completely avoidable."'},
-      {label:"Why it matters — consequence 2", text:'"The second point. A declined or voided policy goes on record. It makes getting cover again significantly harder and more expensive in the future."'},
-      {label:"Confirm", text:'"I need you to reply to the form confirming you understand both of those things. Can you do that now?"'}
+      {label:"Explanation",text:'"Before we go into the application, there is a form I need to send you. It is called the Medical Disclaimer Disclosure. What it confirms is that you understand your duty to disclose everything accurately."'},
+      {label:"Why it matters — consequence 1",text:'"If something is misrepresented, the insurer can refuse to pay a claim. You could be paying premiums for years, something happens, your family makes a claim, and it gets declined because something was left out. That is the worst possible outcome and it is completely avoidable."'},
+      {label:"Why it matters — consequence 2",text:'"The second point. A declined or voided policy goes on record. It makes getting cover again significantly harder and more expensive in the future."'},
+      {label:"Confirm",text:'"I need you to reply to the form confirming you understand both of those things. Can you do that now?"'}
     ],
     items:[
-      {id:"d1", text:"Send the Medical Disclaimer Disclosure form"},
-      {id:"d2", text:"Explain: misrepresentation can mean claim is refused", bold:true},
-      {id:"d3", text:"Explain: a declined policy affects future applications", bold:true},
-      {id:"d4", text:"Obtain written reply confirming client understands"},
-      {id:"d5", text:"Save confirmation to Smartr365"},
-      {id:"d6", text:"Note: NOT required for MetLife"},
-    ]
-  },
-  {
-    id:"outcomes", title:"Explain Possible Outcomes", icon:"📋", compliance:true,
+      {id:"d1",text:"Send the Medical Disclaimer Disclosure form"},
+      {id:"d2",text:"Explain: misrepresentation can mean claim is refused",bold:true},
+      {id:"d3",text:"Explain: a declined policy affects future applications",bold:true},
+      {id:"d4",text:"Obtain written reply confirming client understands"},
+      {id:"d5",text:"Save confirmation to Smartr365"},
+      {id:"d6",text:"Note: NOT required for MetLife"},
+  ]},
+  {id:"outcomes",title:"Explain Possible Outcomes",icon:"📋",compliance:true,
     complianceNote:"All five outcomes must be explained before application begins. Record in file.",
     scripts:[
-      {label:"Frame it", text:'"Before we start, I want to set your expectations on what can come back from the insurer. There are five possible outcomes and I want you to know all of them."'},
-      {label:"The five outcomes", text:'"One: Accepted on standard terms — exactly what we quoted, no changes. Two: Loaded — they accept you but at a higher premium due to something in your health or lifestyle. Three: Exclusions — they accept you but exclude a specific condition, usually something you have had treatment for. Four: Postponed — they want to review in 6 to 12 months. Five: Declined — they will not offer cover at this time."'},
-      {label:"Your commitment", text:'"Whatever comes back, I contact you first. I will explain exactly what it means. Nothing gets agreed without your sign-off."'},
-      {label:"If mental health was disclosed", text:'"Given what you told me about [anxiety / depression / etc], a loading or exclusion on the income protection is a realistic possibility rather than a surprise. If that comes back I will walk you through what it means and we decide together."'}
+      {label:"Frame it",text:'"Before we start, I want to set your expectations on what can come back from the insurer. There are five possible outcomes and I want you to know all of them."'},
+      {label:"The five outcomes",text:'"One: Accepted on standard terms — exactly what we quoted, no changes. Two: Loaded — they accept you but at a higher premium due to something in your health or lifestyle. Three: Exclusions — they accept you but exclude a specific condition, usually something you have had treatment for. Four: Postponed — they want to review in 6 to 12 months. Five: Declined — they will not offer cover at this time."'},
+      {label:"Your commitment",text:'"Whatever comes back, I contact you first. I will explain exactly what it means. Nothing gets agreed without your sign-off."'},
+      {label:"If mental health was disclosed",text:'"Given what you told me about [anxiety / depression / etc], a loading or exclusion on the income protection is a realistic possibility rather than a surprise. If that comes back I will walk you through what it means and we decide together."'}
     ],
     items:[
-      {id:"out1", text:"Accepted — standard terms, no changes"},
-      {id:"out2", text:"Loaded — higher premium due to health or lifestyle"},
-      {id:"out3", text:"Exclusions — specific condition excluded"},
-      {id:"out4", text:"Postponed — review in 6 to 12 months"},
-      {id:"out5", text:"Declined — will not offer cover at this time"},
-      {id:"out6", text:"Confirm: nothing gets agreed without their sign-off", bold:true},
-      {id:"out7", text:"If a disclosure was made, flag the likely outcome type now"},
-    ]
-  },
-  {
-    id:"application", title:"Application", icon:"📝", compliance:true,
+      {id:"out1",text:"Accepted — standard terms, no changes"},
+      {id:"out2",text:"Loaded — higher premium due to health or lifestyle"},
+      {id:"out3",text:"Exclusions — specific condition excluded"},
+      {id:"out4",text:"Postponed — review in 6 to 12 months"},
+      {id:"out5",text:"Declined — will not offer cover at this time"},
+      {id:"out6",text:"Confirm: nothing gets agreed without their sign-off",bold:true},
+      {id:"out7",text:"If a disclosure was made, flag the likely outcome type now"},
+  ]},
+  {id:"application",title:"Application",icon:"📝",compliance:true,
     complianceNote:"Read each question EXACTLY as written. Never paraphrase. Encourage full disclosure. Record in file.",
     note:"Complete live with the client wherever possible. Save and return if any answer needs checking — never guess.",
     scripts:[
-      {label:"Set the tone", text:'"I am going to read each question exactly as it is written. If you are not sure about something, we include it. Better to add too much than leave something out that causes a problem at claim. If we hit anything we are not sure on we can save and come back to it."'},
-      {label:"Encouragement mid-application", text:'"That is the kind of thing we include. Better to have it on record than not."'},
-      {label:"On the cholesterol / minor test example", text:'"Even if it came back completely normal, we note it. Blood test, [reason], normal result, no follow-up. The insurer sees hundreds of these — it is not a problem, it is just accurate."'},
-      {label:"Underwriting caveat", text:'"I want to be straight with you: I cannot guarantee the outcome. The insurer makes that decision based on everything disclosed. If anything comes back other than standard terms, I will contact you before anything is agreed."'}
+      {label:"Set the tone",text:'"I am going to read each question exactly as it is written. If you are not sure about something, we include it. Better to add too much than leave something out that causes a problem at claim. If we hit anything we are not sure on we can save and come back to it."'},
+      {label:"Encouragement mid-application",text:'"That is the kind of thing we include. Better to have it on record than not."'},
+      {label:"On minor test results",text:'"Even if it came back completely normal, we note it. Blood test, [reason], normal result, no follow-up. The insurer sees hundreds of these — it is not a problem, it is just accurate."'},
+      {label:"Underwriting caveat",text:'"I want to be straight with you: I cannot guarantee the outcome. The insurer makes that decision based on everything disclosed. If anything comes back other than standard terms, I will contact you before anything is agreed."'}
     ],
     items:[
-      {id:"ap1", text:"Complete on provider site — live with client where possible"},
-      {id:"ap2", text:"Read each question EXACTLY as written — never paraphrase", bold:true},
-      {id:"ap3", text:"Encourage: if unsure, include it", bold:true},
-      {id:"ap4", text:"Smoking — last 12 months?"},
-      {id:"ap5", text:"Serious medical history — heart, stroke, cancer?"},
-      {id:"ap6", text:"Last 5 years — consultations, investigations, ongoing medication?"},
-      {id:"ap7", text:"Mental health history — ask directly, disclose fully"},
-      {id:"ap8", text:"Height and weight"},
-      {id:"ap9", text:"Any other relevant history?"},
-      {id:"ap10", text:"Save and return if any answer needs checking — do not guess"},
-      {id:"ap11", text:"State underwriting outcome cannot be guaranteed", bold:true},
-    ]
-  },
-  {
-    id:"payment", title:"Payment Details", icon:"🏦", compliance:true,
+      {id:"ap1",text:"Complete on provider site — live with client where possible"},
+      {id:"ap2",text:"Read each question EXACTLY as written — never paraphrase",bold:true},
+      {id:"ap3",text:"Encourage: if unsure, include it",bold:true},
+      {id:"ap4",text:"Smoking — last 12 months?"},
+      {id:"ap5",text:"Serious medical history — heart, stroke, cancer?"},
+      {id:"ap6",text:"Last 5 years — consultations, investigations, ongoing medication?"},
+      {id:"ap7",text:"Mental health history — ask directly, disclose fully"},
+      {id:"ap8",text:"Height and weight"},
+      {id:"ap9",text:"Any other relevant history?"},
+      {id:"ap10",text:"Save and return if any answer needs checking — do not guess"},
+      {id:"ap11",text:"State underwriting outcome cannot be guaranteed",bold:true},
+  ]},
+  {id:"payment",title:"Payment Details",icon:"🏦",compliance:true,
     complianceNote:"Direct debit mandate must be confirmed verbally and recorded in the application.",
     scripts:[
-      {label:"Payment question", text:'"The total premium of [£X] a month will be collected by direct debit. Which account would you like that to come from?"'},
-      {label:"Confirm mandate", text:'"And you are authorising a monthly direct debit of [£X] from that account for these policies?"'}
+      {label:"Payment question",text:'"The total premium of [£X] a month will be collected by direct debit. Which account would you like that to come from?"'},
+      {label:"Confirm mandate",text:'"And you are authorising a monthly direct debit of [£X] from that account for these policies?"'}
     ],
     items:[
-      {id:"pay1", text:"Confirm the total monthly premium"},
-      {id:"pay2", text:"Collect sort code and account number"},
-      {id:"pay3", text:"Confirm client is authorising the direct debit"},
-      {id:"pay4", text:"Record in the application"},
-    ]
-  },
-  {
-    id:"outcome2", title:"Explain the Outcome", icon:"📬",
-    scripts:[
-      {label:"After submission", text:'"The application is submitted. You will get a confirmation from the provider directly. I will follow up as soon as underwriting comes back — usually a few days for a straightforward case. Any outcome other than standard terms comes to me first."'}
-    ],
+      {id:"pay1",text:"Confirm the total monthly premium"},
+      {id:"pay2",text:"Collect sort code and account number"},
+      {id:"pay3",text:"Confirm client is authorising the direct debit"},
+      {id:"pay4",text:"Record in the application"},
+  ]},
+  {id:"outcome2",title:"Explain the Outcome",icon:"📬",
+    scripts:[{label:"After submission",text:'"The application is submitted. You will get a confirmation from the provider directly. I will follow up as soon as underwriting comes back — usually a few days for a straightforward case. Any outcome other than standard terms comes to me first."'}],
     items:[
-      {id:"oc1", text:"Confirm application submitted"},
-      {id:"oc2", text:"Client will receive direct confirmation from the provider"},
-      {id:"oc3", text:"You will follow up once underwriting comes back"},
-      {id:"oc4", text:"Remind: non-standard outcomes come to you first"},
-    ]
-  },
-  {
-    id:"trusts", title:"Trusts", icon:"🏛", compliance:true,
+      {id:"oc1",text:"Confirm application submitted"},
+      {id:"oc2",text:"Client will receive direct confirmation from the provider"},
+      {id:"oc3",text:"You will follow up once underwriting comes back"},
+      {id:"oc4",text:"Remind: non-standard outcomes come to you first"},
+  ]},
+  {id:"trusts",title:"Trusts",icon:"🏛",compliance:true,
     complianceNote:"Cannot advise on tax. Must direct to accountant. Record trust discussion in file regardless of outcome.",
     scripts:[
-      {label:"Explain the problem without a trust", text:'"When a life policy pays out on death, the money normally goes into your estate. That means probate — which can take months — and it could be subject to inheritance tax depending on the size of the estate."'},
-      {label:"Explain the benefit of a trust", text:'"If you write the policy in trust, it bypasses all of that. The money goes directly to [the person you name] — usually within days — without going through probate and outside the estate for tax purposes. It costs nothing to set up."'},
-      {label:"The tax caveat", text:'"I cannot advise you on tax specifically, but I would strongly encourage you to speak to an accountant about the broader estate picture. What I can do is arrange the trust paperwork now if you want to proceed."'}
+      {label:"Explain the problem without a trust",text:'"When a life policy pays out on death, the money normally goes into your estate. That means probate — which can take months — and it could be subject to inheritance tax depending on the size of the estate."'},
+      {label:"Explain the benefit of a trust",text:'"If you write the policy in trust, it bypasses all of that. The money goes directly to [the person you name] — usually within days — without going through probate and outside the estate for tax purposes. It costs nothing to set up."'},
+      {label:"The tax caveat",text:'"I cannot advise you on tax specifically, but I would strongly encourage you to speak to an accountant about the broader estate picture. What I can do is arrange the trust paperwork now if you want to proceed."'}
     ],
     items:[
-      {id:"t1", text:"Explain what happens to the payout without a trust (probate, delays, tax)"},
-      {id:"t2", text:"Explain the benefit of trust — faster, outside estate, costs nothing"},
-      {id:"t3", text:"Recommend writing in trust where relevant (most life cover cases)"},
-      {id:"t4", text:"State clearly: cannot advise on tax — direct to accountant"},
-      {id:"t5", text:"Arrange trust paperwork if client agrees"},
-      {id:"t6", text:"Record trust discussion in file"},
-    ]
-  },
-  {
-    id:"referrals", title:"Referrals", icon:"👥",
+      {id:"t1",text:"Explain what happens to the payout without a trust (probate, delays, tax)"},
+      {id:"t2",text:"Explain the benefit of trust — faster, outside estate, costs nothing"},
+      {id:"t3",text:"Recommend writing in trust where relevant (most life cover cases)"},
+      {id:"t4",text:"State clearly: cannot advise on tax — direct to accountant"},
+      {id:"t5",text:"Arrange trust paperwork if client agrees"},
+      {id:"t6",text:"Record trust discussion in file"},
+  ]},
+  {id:"referrals",title:"Referrals",icon:"👥",
     scripts:[
-      {label:"The ask", text:'"Before I let you go — you know first-hand now what it feels like to have this sorted. I am sure there are people around you, friends, family, colleagues, who are in exactly the position you were in before today. People with a mortgage, maybe young kids, who just have not got around to this. I would love to help them the same way I have helped you. Is there anyone that comes to mind?"'},
-      {label:"If they hesitate", text:'"Even just one person. Someone who has just bought a house, just had a baby, just gone self-employed — those are the moments when this conversation matters most."'},
-      {label:"If they give a name", text:'"That is great. Do you want to pass on my details, or would you like me to reach out directly? Either works."'}
+      {label:"The ask",text:'"Before I let you go — you know first-hand now what it feels like to have this sorted. I am sure there are people around you, friends, family, colleagues, who are in exactly the position you were in before today. People with a mortgage, maybe young kids, who just have not got around to this. I would love to help them the same way I have helped you. Is there anyone that comes to mind?"'},
+      {label:"If they hesitate",text:'"Even just one person. Someone who has just bought a house, just had a baby, just gone self-employed — those are the moments when this conversation matters most."'},
+      {label:"If they give a name",text:'"That is great. Do you want to pass on my details, or would you like me to reach out directly? Either works."'}
     ],
     items:[
-      {id:"ref1", text:"Ask for referrals — everyone knows 10 people who need this"},
-      {id:"ref2", text:"If they hesitate, prompt with a life event: new house, new baby, self-employed"},
-      {id:"ref3", text:"Offer to reach out directly or let them pass on your details"},
-      {id:"ref4", text:"Record any referral names and contact details"},
-    ]
-  },
-  {
-    id:"close3", title:"Close and Next Steps", icon:"🎯",
+      {id:"ref1",text:"Ask for referrals — everyone knows 10 people who need this"},
+      {id:"ref2",text:"If they hesitate, prompt with a life event: new house, new baby, self-employed"},
+      {id:"ref3",text:"Offer to reach out directly or let them pass on your details"},
+      {id:"ref4",text:"Record any referral names and contact details"},
+  ]},
+  {id:"close3",title:"Close and Next Steps",icon:"🎯",
     scripts:[
-      {label:"Close the meeting", text:'"That is everything. Well done for getting this sorted — a lot of people put it off for years. As of today [income/family/home] is protected. That matters more than most people realise until it is too late."'},
-      {label:"Deferred cover", text:'"And in [X months] I want to come back and close the [CI / IP / life] gap. I am diarising that now. Any questions in the meantime, you have got my number."'}
+      {label:"Close the meeting",text:'"That is everything. Well done for getting this sorted — a lot of people put it off for years. As of today [income/family/home] is protected. That matters more than most people realise until it is too late."'},
+      {label:"Deferred cover",text:'"And in [X months] I want to come back and close the [CI / IP / life] gap. I am diarising that now. Any questions in the meantime, you have got my number."'}
     ],
     items:[
-      {id:"fin1", text:"Acknowledge what has been achieved — make it real for the client"},
-      {id:"fin2", text:"Name any outstanding needs deferred and confirm they are in the suitability letter"},
-      {id:"fin3", text:"Diarise the follow-up for deferred cover"},
-      {id:"fin4", text:"Confirm they have your contact details"},
-    ]
-  },
+      {id:"fin1",text:"Acknowledge what has been achieved — make it real for the client"},
+      {id:"fin2",text:"Name any outstanding needs deferred and confirm they are in the suitability letter"},
+      {id:"fin3",text:"Diarise the follow-up for deferred cover"},
+      {id:"fin4",text:"Confirm they have your contact details"},
+  ]},
 ];
 
 const POST_ITEMS = [
-  {id:"p1", text:"Protection Submission Form — within 24h of decision. Do NOT complete during underwriting — wait for outcome", compliance:true},
-  {id:"p2", text:"Smartr365 updated — ideally within 24h, maximum 5 days (not working days)", compliance:true},
-  {id:"p3", text:"Transcript saved to file"},
-  {id:"p4", text:"IDD confirmed in notes"},
-  {id:"p5", text:"ID or Smart Search completed as required"},
-  {id:"p6", text:"Income proof uploaded — required for IP or any policy over £150/month premium", compliance:true},
-  {id:"p7", text:"Policy illustration pulled from Solution Builder"},
-  {id:"p8", text:"Key Facts and/or T&Cs pulled from Solution Builder"},
-  {id:"p9", text:"Evidence of research saved"},
-  {id:"p10", text:"Application form saved"},
-  {id:"p11", text:"Medical Disclaimer Disclosure saved (not required for MetLife)", compliance:true},
-  {id:"p12", text:"Suitability letter issued AND proof of sending saved", compliance:true},
-  {id:"p13", text:"Policies and summary pulled from Solution Builder"},
-  {id:"p14", text:"Priority question recorded — initial answer AND revised answer", compliance:true},
-  {id:"p15", text:"Budget confirmed and recorded"},
-  {id:"p16", text:"Commission disclosure noted"},
-  {id:"p17", text:"Underwriting outcome expectation recorded"},
-  {id:"p18", text:"Trust discussion recorded"},
-  {id:"p19", text:"Deferred needs recorded as outstanding, follow-up diarised", compliance:true},
-  {id:"p20", text:"Referral details noted"},
-  {id:"p21", text:"Case check: reviewed 5 days after submission — Case Check Pass or Pending With Adviser"},
-  {id:"p22", text:"If Pending: complete remedial work within 48h and sign off via approvals"},
+  {id:"p1",text:"Protection Submission Form — within 24h of decision. Do NOT complete during underwriting — wait for outcome",compliance:true},
+  {id:"p2",text:"Smartr365 updated — ideally within 24h, maximum 5 days (not working days)",compliance:true},
+  {id:"p3",text:"Transcript saved to file"},
+  {id:"p4",text:"IDD confirmed in notes"},
+  {id:"p5",text:"ID or Smart Search completed as required"},
+  {id:"p6",text:"Income proof uploaded — required for IP or any policy over £150/month premium",compliance:true},
+  {id:"p7",text:"Policy illustration pulled from Solution Builder"},
+  {id:"p8",text:"Key Facts and/or T&Cs pulled from Solution Builder"},
+  {id:"p9",text:"Evidence of research saved"},
+  {id:"p10",text:"Application form saved"},
+  {id:"p11",text:"Medical Disclaimer Disclosure saved (not required for MetLife)",compliance:true},
+  {id:"p12",text:"Suitability letter issued AND proof of sending saved",compliance:true},
+  {id:"p13",text:"Policies and summary pulled from Solution Builder"},
+  {id:"p14",text:"Priority question recorded — initial answer AND revised answer",compliance:true},
+  {id:"p15",text:"Budget confirmed and recorded"},
+  {id:"p16",text:"Commission disclosure noted"},
+  {id:"p17",text:"Underwriting outcome expectation recorded"},
+  {id:"p18",text:"Trust discussion recorded"},
+  {id:"p19",text:"Deferred needs recorded as outstanding, follow-up diarised",compliance:true},
+  {id:"p20",text:"Referral details noted"},
+  {id:"p21",text:"Case check: reviewed 5 days after submission — Case Check Pass or Pending With Adviser"},
+  {id:"p22",text:"If Pending: complete remedial work within 48h and sign off via approvals"},
 ];
+
+// ─── SECTION COMPLETE MESSAGES ────────────────────────────────────────────────
+const SECTION_MSGS = [
+  '✅ Section done!','🎯 Nailed it!','🔥 On a roll!','⚡ Keep going!',
+  '💪 Boss move!','🚀 Smashing it!','🏆 Section cleared!','✨ Flawless!'
+];
+let sectionMsgIdx = 0;
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function getAllIds(data){
@@ -619,7 +761,7 @@ function getAllIds(data){
 }
 function countChecked(data){
   const ids = getAllIds(data);
-  return {done: ids.filter(id=>checked[id]).length, total: ids.length};
+  return {done:ids.filter(id=>checked[id]).length, total:ids.length};
 }
 function setTab(tab){
   currentTab = tab;
@@ -633,13 +775,11 @@ function updateCounts(){
     const {done,total} = countChecked(data);
     document.getElementById('count-'+t).textContent = done+'/'+total;
   });
-  const data = currentTab==='m1'?M1:currentTab==='m2'?M2:POST_ITEMS;
-  const {done,total} = countChecked(data);
-  const pct = Math.round((done/total)*100);
-  document.getElementById('progress-fill').style.width = pct+'%';
+  updateXP();
 }
-function toggleCheck(id){
-  checked[id] = !checked[id];
+function toggleCheck(id, el){
+  const wasChecked = !!checked[id];
+  checked[id] = !wasChecked;
   save();
   const row = document.querySelector('[data-id="'+id+'"]');
   if(row){
@@ -647,9 +787,36 @@ function toggleCheck(id){
     const cb = row.querySelector('input[type=checkbox]');
     if(cb) cb.checked = !!checked[id];
   }
+  // XP popup only on check (not uncheck)
+  if(!wasChecked && el){
+    const data = currentTab==='m1'?M1:currentTab==='m2'?M2:null;
+    let isCompliance = false;
+    if(data){ for(const s of data){ if(s.compliance && s.items.find(i=>i.id===id)){ isCompliance=true; break; } } }
+    else { const pi = POST_ITEMS.find(i=>i.id===id); if(pi?.compliance) isCompliance=true; }
+    const xp = isCompliance ? 10 : 5;
+    xpPop(el, xp);
+  }
   const section = row?.closest('.section-card');
-  if(section) updateSectionDone(section);
+  if(section){
+    const wasAllDone = section.classList.contains('all-done');
+    updateSectionDone(section);
+    const isAllDone = section.classList.contains('all-done');
+    if(!wasAllDone && isAllDone){
+      showToast(SECTION_MSGS[sectionMsgIdx % SECTION_MSGS.length]);
+      sectionMsgIdx++;
+      confetti(10);
+    }
+  }
   updateCounts();
+  checkMeetingComplete();
+}
+function checkMeetingComplete(){
+  const data = currentTab==='m1'?M1:currentTab==='m2'?M2:POST_ITEMS;
+  const {done,total} = countChecked(data);
+  if(done===total && total>0){
+    const labels = {m1:'Meeting 1 complete! 🎉',m2:'Meeting 2 complete! 🎊',post:'All admin done! 🏆'};
+    setTimeout(()=>{ showToast(labels[currentTab]); confetti(25); },300);
+  }
 }
 function updateSectionDone(card){
   const cbs = card.querySelectorAll('input[type=checkbox]');
@@ -659,7 +826,6 @@ function updateSectionDone(card){
   if(countEl){
     const done = [...cbs].filter(cb=>cb.checked).length;
     countEl.textContent = done+'/'+cbs.length;
-    countEl.style.color = allDone ? 'var(--teal)' : 'var(--ink-soft)';
   }
 }
 function toggleSection(id){
@@ -676,34 +842,34 @@ function render(){
   if(!container) return;
   const data = currentTab==='m1'?M1:currentTab==='m2'?M2:null;
   if(data){
-    container.innerHTML = data.map(section => {
+    container.innerHTML = data.map(section=>{
       const ids = section.items.map(i=>i.id);
       const done = ids.filter(id=>checked[id]).length;
       const total = ids.length;
       const allDone = done===total;
-      const scripts = (section.scripts||[]);
-      const singleScript = section.script;
+      const sectionXP = section.compliance ? total*10 : total*5;
+      const earnedXP = ids.filter(id=>checked[id]).reduce((_,id)=>_+(section.compliance?10:5),0);
       return `<div class="section-card${allDone?' all-done':''}" id="card-${section.id}">
         <button class="section-header" onclick="toggleSection('${section.id}')">
           <span class="section-icon">${section.icon}</span>
           <span class="section-title">${esc(section.title)}</span>
-          ${section.compliance?'<span class="compliance-badge">compliance</span>':''}
+          ${section.compliance?'<span class="compliance-badge">Compliance</span>':''}
+          <span class="section-xp">${earnedXP}/${sectionXP} XP</span>
           <span class="section-count">${done}/${total}</span>
           <span class="chevron" id="chev-${section.id}">▼</span>
         </button>
         <div class="section-body" id="body-${section.id}">
-          ${section.compliance&&section.complianceNote?`<div class="compliance-note">COMPLIANCE: ${esc(section.complianceNote)}</div>`:''}
+          ${section.compliance&&section.complianceNote?`<div class="compliance-note">⚠️ ${esc(section.complianceNote)}</div>`:''}
           ${section.note?`<div class="info-note">${esc(section.note)}</div>`:''}
-          ${singleScript?`<div class="script-block">${esc(singleScript)}</div>`:''}
-          ${scripts.map(s=>`<div class="script-label">${esc(s.label)}</div><div class="script-block">${esc(s.text)}</div>`).join('')}
+          ${(section.scripts||[]).map(s=>`<div class="script-label">${esc(s.label)}</div><div class="script-block">${esc(s.text)}</div>`).join('')}
           <div class="items-list">
             ${section.items.map(item=>`
-              <div class="item-row${checked[item.id]?' checked':''}${item.indent?' indent':''}" data-id="${item.id}" onclick="toggleCheck('${item.id}')">
-                <input type="checkbox" class="item-cb" ${checked[item.id]?'checked':''} onclick="event.stopPropagation();toggleCheck('${item.id}')" />
+              <div class="item-row${checked[item.id]?' checked':''}${item.indent?' indent':''}" data-id="${item.id}" onclick="toggleCheck('${item.id}',this)">
+                <input type="checkbox" class="item-cb" ${checked[item.id]?'checked':''} onclick="event.stopPropagation();toggleCheck('${item.id}',this.closest('.item-row'))"/>
                 <div class="item-content">
                   <span class="item-text${item.bold?' bold':''}">${item.sub?'<span class="item-arrow">↳</span>':''}${esc(item.text)}</span>
-                  ${item.script?`<div class="item-script">${esc(item.script)}</div>`:''}
                 </div>
+                <span class="item-xp">${section.compliance?'10':'5'}</span>
               </div>`).join('')}
           </div>
         </div>
@@ -712,9 +878,10 @@ function render(){
   } else {
     container.innerHTML = `<div style="display:flex;flex-direction:column;gap:4px;">
       ${POST_ITEMS.map(item=>`
-        <div class="post-item${checked[item.id]?' checked':''}" data-id="${item.id}" onclick="toggleCheck('${item.id}')">
-          <input type="checkbox" class="item-cb" ${checked[item.id]?'checked':''} onclick="event.stopPropagation();toggleCheck('${item.id}')" />
+        <div class="post-item${checked[item.id]?' checked':''}" data-id="${item.id}" onclick="toggleCheck('${item.id}',this)">
+          <input type="checkbox" class="item-cb" ${checked[item.id]?'checked':''} onclick="event.stopPropagation();toggleCheck('${item.id}',this.closest('.post-item'))"/>
           <span class="item-text">${item.compliance?'<span class="c-dot">C</span>':''}${esc(item.text)}</span>
+          <span class="item-xp" style="margin-left:auto;flex-shrink:0;">${item.compliance?'10':'5'}</span>
         </div>`).join('')}
     </div>`;
   }
@@ -727,9 +894,8 @@ if('serviceWorker' in navigator){
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
-if(sessionStorage.getItem('pcs_auth') === '1'){
-  render();
-}
+lastRank = getRank(calcTotalXP());
+if(sessionStorage.getItem('pcs_auth')==='1'){ render(); updateXP(); }
 </script>
 </body>
 </html>
