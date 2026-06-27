@@ -45,18 +45,43 @@ body{font-family:var(--f);background:var(--off);color:var(--dark);-webkit-font-s
 .nav-back:hover{color:rgba(255,255,255,.7)}
 
 /* ── HERO ── */
-.hero{background:var(--pink);padding:64px 20px 56px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(26,47,199,.35) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,0,0,.2) 0%,transparent 50%);pointer-events:none}
-.hero-i{max-width:860px;margin:0 auto;position:relative;z-index:1}
+@keyframes float1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(8deg)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(18px) rotate(-6deg)}}
+@keyframes float3{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.06)}}
+@keyframes flyer-bob{0%,100%{transform:rotate(4deg) translateY(0)}50%{transform:rotate(4deg) translateY(-12px)}}
+@keyframes grad-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero{background:var(--pink);background-size:200% 200%;animation:grad-shift 8s ease infinite;padding:72px 20px 64px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(0px)}
+.hb1{width:320px;height:320px;background:rgba(26,47,199,.28);top:-60px;left:-80px;animation:float1 7s ease-in-out infinite}
+.hb2{width:200px;height:200px;background:rgba(200,224,40,.18);bottom:40px;left:20%;animation:float2 9s ease-in-out infinite}
+.hb3{width:180px;height:180px;background:rgba(0,0,0,.15);top:30%;right:-40px;animation:float3 6s ease-in-out infinite}
+.hb4{width:100px;height:100px;background:rgba(26,47,199,.22);bottom:-20px;right:30%;animation:float1 11s ease-in-out infinite reverse}
+.hero-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.12) 1px,transparent 1px);background-size:32px 32px}
+.hero-i{max-width:1100px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center}
+.hero-text{text-align:left}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:var(--white);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:999px;margin-bottom:20px}
 .hero-sub{font-size:13px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:10px}
-.hero-title{font-size:clamp(42px,8vw,88px);font-weight:900;line-height:.95;color:var(--white);letter-spacing:-.03em;text-transform:uppercase;margin-bottom:8px}
+.hero-title{font-size:clamp(48px,7vw,90px);font-weight:900;line-height:.92;color:var(--white);letter-spacing:-.03em;text-transform:uppercase;margin-bottom:8px}
 .hero-title span{display:block}
-.hero-theme{display:inline-block;background:var(--blue);color:var(--white);font-size:clamp(14px,2.5vw,18px);font-weight:800;padding:8px 22px;border-radius:6px;margin:16px 0 28px}
-.hero-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;font-size:15px;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:36px}
+.hero-theme{display:inline-block;background:var(--blue);color:var(--white);font-size:clamp(13px,2vw,17px);font-weight:800;padding:8px 22px;border-radius:6px;margin:16px 0 28px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 24px;font-size:14px;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:36px}
 .hero-meta span{display:flex;align-items:center;gap:6px}
 .hero-meta svg{opacity:.7}
-.hero-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-flyer-wrap{position:relative;z-index:2}
+.hero-flyer{width:100%;max-width:380px;border-radius:20px;box-shadow:0 32px 80px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.3);transform:rotate(4deg);animation:flyer-bob 5s ease-in-out infinite;display:block}
+.hero-flyer-ring{position:absolute;width:110%;height:110%;top:-5%;left:-5%;border-radius:24px;border:2px solid rgba(255,255,255,.15);transform:rotate(4deg);pointer-events:none}
+.hero-flyer-lime{position:absolute;bottom:-16px;left:-16px;background:var(--lime);color:var(--dark);font-size:12px;font-weight:900;padding:10px 16px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:3;white-space:nowrap;letter-spacing:.02em}
+@media(max-width:900px){
+  .hero-i{grid-template-columns:1fr;gap:40px}
+  .hero-text{text-align:center}
+  .hero-meta{justify-content:center}
+  .hero-btns{justify-content:center}
+  .hero-flyer{max-width:300px;transform:rotate(2deg)}
+  .hero-flyer-ring{transform:rotate(2deg)}
+}
 .btn-pri{padding:15px 32px;background:var(--white);color:var(--pink);border-radius:10px;font-size:15px;font-weight:900;text-decoration:none;transition:.15s;letter-spacing:.01em}
 .btn-pri:hover{background:var(--lime);color:var(--dark)}
 .btn-sec{padding:15px 32px;background:rgba(255,255,255,.12);color:var(--white);border:2px solid rgba(255,255,255,.3);border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:.15s}
@@ -203,32 +228,48 @@ footer{background:var(--dark);padding:32px 20px;text-align:center}
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-bg">
+    <div class="hero-dots"></div>
+    <div class="hero-blob hb1"></div>
+    <div class="hero-blob hb2"></div>
+    <div class="hero-blob hb3"></div>
+    <div class="hero-blob hb4"></div>
+  </div>
   <div class="hero-i">
-    <div class="hero-badge">🏠 Landlord &amp; Investment Expo</div>
-    <div class="hero-sub">Property Clinic Solutions Presents</div>
-    <h1 class="hero-title">
-      <span>Empowerment</span>
-      <span>Through</span>
-      <span>Property</span>
-    </h1>
-    <div class="hero-theme">Theme: Wealth meets Health</div>
-    <div class="hero-meta">
-      <span>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="2" stroke="white" stroke-width="1.5"/><path d="M1 5.5h12M4.5 1v2M9.5 1v2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Saturday 1 August 2026
-      </span>
-      <span>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.5"/><path d="M7 4v3.5l2 1.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-        12 PM – 6 PM BST
-      </span>
-      <span>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4.79 1.5 3 3.29 3 5.5c0 3.25 4 7 4 7s4-3.75 4-7c0-2.21-1.79-4-4-4z" stroke="white" stroke-width="1.5"/><circle cx="7" cy="5.5" r="1.25" stroke="white" stroke-width="1.3"/></svg>
-        Grove House, Hammersmith, London
-      </span>
+    <div class="hero-text">
+      <div class="hero-badge">🏠 Landlord &amp; Investment Expo</div>
+      <div class="hero-sub">Property Clinic Solutions Presents</div>
+      <h1 class="hero-title">
+        <span>Empowerment</span>
+        <span>Through</span>
+        <span>Property</span>
+      </h1>
+      <div class="hero-theme">Theme: Wealth meets Health</div>
+      <div class="hero-meta">
+        <span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="2" stroke="white" stroke-width="1.5"/><path d="M1 5.5h12M4.5 1v2M9.5 1v2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Saturday 1 August 2026
+        </span>
+        <span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.5"/><path d="M7 4v3.5l2 1.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          12 PM – 6 PM BST
+        </span>
+        <span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4.79 1.5 3 3.29 3 5.5c0 3.25 4 7 4 7s4-3.75 4-7c0-2.21-1.79-4-4-4z" stroke="white" stroke-width="1.5"/><circle cx="7" cy="5.5" r="1.25" stroke="white" stroke-width="1.3"/></svg>
+          Grove House, Hammersmith, London
+        </span>
+      </div>
+      <div class="hero-btns">
+        <a href="https://www.eventbrite.com/e/empowerment-through-property-landlord-expo-wealth-meets-health-tickets-1990065361066" target="_blank" rel="noopener" class="btn-pri">Reserve Your Place</a>
+        <a href="#agenda" class="btn-sec">See the Agenda</a>
+      </div>
     </div>
-    <div class="hero-btns">
-      <a href="https://www.eventbrite.com/e/empowerment-through-property-landlord-expo-wealth-meets-health-tickets-1990065361066" target="_blank" rel="noopener" class="btn-pri">Reserve Your Place</a>
-      <a href="#agenda" class="btn-sec">See the Agenda</a>
+    <div class="hero-visual">
+      <div class="hero-flyer-wrap">
+        <img src="/assets/photos/event-flyer.jpg" alt="Empowerment Through Property 2026 event flyer" class="hero-flyer"/>
+        <div class="hero-flyer-ring"></div>
+        <div class="hero-flyer-lime">🎟 Tickets from £11.55</div>
+      </div>
     </div>
   </div>
 </section>
