@@ -847,202 +847,91 @@
     }), " 0333 404 0589")));
   }
   function Hero() {
-    const {
-      Button,
-      Badge
-    } = window.PCSDesignSystem_269f6d;
-    const {
-      Icon
-    } = window.PCSIcons;
+    const { Button } = window.PCSDesignSystem_269f6d;
+    const { Icon } = window.PCSIcons;
     return /*#__PURE__*/React.createElement("section", {
       id: "top",
-      style: {
-        background: "var(--surface-page)",
-        padding: "76px 28px 84px",
-        position: "relative",
-        overflow: "hidden"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        maxWidth: 1200,
-        margin: "0 auto",
-        display: "grid",
-        gridTemplateColumns: "1.05fr .95fr",
-        gap: 60,
-        alignItems: "center"
+      className: "pcs-hero-dark",
+      style: { padding: "80px 28px 88px", position: "relative", overflow: "hidden" }
+    },
+      /*#__PURE__*/React.createElement("div", { className: "pcs-hero-dots" }),
+      /*#__PURE__*/React.createElement("div", { className: "pcs-hero-blob pcs-hero-blob-1" }),
+      /*#__PURE__*/React.createElement("div", { className: "pcs-hero-blob pcs-hero-blob-2" }),
+      /*#__PURE__*/React.createElement("div", { className: "pcs-hero-blob pcs-hero-blob-3" }),
+      /*#__PURE__*/React.createElement("div", { className: "pcs-hero-blob pcs-hero-blob-4" }),
+      /*#__PURE__*/React.createElement("div", {
+        style: { maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 60, alignItems: "center", position: "relative", zIndex: 1 },
+        className: "pcs-hero-grid"
       },
-      className: "pcs-hero-grid"
-    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
-      className: "pcs-label pcs-hero-anim",
-      style: {
-        color: "var(--pcs-blue)",
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 8,
-        animationDelay: ".02s"
-      }
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "shield",
-      size: 15
-    }), " Professional Property People"), /*#__PURE__*/React.createElement("h1", {
-      className: "pcs-hero-title",
-      style: {
-        margin: "18px 0 0"
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "pcs-hero-anim",
-      style: {
-        color: "var(--pcs-blue)",
-        display: "inline-block",
-        animationDelay: ".12s"
-      }
-    }, "We advise."), " ", /*#__PURE__*/React.createElement("span", {
-      className: "pcs-hero-anim",
-      style: {
-        color: "var(--pcs-emerald)",
-        display: "inline-block",
-        animationDelay: ".22s"
-      }
-    }, "We protect."), " ", /*#__PURE__*/React.createElement("span", {
-      className: "pcs-hero-anim",
-      style: {
-        color: "var(--pcs-ink)",
-        display: "inline-block",
-        animationDelay: ".32s"
-      }
-    }, "We teach.")), /*#__PURE__*/React.createElement("p", {
-      className: "pcs-body pcs-hero-anim",
-      style: {
-        fontSize: 18.5,
-        maxWidth: 540,
-        margin: "20px 0 0",
-        animationDelay: ".42s"
-      }
-    }, "Independent UK mortgages and protection for first-time buyers, self-employed, landlords, and every case in between. For life, not just one transaction."), /*#__PURE__*/React.createElement("div", {
-      className: "pcs-hero-anim",
-      style: {
-        display: "flex",
-        gap: 12,
-        marginTop: 30,
-        flexWrap: "wrap",
-        animationDelay: ".5s"
-      }
-    }, /*#__PURE__*/React.createElement(Button, {
-      size: "lg",
-      href: CALENDLY,
-      target: "_blank",
-      rel: "noopener",
-      rightIcon: /*#__PURE__*/React.createElement(Icon, {
-        name: "arrowRight",
-        size: 18
-      })
-    }, "Book a Free Consultation"), /*#__PURE__*/React.createElement(Button, {
-      size: "lg",
-      variant: "outline",
-      href: "#events",
-      leftIcon: /*#__PURE__*/React.createElement(Icon, {
-        name: "calendar",
-        size: 18
-      })
-    }, "See Upcoming Events")), /*#__PURE__*/React.createElement("p", {
-      className: "pcs-hero-anim",
-      style: {
-        margin: "22px 0 0",
-        maxWidth: 520,
-        font: "500 13.5px/1.5 var(--font-sans)",
-        color: "var(--text-muted)",
-        display: "flex",
-        gap: 9,
-        animationDelay: ".58s"
-      }
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "shield",
-      size: 17,
-      style: {
-        color: "var(--pcs-blue)",
-        flex: "none",
-        marginTop: 1
-      }
-    }), RISK)), /*#__PURE__*/React.createElement("div", {
-      style: {
-        position: "relative"
-      }
-    }, /*#__PURE__*/React.createElement(Photo, {
-      className: "pcs-hero-photo",
-      id: "hero-townhouse",
-      alt: "A row of classic English red-brick Victorian townhouses",
-      h: 480,
-      radius: 28,
-      eager: true
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "pcs-hero-anim",
-      style: {
-        position: "absolute",
-        left: -22,
-        bottom: -22,
-        background: "#fff",
-        borderRadius: 18,
-        boxShadow: "var(--shadow-lg)",
-        padding: "16px 20px",
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
-        maxWidth: 260,
-        animationDelay: ".62s"
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      style: {
-        flex: "none",
-        width: 44,
-        height: 44,
-        borderRadius: 12,
-        background: "var(--pcs-emerald-tint)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "var(--pcs-emerald)"
-      }
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "handshake",
-      size: 22
-    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-      style: {
-        font: "800 20px var(--font-display)",
-        color: "var(--pcs-ink)",
-        letterSpacing: "-.01em"
-      }
-    }, "Whole of market"), /*#__PURE__*/React.createElement("div", {
-      style: {
-        font: "500 13px var(--font-sans)",
-        color: "var(--text-muted)"
-      }
-    }, "90+ lenders, not a panel"))), /*#__PURE__*/React.createElement("div", {
-      className: "pcs-hero-anim",
-      style: {
-        position: "absolute",
-        right: -14,
-        top: 24,
-        background: "#fff",
-        borderRadius: 14,
-        boxShadow: "var(--shadow-md)",
-        padding: "10px 14px",
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        animationDelay: ".72s"
-      }
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "star",
-      size: 18,
-      style: {
-        color: "var(--pcs-gold)"
-      }
-    }), /*#__PURE__*/React.createElement("span", {
-      style: {
-        font: "700 14px var(--font-sans)",
-        color: "var(--pcs-ink)"
-      }
-    }, "Independent advice")))));
+        /*#__PURE__*/React.createElement("div", null,
+          /*#__PURE__*/React.createElement("span", {
+            className: "pcs-label pcs-hero-anim",
+            style: { color: "var(--pcs-emerald)", display: "inline-flex", alignItems: "center", gap: 8, animationDelay: ".02s" }
+          }, /*#__PURE__*/React.createElement(Icon, { name: "shield", size: 15 }), " Independent UK Mortgage and Protection Brokers"),
+          /*#__PURE__*/React.createElement("h1", { className: "pcs-hero-title", style: { margin: "18px 0 0" } },
+            /*#__PURE__*/React.createElement("span", { className: "pcs-hero-anim", style: { color: "var(--pcs-blue)", display: "block", animationDelay: ".12s" } }, "We advise."),
+            /*#__PURE__*/React.createElement("span", { className: "pcs-hero-anim", style: { color: "var(--pcs-emerald)", display: "block", animationDelay: ".22s" } }, "We protect."),
+            /*#__PURE__*/React.createElement("span", { className: "pcs-hero-anim", style: { color: "#fff", display: "block", animationDelay: ".32s" } }, "We teach.")
+          ),
+          /*#__PURE__*/React.createElement("p", {
+            className: "pcs-hero-anim",
+            style: { fontSize: 18, maxWidth: 520, margin: "22px 0 0", lineHeight: 1.65, color: "rgba(255,255,255,.65)", animationDelay: ".42s" }
+          }, "For first-time buyers, self-employed, landlords, and complex cases. We stay with you across every mortgage, every protection review, and every stage of your property journey."),
+          /*#__PURE__*/React.createElement("div", {
+            className: "pcs-hero-anim",
+            style: { display: "flex", gap: 12, marginTop: 32, flexWrap: "wrap", animationDelay: ".5s" }
+          },
+            /*#__PURE__*/React.createElement(Button, { size: "lg", href: CALENDLY, target: "_blank", rel: "noopener", rightIcon: /*#__PURE__*/React.createElement(Icon, { name: "arrowRight", size: 18 }) }, "Book a Free Consultation"),
+            /*#__PURE__*/React.createElement("a", {
+              href: "#events",
+              style: { display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 22px", borderRadius: 8, border: "1.5px solid rgba(255,255,255,.3)", color: "#fff", font: "600 15px var(--font-sans)", textDecoration: "none", transition: "border-color .2s" }
+            }, /*#__PURE__*/React.createElement(Icon, { name: "calendar", size: 18 }), "See Upcoming Events")
+          ),
+          /*#__PURE__*/React.createElement("p", {
+            className: "pcs-hero-anim",
+            style: { margin: "24px 0 0", maxWidth: 500, font: "500 12.5px/1.5 var(--font-sans)", color: "rgba(255,255,255,.35)", display: "flex", gap: 8, animationDelay: ".58s" }
+          }, /*#__PURE__*/React.createElement(Icon, { name: "shield", size: 16, style: { color: "rgba(255,255,255,.3)", flex: "none", marginTop: 1 } }), RISK)
+        ),
+        /*#__PURE__*/React.createElement("div", { style: { position: "relative" } },
+          /*#__PURE__*/React.createElement("div", { className: "pcs-photo-bob" },
+            /*#__PURE__*/React.createElement(Photo, {
+              className: "pcs-hero-photo",
+              id: "hero-townhouse",
+              alt: "A row of classic English red-brick Victorian townhouses",
+              h: 480,
+              radius: 28,
+              eager: true,
+              style: { boxShadow: "0 40px 80px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.3)" }
+            })
+          ),
+          /*#__PURE__*/React.createElement("div", {
+            className: "pcs-hero-anim",
+            style: { position: "absolute", left: -22, bottom: 20, background: "#fff", borderRadius: 18, boxShadow: "0 16px 48px rgba(0,0,0,.4)", padding: "14px 18px", display: "flex", alignItems: "center", gap: 12, maxWidth: 240, animationDelay: ".62s" }
+          },
+            /*#__PURE__*/React.createElement("span", { style: { flex: "none", width: 42, height: 42, borderRadius: 11, background: "var(--pcs-emerald-tint)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pcs-emerald)" } },
+              /*#__PURE__*/React.createElement(Icon, { name: "handshake", size: 21 })
+            ),
+            /*#__PURE__*/React.createElement("div", null,
+              /*#__PURE__*/React.createElement("div", { style: { font: "800 16px var(--font-display)", color: "var(--pcs-ink)", letterSpacing: "-.01em" } }, "Whole of market"),
+              /*#__PURE__*/React.createElement("div", { style: { font: "500 12px var(--font-sans)", color: "var(--text-muted)" } }, "90+ lenders, not a panel")
+            )
+          ),
+          /*#__PURE__*/React.createElement("div", {
+            className: "pcs-hero-anim",
+            style: { position: "absolute", right: -14, top: 28, background: "var(--pcs-blue)", borderRadius: 14, boxShadow: "0 8px 24px rgba(0,42,177,.5)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8, animationDelay: ".72s" }
+          },
+            /*#__PURE__*/React.createElement(Icon, { name: "checkCircle", size: 17, style: { color: "var(--pcs-emerald)" } }),
+            /*#__PURE__*/React.createElement("span", { style: { font: "700 13px var(--font-sans)", color: "#fff" } }, "FCA regulated")
+          ),
+          /*#__PURE__*/React.createElement("div", {
+            className: "pcs-hero-anim",
+            style: { position: "absolute", left: -10, top: "42%", background: "var(--pcs-gold)", borderRadius: 10, padding: "7px 14px", animationDelay: ".8s" }
+          },
+            /*#__PURE__*/React.createElement("span", { style: { font: "800 13px var(--font-sans)", color: "var(--pcs-ink)" } }, "No upfront fees")
+          )
+        )
+      )
+    );
   }
   W.Hero = Hero;
   function TrustStrip() {

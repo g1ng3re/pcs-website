@@ -346,50 +346,66 @@
   }
 
   function Hero() {
-    const { Button, Badge } = window.PCSDesignSystem_269f6d;
+    const { Button } = window.PCSDesignSystem_269f6d;
     const { Icon } = window.PCSIcons;
     return (
-      <section id="top" style={{ background: "var(--surface-page)", padding: "76px 28px 84px", position: "relative", overflow: "hidden" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 60, alignItems: "center" }} className="pcs-hero-grid">
+      <section id="top" className="pcs-hero-dark" style={{ padding: "80px 28px 88px", position: "relative", overflow: "hidden" }}>
+        {/* Animated background */}
+        <div className="pcs-hero-dots" />
+        <div className="pcs-hero-blob pcs-hero-blob-1" />
+        <div className="pcs-hero-blob pcs-hero-blob-2" />
+        <div className="pcs-hero-blob pcs-hero-blob-3" />
+        <div className="pcs-hero-blob pcs-hero-blob-4" />
+
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 60, alignItems: "center", position: "relative", zIndex: 1 }} className="pcs-hero-grid">
           <div>
-            <span className="pcs-label pcs-hero-anim" style={{ color: "var(--pcs-blue)", display: "inline-flex", alignItems: "center", gap: 8, animationDelay: ".02s" }}>
-              <Icon name="shield" size={15} /> Professional Property People
+            <span className="pcs-label pcs-hero-anim" style={{ color: "var(--pcs-emerald)", display: "inline-flex", alignItems: "center", gap: 8, animationDelay: ".02s" }}>
+              <Icon name="shield" size={15} /> Independent UK Mortgage and Protection Brokers
             </span>
             <h1 className="pcs-hero-title" style={{ margin: "18px 0 0" }}>
-              <span className="pcs-hero-anim" style={{ color: "var(--pcs-blue)", display: "inline-block", animationDelay: ".12s" }}>We advise.</span>{" "}
-              <span className="pcs-hero-anim" style={{ color: "var(--pcs-emerald)", display: "inline-block", animationDelay: ".22s" }}>We protect.</span>{" "}
-              <span className="pcs-hero-anim" style={{ color: "var(--pcs-ink)", display: "inline-block", animationDelay: ".32s" }}>We teach.</span>
+              <span className="pcs-hero-anim" style={{ color: "var(--pcs-blue)", display: "block", animationDelay: ".12s" }}>We advise.</span>
+              <span className="pcs-hero-anim" style={{ color: "var(--pcs-emerald)", display: "block", animationDelay: ".22s" }}>We protect.</span>
+              <span className="pcs-hero-anim" style={{ color: "#fff", display: "block", animationDelay: ".32s" }}>We teach.</span>
             </h1>
-            <p className="pcs-body pcs-hero-anim" style={{ fontSize: 18.5, maxWidth: 540, margin: "20px 0 0", animationDelay: ".42s" }}>
-              Independent UK mortgages and protection for first-time buyers, self-employed, landlords, and every case in between. For life, not just one transaction.
+            <p className="pcs-hero-anim" style={{ fontSize: 18, maxWidth: 520, margin: "22px 0 0", lineHeight: 1.65, color: "rgba(255,255,255,.65)", animationDelay: ".42s" }}>
+              For first-time buyers, self-employed, landlords, and complex cases. We stay with you across every mortgage, every protection review, and every stage of your property journey.
             </p>
-            <div className="pcs-hero-anim" style={{ display: "flex", gap: 12, marginTop: 30, flexWrap: "wrap", animationDelay: ".5s" }}>
+            <div className="pcs-hero-anim" style={{ display: "flex", gap: 12, marginTop: 32, flexWrap: "wrap", animationDelay: ".5s" }}>
               <Button size="lg" href={CALENDLY} target="_blank" rel="noopener" rightIcon={<Icon name="arrowRight" size={18} />}>Book a Free Consultation</Button>
-              <Button size="lg" variant="outline" href="#events" leftIcon={<Icon name="calendar" size={18} />}>See Upcoming Events</Button>
+              <Button size="lg" variant="ghost" href="#events" leftIcon={<Icon name="calendar" size={18} />} style={{ color: "#fff", borderColor: "rgba(255,255,255,.3)" }}>See Upcoming Events</Button>
             </div>
-            <p className="pcs-hero-anim" style={{ margin: "22px 0 0", maxWidth: 520, font: "500 13.5px/1.5 var(--font-sans)", color: "var(--text-muted)", display: "flex", gap: 9, animationDelay: ".58s" }}>
-              <Icon name="shield" size={17} style={{ color: "var(--pcs-blue)", flex: "none", marginTop: 1 }} />
+            <p className="pcs-hero-anim" style={{ margin: "24px 0 0", maxWidth: 500, font: "500 12.5px/1.5 var(--font-sans)", color: "rgba(255,255,255,.35)", display: "flex", gap: 8, animationDelay: ".58s" }}>
+              <Icon name="shield" size={16} style={{ color: "rgba(255,255,255,.3)", flex: "none", marginTop: 1 }} />
               {RISK}
             </p>
           </div>
+
           <div style={{ position: "relative" }}>
-            <Photo className="pcs-hero-photo" id="hero-townhouse" alt="A row of classic English red-brick Victorian townhouses" h={480} radius={28} eager />
+            <div className="pcs-photo-bob">
+              <Photo className="pcs-hero-photo" id="hero-townhouse" alt="A row of classic English red-brick Victorian townhouses" h={480} radius={28} eager style={{ boxShadow: "0 40px 80px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.3)" }} />
+            </div>
+            {/* Floating badge: bottom-left */}
             <div className="pcs-hero-anim" style={{
-              position: "absolute", left: -22, bottom: -22, background: "#fff", borderRadius: 18,
-              boxShadow: "var(--shadow-lg)", padding: "16px 20px", display: "flex", alignItems: "center", gap: 14, maxWidth: 260,
+              position: "absolute", left: -22, bottom: 20, background: "#fff", borderRadius: 18,
+              boxShadow: "0 16px 48px rgba(0,0,0,.4)", padding: "14px 18px", display: "flex", alignItems: "center", gap: 12, maxWidth: 240,
               animationDelay: ".62s",
             }}>
-              <span style={{ flex: "none", width: 44, height: 44, borderRadius: 12, background: "var(--pcs-emerald-tint)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pcs-emerald)" }}>
-                <Icon name="handshake" size={22} />
+              <span style={{ flex: "none", width: 42, height: 42, borderRadius: 11, background: "var(--pcs-emerald-tint)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pcs-emerald)" }}>
+                <Icon name="handshake" size={21} />
               </span>
               <div>
-                <div style={{ font: "800 20px var(--font-display)", color: "var(--pcs-ink)", letterSpacing: "-.01em" }}>Whole of market</div>
-                <div style={{ font: "500 13px var(--font-sans)", color: "var(--text-muted)" }}>90+ lenders, not a panel</div>
+                <div style={{ font: "800 16px var(--font-display)", color: "var(--pcs-ink)", letterSpacing: "-.01em" }}>Whole of market</div>
+                <div style={{ font: "500 12px var(--font-sans)", color: "var(--text-muted)" }}>90+ lenders, not a panel</div>
               </div>
             </div>
-            <div className="pcs-hero-anim" style={{ position: "absolute", right: -14, top: 24, background: "#fff", borderRadius: 14, boxShadow: "var(--shadow-md)", padding: "10px 14px", display: "flex", alignItems: "center", gap: 8, animationDelay: ".72s" }}>
-              <Icon name="star" size={18} style={{ color: "var(--pcs-gold)" }} />
-              <span style={{ font: "700 14px var(--font-sans)", color: "var(--pcs-ink)" }}>Independent advice</span>
+            {/* Floating badge: top-right */}
+            <div className="pcs-hero-anim" style={{ position: "absolute", right: -14, top: 28, background: "var(--pcs-blue)", borderRadius: 14, boxShadow: "0 8px 24px rgba(0,42,177,.5)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8, animationDelay: ".72s" }}>
+              <Icon name="checkCircle" size={17} style={{ color: "var(--pcs-emerald)" }} />
+              <span style={{ font: "700 13px var(--font-sans)", color: "#fff" }}>FCA regulated</span>
+            </div>
+            {/* Floating badge: mid-left accent */}
+            <div className="pcs-hero-anim" style={{ position: "absolute", left: -10, top: "42%", background: "var(--pcs-gold)", borderRadius: 10, padding: "7px 14px", display: "flex", alignItems: "center", gap: 6, animationDelay: ".8s" }}>
+              <span style={{ font: "800 13px var(--font-sans)", color: "var(--pcs-ink)" }}>No upfront fees</span>
             </div>
           </div>
         </div>
