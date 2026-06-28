@@ -62,7 +62,7 @@ body{font-family:var(--f);background:var(--off);color:var(--dark);-webkit-font-s
 .hero-text{text-align:left}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:var(--white);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:999px;margin-bottom:20px}
 .hero-sub{font-size:13px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:10px}
-.hero-title{font-size:clamp(48px,7vw,90px);font-weight:900;line-height:.92;color:var(--white);letter-spacing:-.03em;text-transform:uppercase;margin-bottom:8px}
+.hero-title{font-size:clamp(40px,7vw,90px);font-weight:900;line-height:.92;color:var(--white);letter-spacing:-.03em;text-transform:uppercase;margin-bottom:8px;overflow-wrap:break-word}
 .hero-title span{display:block}
 .hero-theme{display:inline-block;background:var(--blue);color:var(--white);font-size:clamp(13px,2vw,17px);font-weight:800;padding:8px 22px;border-radius:6px;margin:16px 0 28px}
 .hero-meta{display:flex;flex-wrap:wrap;gap:10px 24px;font-size:14px;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:36px}
@@ -75,12 +75,25 @@ body{font-family:var(--f);background:var(--off);color:var(--dark);-webkit-font-s
 .hero-flyer-ring{position:absolute;width:110%;height:110%;top:-5%;left:-5%;border-radius:24px;border:2px solid rgba(255,255,255,.15);transform:rotate(4deg);pointer-events:none}
 .hero-flyer-lime{position:absolute;bottom:-16px;left:-16px;background:var(--lime);color:var(--dark);font-size:12px;font-weight:900;padding:10px 16px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:3;white-space:nowrap;letter-spacing:.02em}
 @media(max-width:900px){
-  .hero-i{grid-template-columns:1fr;gap:40px}
+  .hero{padding:56px 20px 52px}
+  .hero-i{grid-template-columns:1fr;gap:36px}
   .hero-text{text-align:center}
   .hero-meta{justify-content:center}
   .hero-btns{justify-content:center}
   .hero-flyer{max-width:300px;transform:rotate(2deg)}
   .hero-flyer-ring{transform:rotate(2deg)}
+}
+@media(max-width:480px){
+  .hero{padding:44px 18px 44px}
+  .hero-i{gap:30px}
+  .hero-title{font-size:clamp(34px,12vw,52px)}
+  .hero-badge{margin-bottom:16px}
+  .hero-theme{margin:14px 0 22px}
+  .hero-meta{gap:8px 18px;font-size:13px;margin-bottom:28px}
+  .hero-btns{flex-direction:column;align-items:stretch;gap:10px}
+  .hero-btns .btn-pri,.hero-btns .btn-sec{text-align:center;padding:14px 24px}
+  .hero-flyer{max-width:260px}
+  .hero-flyer-lime{font-size:11px;padding:8px 13px;left:auto;right:-8px;bottom:-12px}
 }
 .btn-pri{padding:15px 32px;background:var(--white);color:var(--pink);border-radius:10px;font-size:15px;font-weight:900;text-decoration:none;transition:.15s;letter-spacing:.01em}
 .btn-pri:hover{background:var(--lime);color:var(--dark)}
@@ -302,7 +315,7 @@ footer{background:var(--dark);padding:32px 20px;text-align:center}
 <section class="expect">
   <div class="s-inner">
     <div class="s-eyebrow">What to expect</div>
-    <h2 class="s-head">Six hours that could change your financial future.</h2>
+    <h2 class="s-head">Six hours that could change your financial wellbeing.</h2>
     <p class="s-sub">Whether you own one property or ten, are just starting out or ready to scale, this expo is built for you.</p>
     <div class="expect-grid">
       <div class="exp-card">
