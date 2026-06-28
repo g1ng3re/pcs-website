@@ -191,9 +191,12 @@ section{padding:72px 20px}
 
 /* ── SPONSORS ── */
 .sponsors{background:var(--dark);padding:48px 20px;text-align:center}
-.sp-label{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:24px}
-.sp-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px 32px}
-.sp-pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:9px 20px;border-radius:8px;font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.04em}
+.sp-label{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:28px}
+.sp-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px}
+.sp-logo{background:var(--white);border-radius:12px;height:72px;width:150px;display:flex;align-items:center;justify-content:center;padding:14px 18px;box-shadow:0 4px 16px rgba(0,0,0,.25);overflow:hidden}
+.sp-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
+@media(max-width:560px){.sp-row{gap:12px}.sp-logo{height:60px;width:128px;padding:11px 14px}}
+@media(max-width:380px){.sp-logo{width:calc(50% - 6px)}}
 
 /* ── VENUE ── */
 .venue-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-top:40px}
@@ -518,12 +521,12 @@ footer{background:var(--dark);padding:32px 20px;text-align:center}
 <div class="sponsors">
   <div class="sp-label">Sponsors &amp; Partners</div>
   <div class="sp-row">
-    <div class="sp-pill">SC</div>
-    <div class="sp-pill">Triplemm</div>
-    <div class="sp-pill">My Property Group</div>
-    <div class="sp-pill">Envo Assets</div>
-    <div class="sp-pill">CAHN</div>
-    <div class="sp-pill">Holistic Estate Planning</div>
+    <div class="sp-logo"><img src="/assets/sponsors/sc.jpeg" alt="Spaces Charity" loading="lazy"/></div>
+    <div class="sp-logo"><img src="/assets/sponsors/triplemm.jpeg" alt="Triplemm Homes Ltd" loading="lazy"/></div>
+    <div class="sp-logo"><img src="/assets/sponsors/my-property-group.jpeg" alt="My Property Group" loading="lazy"/></div>
+    <div class="sp-logo"><img src="/assets/sponsors/envo-assets.jpeg" alt="Envo Assets" loading="lazy"/></div>
+    <div class="sp-logo"><img src="/assets/sponsors/cahn.jpeg" alt="CAHN — Caribbean &amp; African Health Network" loading="lazy"/></div>
+    <div class="sp-logo"><img src="/assets/sponsors/holistic-estate-planning.jpeg" alt="Holistic Estate Planning" loading="lazy"/></div>
   </div>
 </div>
 
