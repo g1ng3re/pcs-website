@@ -500,15 +500,13 @@
       }
     }, "These figures are illustrative only and not a quote or a recommendation. A real affordability assessment uses your income, outgoings, credit profile, and lender criteria. Your home may be repossessed if you do not keep up repayments on your mortgage."), /*#__PURE__*/React.createElement(Button, {
       size: "lg",
-      href: CALENDLY,
-      target: "_blank",
-      rel: "noopener",
+      href: "get-started",
       className: "pcs-calc-cta",
       rightIcon: /*#__PURE__*/React.createElement(Icon, {
         name: "arrowRight",
         size: 18
       })
-    }, "Book a Free Affordability Check With an Adviser"))));
+    }, "Get Started"))));
   }
   window.PCSCalc = {
     Calculator

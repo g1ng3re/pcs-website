@@ -925,14 +925,12 @@
       }
     }, /*#__PURE__*/React.createElement(Button, {
       size: "lg",
-      href: CALENDLY,
-      target: "_blank",
-      rel: "noopener",
+      href: "get-started",
       rightIcon: /*#__PURE__*/React.createElement(Icon, {
         name: "arrowRight",
         size: 18
       })
-    }, "Book a Free Consultation"), /*#__PURE__*/React.createElement(Button, {
+    }, "Get Started"), /*#__PURE__*/React.createElement(Button, {
       size: "lg",
       variant: "outline",
       href: "#events",

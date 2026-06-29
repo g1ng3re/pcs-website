@@ -450,14 +450,12 @@
       }
     }, /*#__PURE__*/React.createElement(Button, {
       size: "lg",
-      href: CALENDLY,
-      target: "_blank",
-      rel: "noopener",
+      href: "get-started",
       rightIcon: /*#__PURE__*/React.createElement(Icon, {
         name: "arrowRight",
         size: 18
       })
-    }, "Start with a Free Consultation"))));
+    }, "Get Started"))));
   }
   W.HowWeWork = HowWeWork;
 
@@ -1302,14 +1300,12 @@
     }, /*#__PURE__*/React.createElement(Button, {
       size: "lg",
       variant: "secondary",
-      href: CALENDLY,
-      target: "_blank",
-      rel: "noopener",
+      href: "get-started",
       rightIcon: /*#__PURE__*/React.createElement(Icon, {
         name: "arrowRight",
         size: 18
       })
-    }, "Book Your Free Consultation")))));
+    }, "Get Started")))));
   }
   W.Newsletter = Newsletter;
 })();
