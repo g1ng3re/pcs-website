@@ -643,11 +643,9 @@
       size: 16
     }), " 0333 404 0589"), /*#__PURE__*/React.createElement(Button, {
       size: "sm",
-      href: CALENDLY,
-      target: "_blank",
-      rel: "noopener",
+      href: "get-started",
       className: "pcs-book-btn"
-    }, "Book a Consultation"), /*#__PURE__*/React.createElement("button", {
+    }, "Get Started"), /*#__PURE__*/React.createElement("button", {
       className: "pcs-burger",
       "aria-label": "Open menu",
       onClick: () => setDrawer(true),
@@ -823,13 +821,11 @@
     }), /*#__PURE__*/React.createElement(Button, {
       size: "lg",
       fullWidth: true,
-      href: CALENDLY,
-      target: "_blank",
-      rel: "noopener",
+      href: "get-started",
       style: {
         marginTop: 18
       }
-    }, "Book a Consultation"), /*#__PURE__*/React.createElement("a", {
+    }, "Get Started"), /*#__PURE__*/React.createElement("a", {
       href: "tel:03334040589",
       style: {
         display: "flex",
