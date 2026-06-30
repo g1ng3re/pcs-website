@@ -1,162 +1,220 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Blog · Property Clinic Solutions</title>
-<meta name="description" content="Plain-English guides on mortgages, protection, and property finance. Written by the team at Property Clinic Solutions."/>
-<link rel="canonical" href="https://propertyclinicsolutions.com/blog"/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="Blog · Property Clinic Solutions"/>
-<meta property="og:description" content="Plain-English guides on mortgages, protection, and property finance."/>
-<meta property="og:image" content="https://propertyclinicsolutions.com/assets/share/pcs-og-card.png"/>
-<link rel="icon" href="/assets/favicon/favicon.ico" sizes="any"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"/>
-<meta name="theme-color" content="#002AB1"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<meta name="description" content="Plain-English guides on mortgages, protection, and property finance. No jargon, no pressure, just the information you need to make better decisions." />
+<link rel="canonical" href="https://propertyclinicsolutions.com/blog" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Blog · Property Clinic Solutions" />
+<meta property="og:description" content="Plain-English guides on mortgages, protection, and property finance." />
+<meta property="og:image" content="assets/logos/pcs-logo-horizontal.svg" />
+<link rel="icon" type="image/svg+xml" href="assets/logos/pcs-favicon.svg" />
+<link rel="icon" href="assets/favicon/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+<meta name="theme-color" content="#002AB1" />
+
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
+<link rel="stylesheet" href="site.css?v=1781888777370" />
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#002AB1;--blue-h:#00239A;--blue-t:#E7ECFA;--ink:#0C1A3A;--emerald:#109E6C;--emerald-t:#E3F4EC;--gold:#DB9F1F;--gold-t:#FBF2DB;--paper:#F7F7F4;--card:#fff;--n200:#E6E7EC;--n400:#AEB4C2;--n500:#7E8699;--n600:#5A6173;--f:'Plus Jakarta Sans',sans-serif;--max:1100px}
-html{scroll-behavior:smooth}
-body{font-family:var(--f);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
-.nav{position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(255,255,255,.08)}
-.nav-i{max-width:var(--max);margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo span{font-size:13px;font-weight:700;color:rgba(255,255,255,.7)}
-.nav-cta{padding:9px 20px;background:var(--blue);color:#fff;border-radius:8px;font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap}
-.nav-cta:hover{background:var(--blue-h)}
-.nav-back{font-size:12px;font-weight:600;color:rgba(255,255,255,.4);text-decoration:none}
-.nav-back:hover{color:rgba(255,255,255,.7)}
+  .pcs-blog-hero { background: var(--pcs-ink); padding: 72px 28px 64px; position: relative; overflow: hidden; }
+  .pcs-blog-hero::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 12% 50%, rgba(0,42,177,.5) 0%, transparent 60%), radial-gradient(ellipse at 90% 15%, rgba(16,158,108,.22) 0%, transparent 50%); }
+  .pcs-blog-hero__in { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .pcs-blog-title { font: 900 clamp(34px,5vw,56px)/1.05 var(--font-display); color: #fff; letter-spacing: -.03em; margin: 14px 0 16px; }
+  .pcs-blog-sub { font: 400 17px/1.65 var(--font-sans); color: rgba(255,255,255,.6); max-width: 540px; }
 
-/* HERO */
-.blog-hero{background:var(--ink);padding:64px 20px 56px;position:relative;overflow:hidden}
-.blog-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(0,42,177,.5) 0%,transparent 60%),radial-gradient(ellipse at 90% 20%,rgba(16,158,108,.2) 0%,transparent 50%);pointer-events:none}
-.blog-hero-i{max-width:var(--max);margin:0 auto;position:relative;z-index:1}
-.blog-eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);margin-bottom:14px}
-.blog-title{font-size:clamp(36px,5vw,60px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:16px}
-.blog-sub{font-size:17px;color:rgba(255,255,255,.55);line-height:1.65;max-width:520px}
+  .pcs-blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 900px) { .pcs-blog-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 580px) { .pcs-blog-grid { grid-template-columns: 1fr; } }
 
-/* GRID */
-.blog-section{padding:56px 20px 80px}
-.blog-section-i{max-width:var(--max);margin:0 auto}
-.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
-@media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:580px){.blog-grid{grid-template-columns:1fr}}
+  .pcs-bcard { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; overflow: hidden;
+    text-decoration: none; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
+  .pcs-bcard:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(12,26,58,.1); }
+  .pcs-bcard__bar { height: 5px; }
+  .pcs-bcard__body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .pcs-bcard__cat { font: 800 10px var(--font-sans); letter-spacing: .14em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 999px; display: inline-block; align-self: flex-start; margin-bottom: 14px; }
+  .pcs-bcard__title { font: 800 18px/1.3 var(--font-display); color: var(--pcs-ink); letter-spacing: -.01em; margin: 0 0 10px; }
+  .pcs-bcard__excerpt { font: 400 13.5px/1.65 var(--font-sans); color: var(--text-body); flex: 1; margin: 0 0 20px; }
+  .pcs-bcard__meta { display: flex; align-items: center; justify-content: space-between;
+    font: 700 11px var(--font-sans); color: var(--text-muted); }
+  .pcs-bcard__read { color: var(--pcs-blue); font: 800 12px var(--font-sans); display: inline-flex; align-items: center; gap: 5px; }
 
-/* CARD */
-.bcard{background:var(--card);border-radius:16px;border:1.5px solid var(--n200);overflow:hidden;text-decoration:none;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
-.bcard:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(12,26,58,.1)}
-.bcard-color{height:5px}
-.bcard-body{padding:24px;flex:1;display:flex;flex-direction:column}
-.bcard-cat{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border-radius:999px;display:inline-block;margin-bottom:14px}
-.cat-protection{background:var(--emerald-t);color:var(--emerald)}
-.cat-mortgage{background:var(--blue-t);color:var(--blue)}
-.bcard-title{font-size:18px;font-weight:800;color:var(--ink);line-height:1.3;margin-bottom:10px;letter-spacing:-.01em}
-.bcard-excerpt{font-size:13.5px;line-height:1.65;color:var(--n600);flex:1;margin-bottom:20px}
-.bcard-meta{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;color:var(--n400)}
-.bcard-read{color:var(--blue);font-weight:800;font-size:12px}
-
-/* DISCLAIMER */
-.disclaimer{background:var(--gold-t);border-top:1px solid rgba(219,159,31,.2);padding:24px 20px;text-align:center}
-.disclaimer p{font-size:12px;color:#7a5a0a;max-width:700px;margin:0 auto;line-height:1.6}
-
-footer{background:var(--ink);padding:40px 20px;text-align:center}
-.ft-i{max-width:var(--max);margin:0 auto}
-.ft-text{font-size:12px;color:rgba(255,255,255,.3);line-height:1.6;max-width:600px;margin:0 auto 16px}
-.ft-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px}
-.ft-links a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none}
-.ft-links a:hover{color:rgba(255,255,255,.6)}
+  /* Featured (first) card spans the row on wide screens */
+  .pcs-bcard--feature { grid-column: 1 / -1; flex-direction: row; }
+  .pcs-bcard--feature .pcs-bcard__bar { height: auto; width: 6px; }
+  .pcs-bcard--feature .pcs-bcard__body { padding: 32px 34px; }
+  .pcs-bcard--feature .pcs-bcard__title { font-size: 26px; }
+  .pcs-bcard--feature .pcs-bcard__excerpt { font-size: 15.5px; max-width: 680px; }
+  @media (max-width: 700px) { .pcs-bcard--feature { flex-direction: column; } .pcs-bcard--feature .pcs-bcard__bar { width: auto; height: 5px; } }
 </style>
+
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
+<script src="icons.js?v=1781888777370"></script>
+<script src="home-parts.js?v=1782814992606"></script>
+<script src="page-kit.js?v=1782038324700"></script>
+
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "Blog", "name": "Property Clinic Solutions Blog", "url": "https://propertyclinicsolutions.com/blog", "description": "Plain-English guides on mortgages, protection, and property finance." }
+</script>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-i">
-    <a href="/" class="nav-logo"><span>Property Clinic Solutions</span></a>
-    <div style="display:flex;align-items:center;gap:16px">
-      <a href="/" class="nav-back">← Home</a>
-      <a href="get-started" class="nav-cta">Get Started</a>
-    </div>
-  </div>
-</nav>
+<a href="#main" class="pcs-skip">Skip to content</a>
+<div id="root"><div aria-hidden="true" style="position: fixed; top: 0px; left: 0px; right: 0px; height: 3px; z-index: 120; background: var(--pcs-blue); transform-origin: left center; transform: scaleX(0);"></div><div style="background: var(--pcs-ink); color: rgb(255, 255, 255); position: relative; overflow: hidden;"><a href="https://www.eventbrite.com/e/empowerment-through-property-landlord-expo-wealth-meets-health-tickets-1990065361066?lid=zj5izzdshlrl" target="_blank" rel="noopener" aria-label="Reserve your place at Empowerment Through Property, Saturday 1 August 2026, London" style="display: block; text-decoration: none;"><div class="pcs-annmarquee" style="display: flex; width: max-content; padding: 9px 0px;"><span style="display: inline-flex; align-items: center; gap: 12px; padding: 0px 14px; white-space: nowrap; font: 600 14px var(--font-sans); color: rgba(255, 255, 255, 0.92);"><span style="display: inline-flex; align-items: center; gap: 6px; font: 700 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pcs-gold);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg> Upcoming event</span><span>Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London</span><span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: rgb(255, 255, 255);">Reserve your place <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span aria-hidden="true" style="color: var(--pcs-gold); padding: 0px 4px;">·</span></span><span style="display: inline-flex; align-items: center; gap: 12px; padding: 0px 14px; white-space: nowrap; font: 600 14px var(--font-sans); color: rgba(255, 255, 255, 0.92);"><span style="display: inline-flex; align-items: center; gap: 6px; font: 700 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pcs-gold);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg> Upcoming event</span><span>Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London</span><span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: rgb(255, 255, 255);">Reserve your place <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span aria-hidden="true" style="color: var(--pcs-gold); padding: 0px 4px;">·</span></span><span style="display: inline-flex; align-items: center; gap: 12px; padding: 0px 14px; white-space: nowrap; font: 600 14px var(--font-sans); color: rgba(255, 255, 255, 0.92);"><span style="display: inline-flex; align-items: center; gap: 6px; font: 700 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pcs-gold);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg> Upcoming event</span><span>Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London</span><span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: rgb(255, 255, 255);">Reserve your place <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span aria-hidden="true" style="color: var(--pcs-gold); padding: 0px 4px;">·</span></span><span style="display: inline-flex; align-items: center; gap: 12px; padding: 0px 14px; white-space: nowrap; font: 600 14px var(--font-sans); color: rgba(255, 255, 255, 0.92);"><span style="display: inline-flex; align-items: center; gap: 6px; font: 700 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pcs-gold);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg> Upcoming event</span><span>Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London</span><span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: rgb(255, 255, 255);">Reserve your place <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span aria-hidden="true" style="color: var(--pcs-gold); padding: 0px 4px;">·</span></span><span style="display: inline-flex; align-items: center; gap: 12px; padding: 0px 14px; white-space: nowrap; font: 600 14px var(--font-sans); color: rgba(255, 255, 255, 0.92);"><span style="display: inline-flex; align-items: center; gap: 6px; font: 700 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pcs-gold);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg> Upcoming event</span><span>Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London</span><span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: rgb(255, 255, 255);">Reserve your place <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span aria-hidden="true" style="color: var(--pcs-gold); padding: 0px 4px;">·</span></span><span style="display: inline-flex; align-items: center; gap: 12px; padding: 0px 14px; white-space: nowrap; font: 600 14px var(--font-sans); color: rgba(255, 255, 255, 0.92);"><span style="display: inline-flex; align-items: center; gap: 6px; font: 700 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pcs-gold);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path></svg> Upcoming event</span><span>Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London</span><span style="display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: rgb(255, 255, 255);">Reserve your place <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span aria-hidden="true" style="color: var(--pcs-gold); padding: 0px 4px;">·</span></span></div></a><button aria-label="Dismiss announcement" style="position: absolute; right: 0px; top: 0px; bottom: 0px; width: 42px; background: var(--pcs-ink); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; color: rgba(255, 255, 255, 0.7); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; z-index: 2;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div><header style="position: sticky; top: 0px; z-index: 80; background: rgba(247, 247, 244, 0.72); backdrop-filter: blur(16px); border-bottom: 1px solid transparent; transition: background 0.25s, border-color 0.25s;"><div style="max-width: 1200px; margin: 0px auto; padding: 12px 28px; display: flex; align-items: center; gap: 22px;"><a href="/" aria-label="Property Clinic Solutions home" style="display: flex; flex: 0 0 auto;"><img src="assets/logos/pcs-logo-horizontal.svg" alt="Property Clinic Solutions" style="height: 38px;"></a><nav class="pcs-nav" style="display: flex; align-items: center; gap: 6px; margin-left: 12px;"><div style="position: relative;"><button class="pcs-nav-btn" aria-expanded="false" aria-haspopup="true" style="display: inline-flex; align-items: center; gap: 5px; background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; cursor: pointer; font: 600 15px var(--font-sans); color: var(--text-body); padding: 8px 12px; border-radius: 8px;">Mortgages<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto; transition: transform 0.2s; transform: none;"><path d="M6 9l6 6 6-6"></path></svg></button></div><div style="position: relative;"><button class="pcs-nav-btn" aria-expanded="false" aria-haspopup="true" style="display: inline-flex; align-items: center; gap: 5px; background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; cursor: pointer; font: 600 15px var(--font-sans); color: var(--text-body); padding: 8px 12px; border-radius: 8px;">Protection<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto; transition: transform 0.2s; transform: none;"><path d="M6 9l6 6 6-6"></path></svg></button></div><div style="position: relative;"><button class="pcs-nav-btn" aria-expanded="false" aria-haspopup="true" style="display: inline-flex; align-items: center; gap: 5px; background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; cursor: pointer; font: 600 15px var(--font-sans); color: var(--text-body); padding: 8px 12px; border-radius: 8px;">About<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto; transition: transform 0.2s; transform: none;"><path d="M6 9l6 6 6-6"></path></svg></button></div><a href="events" class="pcs-nav-btn" style="font: 600 15px var(--font-sans); color: var(--text-body); text-decoration: none; padding: 8px 12px; border-radius: 8px;">Events</a><a href="contact" class="pcs-nav-btn" style="font: 600 15px var(--font-sans); color: var(--text-body); text-decoration: none; padding: 8px 12px; border-radius: 8px;">Contact</a></nav><div style="margin-left: auto; display: flex; align-items: center; gap: 14px;"><a href="tel:03334040589" class="pcs-nav-phone" style="display: flex; align-items: center; gap: 7px; font: 700 15px var(--font-sans); color: var(--pcs-ink); text-decoration: none; white-space: nowrap;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> 0333 404 0589</a><a class="pcs-btn pcs-btn--primary pcs-btn--sm pcs-book-btn" href="get-started">Get Started</a><button class="pcs-burger" aria-label="Open menu" style="display: none; background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; color: var(--pcs-ink); cursor: pointer; padding: 6px;"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button></div></div><div class="pcs-mega" style="position: absolute; left: 0px; right: 0px; top: 100%; pointer-events: none; opacity: 0; transform: translateY(-8px); transition: opacity .18s var(--ease-out), transform .18s var(--ease-out);"><div style="max-width: 1200px; margin: 0px auto; padding: 0px 28px;"><div style="background: rgb(255, 255, 255); border: 1px solid var(--border-subtle); border-radius: 18px; box-shadow: var(--shadow-lg); padding: 18px; margin-top: 6px; max-width: 720px;"></div></div></div></header><main id="main"><section class="pcs-blog-hero"><div class="pcs-blog-hero__in"><span style="font: 800 11px var(--font-sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--pcs-emerald);">Knowledge Hub</span><h1 class="pcs-blog-title">We teach what<br>most won't explain.</h1><p class="pcs-blog-sub">Plain-English guides on mortgages, protection, and property finance. No jargon. No pressure. Just the information you need to make better decisions.</p></div></section><section class="reveal reveal--in" style="background: var(--surface-page); padding: 56px 28px 80px;"><div style="max-width: 1100px; margin: 0px auto;"><div class="pcs-blog-grid"><a href="blog/death-in-service" class="pcs-bcard pcs-bcard--feature"><div class="pcs-bcard__bar" style="background: var(--pcs-emerald);"></div><div class="pcs-bcard__body"><span class="pcs-bcard__cat" style="background: var(--pcs-emerald-tint); color: var(--pcs-emerald);">Protection</span><h2 class="pcs-bcard__title">Why your death in service from work probably isn't enough</h2><p class="pcs-bcard__excerpt">Most people assume their employer's death in service covers them. It doesn't, at least not properly. Here's what it actually is, what it isn't, and why it shouldn't be your only plan.</p><div class="pcs-bcard__meta"><span>5 min read</span><span class="pcs-bcard__read">Read <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></div></div></a><a href="blog/income-protection" class="pcs-bcard"><div class="pcs-bcard__bar" style="background: var(--pcs-emerald);"></div><div class="pcs-bcard__body"><span class="pcs-bcard__cat" style="background: var(--pcs-emerald-tint); color: var(--pcs-emerald);">Protection</span><h2 class="pcs-bcard__title">What is income protection and do I actually need it?</h2><p class="pcs-bcard__excerpt">If you stopped working tomorrow, illness, injury, anything, how long could you last on savings? Income protection is the policy nobody thinks about until it's too late.</p><div class="pcs-bcard__meta"><span>6 min read</span><span class="pcs-bcard__read">Read <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></div></div></a><a href="blog/how-much-life-cover" class="pcs-bcard"><div class="pcs-bcard__bar" style="background: var(--pcs-gold);"></div><div class="pcs-bcard__body"><span class="pcs-bcard__cat" style="background: var(--pcs-emerald-tint); color: var(--pcs-emerald);">Protection</span><h2 class="pcs-bcard__title">How much life cover do I need? The honest answer</h2><p class="pcs-bcard__excerpt">The 10x your salary rule is lazy and often wrong. The honest answer depends on four questions about your actual situation, not a formula someone pulled from thin air.</p><div class="pcs-bcard__meta"><span>5 min read</span><span class="pcs-bcard__read">Read <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></div></div></a><a href="blog/self-employed-mortgage" class="pcs-bcard"><div class="pcs-bcard__bar" style="background: var(--pcs-blue);"></div><div class="pcs-bcard__body"><span class="pcs-bcard__cat" style="background: var(--pcs-blue-tint); color: var(--pcs-blue);">Mortgages</span><h2 class="pcs-bcard__title">Self-employed mortgage: how lenders actually assess your income</h2><p class="pcs-bcard__excerpt">Being self-employed doesn't stop you getting a mortgage. It just means lenders look at your income differently. Here's exactly what they want to see, and what trips people up.</p><div class="pcs-bcard__meta"><span>6 min read</span><span class="pcs-bcard__read">Read <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></div></div></a><a href="blog/first-time-buyer-guide" class="pcs-bcard"><div class="pcs-bcard__bar" style="background: var(--pcs-blue);"></div><div class="pcs-bcard__body"><span class="pcs-bcard__cat" style="background: var(--pcs-blue-tint); color: var(--pcs-blue);">Mortgages</span><h2 class="pcs-bcard__title">First-time buyer: what actually happens between offer and keys</h2><p class="pcs-bcard__excerpt">Most first-time buyers know they need a deposit and a mortgage. What nobody tells you is what happens in between, and why it takes longer than you think.</p><div class="pcs-bcard__meta"><span>7 min read</span><span class="pcs-bcard__read">Read <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></div></div></a></div></div></section><section style="background: var(--pcs-gold-tint); border-top: 1px solid rgba(219, 159, 31, 0.2); padding: 24px 28px; text-align: center;"><p style="font: 400 12.5px/1.6 var(--font-sans); color: rgb(122, 90, 10); max-width: 720px; margin: 0px auto;">The articles on this blog are for information only and do not constitute financial advice. Your circumstances are unique, speak to a qualified adviser before making any decisions about your mortgage or protection cover.</p></section><section class="reveal" style="background: var(--surface-page); padding: 88px 28px;"><div style="max-width: 1200px; margin: 0px auto;"><div class="pcs-spotlight" style="background: var(--pcs-blue); border-radius: 28px; padding: 56px 48px; color: rgb(255, 255, 255); position: relative; overflow: hidden; text-align: center;"><img src="assets/logos/pcs-symbol-white.svg" alt="" aria-hidden="true" style="position: absolute; right: -40px; bottom: -40px; width: 240px; opacity: 0.12;"><div style="position: relative;"><span class="pcs-eyebrow" style="color: rgba(255, 255, 255, 0.78);">Got a Question We Haven't Covered?</span><h2 style="font: 800 clamp(30px,3.6vw,40px)/1.08 var(--font-display); letter-spacing: -0.02em; margin: 12px auto 0px; max-width: 720px;">Talk it through with a real adviser.</h2><p style="font: 400 18px/1.55 var(--font-sans); color: rgba(255, 255, 255, 0.9); margin: 14px auto 0px; max-width: 560px;">No pressure, no jargon, and no impact on your credit score. It takes about two minutes to get started.</p><div style="margin-top: 28px; display: flex; justify-content: center;"><a class="pcs-btn pcs-btn--secondary pcs-btn--lg" href="get-started">Get Started<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div></div></div></div></section></main><footer style="background: var(--pcs-ink); color: rgba(255, 255, 255, 0.72);"><div style="max-width: 1200px; margin: 0px auto; padding: 60px 28px 30px;"><div class="pcs-footer-grid" style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 40px;"><div><img src="assets/logos/pcs-logo-horizontal-reversed.svg" alt="Property Clinic Solutions" style="height: 40px;"><p style="font: 700 13px var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); margin: 16px 0px 0px;">Professional Property People</p><p style="font: 400 14px/1.6 var(--font-sans); margin-top: 10px; max-width: 280px;">Independent property finance and education for individuals, families, and investors across the UK.</p><div style="display: flex; gap: 10px; margin-top: 20px;"><a href="https://www.facebook.com/profile.php?id=61588038074490" target="_blank" rel="noopener" aria-label="Facebook" class="pcs-social" style="width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.8);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a><a href="https://www.instagram.com/propertyclinicsolutions/" target="_blank" rel="noopener" aria-label="Instagram" class="pcs-social" style="width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.8);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M2 7.5A5.5 5.5 0 0 1 7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5zM16 11.4a4 4 0 1 1-7.9 1.2 4 4 0 0 1 7.9-1.2zM17.5 6.5h.01"></path></svg></a><a href="https://www.linkedin.com/company/property-clinic-solutions/" target="_blank" rel="noopener" aria-label="LinkedIn" class="pcs-social" style="width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.8);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM6 9v12H2V9zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path></svg></a><a href="https://www.tiktok.com/@propertyclinicsolutions" target="_blank" rel="noopener" aria-label="TikTok" class="pcs-social" style="width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.8);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M14 4v11.5a3.5 3.5 0 1 1-3.5-3.5M14 4c.4 2.8 2.7 4.9 5.5 5"></path></svg></a></div></div><div><div style="font: 700 12px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: rgb(255, 255, 255); margin-bottom: 14px;">Services</div><div style="display: flex; flex-direction: column; gap: 10px;"><a href="mortgages" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Residential Mortgages</a><a href="buy-to-let" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Buy to Let</a><a href="remortgage" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Remortgage</a><a href="protection" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Protection</a></div></div><div><div style="font: 700 12px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: rgb(255, 255, 255); margin-bottom: 14px;">Company</div><div style="display: flex; flex-direction: column; gap: 10px;"><a href="about" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">About Us</a><a href="how-it-works" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">How It Works</a><a href="events" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Events</a><a href="contact" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Contact</a></div></div><div><div style="font: 700 12px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: rgb(255, 255, 255); margin-bottom: 14px;">Legal</div><div style="display: flex; flex-direction: column; gap: 10px;"><a href="privacy" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Privacy Policy</a><a href="complaints" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Complaints</a><a href="cookie-policy" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Cookie Policy</a></div></div><div><div style="font: 700 12px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: rgb(255, 255, 255); margin-bottom: 14px;">Tools</div><div style="display: flex; flex-direction: column; gap: 10px;"><a href="calculator" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Mortgage Calculator</a><a href="blog" class="pcs-foot-link" style="font: 400 14px var(--font-sans); color: rgba(255, 255, 255, 0.72); text-decoration: none;">Blog</a></div></div></div><div style="border-top: 1px solid rgba(255, 255, 255, 0.14); margin-top: 44px; padding-top: 24px; font: 400 12.5px/1.75 var(--font-sans); color: rgba(255, 255, 255, 0.58);"><p style="margin: 0px 0px 10px;">Property Clinic Solutions Limited is an Appointed Representative of BSL Financial Services Ltd, which is authorised and regulated by the Financial Conduct Authority under FRN 816566. Property Clinic Solutions Limited is registered in England and Wales (company number 15630130). Registered office: 1 Mychell House, Pincott Road, London, SW19 2NN.</p><p style="margin: 0px 0px 10px;"><strong style="color: rgba(255, 255, 255, 0.82);">Your home may be repossessed if you do not keep up repayments on your mortgage.</strong></p><p style="margin: 0px 0px 14px;">If you have a complaint we have been unable to resolve, you can refer it to the Financial Ombudsman Service. Visit financial-ombudsman.org.uk or call 0800 023 4567.</p><p style="margin: 0px; color: rgba(255, 255, 255, 0.45);">© 2026 Property Clinic Solutions Limited. All rights reserved.</p></div></div></footer><div role="dialog" aria-label="Cookie preferences" aria-modal="false" style="position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 100; display: flex; justify-content: center;"><div style="width: min(560px, 100%); background: rgb(255, 255, 255); border: 1px solid var(--border-subtle); border-radius: 18px; box-shadow: var(--shadow-xl); padding: 22px;"><div style="display: flex; gap: 12px; align-items: flex-start;"><span style="flex: 0 0 auto; width: 40px; height: 40px; border-radius: 11px; background: var(--pcs-blue-tint); color: var(--pcs-blue); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="" style="display: block; flex: 0 0 auto;"><path d="M5 11h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2zM8 11V7a4 4 0 0 1 8 0v4"></path></svg></span><div><div style="font: 700 17px var(--font-display); color: var(--pcs-ink);">We value your privacy</div><p style="font: 400 14px/1.55 var(--font-sans); color: var(--text-muted); margin: 6px 0px 0px;">We use cookies to run the site and, with your consent, to understand how it is used. You can accept all, reject all, or choose. See our Cookie Policy.</p></div></div><div style="display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap;"><button class="pcs-btn pcs-btn--primary pcs-btn--sm" type="button">Accept all</button><button class="pcs-btn pcs-btn--outline pcs-btn--sm" type="button">Reject all</button><button class="pcs-btn pcs-btn--ghost pcs-btn--sm" type="button">Choose</button></div></div></div></div>
 
-<div class="blog-hero">
-  <div class="blog-hero-i">
-    <div class="blog-eyebrow">Knowledge Hub</div>
-    <h1 class="blog-title">We teach what<br/>most won't explain.</h1>
-    <p class="blog-sub">Plain-English guides on mortgages, protection, and property finance. No jargon. No pressure. Just the information you need to make better decisions.</p>
-  </div>
-</div>
+<script>const K = window.PCSKit;
+const {
+  Icon
+} = window.PCSIcons;
 
-<section class="blog-section">
-  <div class="blog-section-i">
-    <div class="blog-grid">
-
-      <a href="/blog/death-in-service" class="bcard">
-        <div class="bcard-color" style="background:var(--emerald)"></div>
-        <div class="bcard-body">
-          <span class="bcard-cat cat-protection">Protection</span>
-          <div class="bcard-title">Why your death in service from work probably isn't enough</div>
-          <div class="bcard-excerpt">Most people assume their employer's death in service covers them. It doesn't — at least not properly. Here's what it actually is, what it isn't, and why it shouldn't be your plan.</div>
-          <div class="bcard-meta"><span>5 min read</span><span class="bcard-read">Read →</span></div>
-        </div>
-      </a>
-
-      <a href="/blog/income-protection" class="bcard">
-        <div class="bcard-color" style="background:var(--blue)"></div>
-        <div class="bcard-body">
-          <span class="bcard-cat cat-protection">Protection</span>
-          <div class="bcard-title">What is income protection and do I actually need it?</div>
-          <div class="bcard-excerpt">If you stopped working tomorrow — illness, injury, anything — how long could you last on savings? Income protection is the policy nobody thinks about until it's too late.</div>
-          <div class="bcard-meta"><span>6 min read</span><span class="bcard-read">Read →</span></div>
-        </div>
-      </a>
-
-      <a href="/blog/how-much-life-cover" class="bcard">
-        <div class="bcard-color" style="background:var(--gold)"></div>
-        <div class="bcard-body">
-          <span class="bcard-cat cat-protection">Protection</span>
-          <div class="bcard-title">How much life cover do I need? The honest answer</div>
-          <div class="bcard-excerpt">The "10x your salary" rule is lazy and often wrong. The honest answer depends on four questions about your actual situation — not a formula someone pulled from thin air.</div>
-          <div class="bcard-meta"><span>5 min read</span><span class="bcard-read">Read →</span></div>
-        </div>
-      </a>
-
-      <a href="/blog/self-employed-mortgage" class="bcard">
-        <div class="bcard-color" style="background:var(--blue)"></div>
-        <div class="bcard-body">
-          <span class="bcard-cat cat-mortgage">Mortgages</span>
-          <div class="bcard-title">Self-employed mortgage: how lenders actually assess your income</div>
-          <div class="bcard-excerpt">Being self-employed doesn't stop you getting a mortgage. It just means lenders look at your income differently. Here's exactly what they want to see — and what trips people up.</div>
-          <div class="bcard-meta"><span>6 min read</span><span class="bcard-read">Read →</span></div>
-        </div>
-      </a>
-
-      <a href="/blog/first-time-buyer-guide" class="bcard">
-        <div class="bcard-color" style="background:var(--emerald)"></div>
-        <div class="bcard-body">
-          <span class="bcard-cat cat-mortgage">Mortgages</span>
-          <div class="bcard-title">First-time buyer: what actually happens between offer and keys</div>
-          <div class="bcard-excerpt">Most first-time buyers know they need a deposit and a mortgage. What nobody tells you is what happens in between — and why it takes longer than you think.</div>
-          <div class="bcard-meta"><span>7 min read</span><span class="bcard-read">Read →</span></div>
-        </div>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-<div class="disclaimer">
-  <p>⚠️ The articles on this blog are for information only and do not constitute financial advice. Your circumstances are unique — speak to a qualified adviser before making any decisions about your mortgage or protection cover. Property Clinic Solutions is authorised and regulated by the Financial Conduct Authority.</p>
-</div>
-
-<footer>
-  <div class="ft-i">
-    <div class="ft-text">Property Clinic Solutions Limited is an Appointed Representative of BSL Financial Services Ltd, which is authorised and regulated by the Financial Conduct Authority.<br/>Your home may be repossessed if you do not keep up repayments on your mortgage.</div>
-    <div class="ft-links">
-      <a href="/">Home</a><a href="/blog">Blog</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a>
-    </div>
-  </div>
-</footer>
+/* Article list. Add new posts here; `featured` flags the lead article. */
+const CAT = {
+  Mortgages: {
+    bg: "var(--pcs-blue-tint)",
+    fg: "var(--pcs-blue)",
+    bar: "var(--pcs-blue)"
+  },
+  Protection: {
+    bg: "var(--pcs-emerald-tint)",
+    fg: "var(--pcs-emerald)",
+    bar: "var(--pcs-emerald)"
+  }
+};
+const ARTICLES = [{
+  cat: "Protection",
+  href: "blog/death-in-service",
+  read: "5 min read",
+  featured: true,
+  title: "Why your death in service from work probably isn't enough",
+  excerpt: "Most people assume their employer's death in service covers them. It doesn't, at least not properly. Here's what it actually is, what it isn't, and why it shouldn't be your only plan."
+}, {
+  cat: "Protection",
+  href: "blog/income-protection",
+  read: "6 min read",
+  title: "What is income protection and do I actually need it?",
+  excerpt: "If you stopped working tomorrow, illness, injury, anything, how long could you last on savings? Income protection is the policy nobody thinks about until it's too late."
+}, {
+  cat: "Protection",
+  href: "blog/how-much-life-cover",
+  read: "5 min read",
+  bar: "var(--pcs-gold)",
+  title: "How much life cover do I need? The honest answer",
+  excerpt: "The 10x your salary rule is lazy and often wrong. The honest answer depends on four questions about your actual situation, not a formula someone pulled from thin air."
+}, {
+  cat: "Mortgages",
+  href: "blog/self-employed-mortgage",
+  read: "6 min read",
+  title: "Self-employed mortgage: how lenders actually assess your income",
+  excerpt: "Being self-employed doesn't stop you getting a mortgage. It just means lenders look at your income differently. Here's exactly what they want to see, and what trips people up."
+}, {
+  cat: "Mortgages",
+  href: "blog/first-time-buyer-guide",
+  read: "7 min read",
+  title: "First-time buyer: what actually happens between offer and keys",
+  excerpt: "Most first-time buyers know they need a deposit and a mortgage. What nobody tells you is what happens in between, and why it takes longer than you think."
+}];
+function Card({
+  a
+}) {
+  const c = CAT[a.cat] || CAT.Mortgages;
+  const bar = a.bar || c.bar;
+  return /*#__PURE__*/React.createElement("a", {
+    href: a.href,
+    className: "pcs-bcard" + (a.featured ? " pcs-bcard--feature" : "")
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pcs-bcard__bar",
+    style: {
+      background: bar
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "pcs-bcard__body"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "pcs-bcard__cat",
+    style: {
+      background: c.bg,
+      color: c.fg
+    }
+  }, a.cat), /*#__PURE__*/React.createElement("h2", {
+    className: "pcs-bcard__title"
+  }, a.title), /*#__PURE__*/React.createElement("p", {
+    className: "pcs-bcard__excerpt"
+  }, a.excerpt), /*#__PURE__*/React.createElement("div", {
+    className: "pcs-bcard__meta"
+  }, /*#__PURE__*/React.createElement("span", null, a.read), /*#__PURE__*/React.createElement("span", {
+    className: "pcs-bcard__read"
+  }, "Read ", /*#__PURE__*/React.createElement(Icon, {
+    name: "arrowRight",
+    size: 14
+  })))));
+}
+function Blog() {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
+    className: "pcs-blog-hero"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pcs-blog-hero__in"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      font: "800 11px var(--font-sans)",
+      letterSpacing: ".18em",
+      textTransform: "uppercase",
+      color: "var(--pcs-emerald)"
+    }
+  }, "Knowledge Hub"), /*#__PURE__*/React.createElement("h1", {
+    className: "pcs-blog-title"
+  }, "We teach what", /*#__PURE__*/React.createElement("br", null), "most won't explain."), /*#__PURE__*/React.createElement("p", {
+    className: "pcs-blog-sub"
+  }, "Plain-English guides on mortgages, protection, and property finance. No jargon. No pressure. Just the information you need to make better decisions."))), /*#__PURE__*/React.createElement("section", {
+    className: "reveal",
+    style: {
+      background: "var(--surface-page)",
+      padding: "56px 28px 80px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 1100,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pcs-blog-grid"
+  }, ARTICLES.map((a, i) => /*#__PURE__*/React.createElement(Card, {
+    key: i,
+    a: a
+  }))))), /*#__PURE__*/React.createElement("section", {
+    style: {
+      background: "var(--pcs-gold-tint)",
+      borderTop: "1px solid rgba(219,159,31,.2)",
+      padding: "24px 28px",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      font: "400 12.5px/1.6 var(--font-sans)",
+      color: "#7a5a0a",
+      maxWidth: 720,
+      margin: "0 auto"
+    }
+  }, "The articles on this blog are for information only and do not constitute financial advice. Your circumstances are unique, speak to a qualified adviser before making any decisions about your mortgage or protection cover.")), /*#__PURE__*/React.createElement(K.CTABand, {
+    eyebrow: "Got a Question We Haven't Covered?",
+    title: "Talk it through with a real adviser.",
+    body: "No pressure, no jargon, and no impact on your credit score. It takes about two minutes to get started.",
+    primary: {
+      label: "Get Started",
+      href: "get-started",
+      external: false
+    }
+  }));
+}
+K.boot(/*#__PURE__*/React.createElement(Blog, null));</script>
 </body>
 </html>
