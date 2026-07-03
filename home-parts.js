@@ -85,6 +85,7 @@
       const el = ref.current;
       let raf,
         running = false,
+        done = false,
         popTimer;
       const run = () => {
         running = true;
@@ -98,26 +99,24 @@
           } else {
             setDisp(value);
             running = false;
+            done = true;
             setPop(true);
             popTimer = setTimeout(() => setPop(false), 380);
           }
         };
         raf = requestAnimationFrame(tick);
       };
-      setDisp(fmt(0));
+      // Keep the real value in the markup until the animation actually starts,
+      // so crawlers and the prerenderer bake "500+", not "0+".
       if (!("IntersectionObserver" in window) || !el) {
-        run();
         return;
       }
-      // Re-fires every time the stat scrolls back into view.
+      // Animates once, the first time the stat scrolls into view.
       const io = new IntersectionObserver(ents => {
         ents.forEach(en => {
-          if (en.isIntersecting) {
-            if (!running) run();
-          } else {
-            if (raf) cancelAnimationFrame(raf);
-            running = false;
+          if (en.isIntersecting && !running && !done) {
             setDisp(fmt(0));
+            run();
           }
         });
       }, {

@@ -16,9 +16,30 @@ DirectoryIndex index.html
   RewriteCond %{THE_REQUEST} \s/+index(\.html)?[\s?] [NC]
   RewriteRule ^ / [R=301,L]
 
+  # --- 301s from old WordPress URLs (indexed by Google) to their new homes ---
+  RewriteRule ^about-us/?$ /about [R=301,L]
+  RewriteRule ^mortgage-calculator/?$ /calculator [R=301,L]
+  RewriteRule ^self-employed-mortgages/?$ /self-employed [R=301,L]
+  RewriteRule ^events-2/?$ /events [R=301,L]
+  RewriteRule ^complaint/?$ /complaints [R=301,L]
+  RewriteRule ^cookies-policy/?$ /cookie-policy [R=301,L]
+  RewriteRule ^privacy-policy/?$ /privacy [R=301,L]
+  RewriteRule ^resources/?$ /blog [R=301,L]
+  # Old WP privacy page reached via query string (/?page_id=3)
+  RewriteCond %{QUERY_STRING} (^|&)page_id=3(&|$)
+  RewriteRule ^$ /privacy? [R=301,L]
+  # Anything under the old WP internals has no static equivalent -> home
+  RewriteRule ^(wp-admin|wp-content|wp-includes|wp-json)(/|$) / [R=301,L]
+  RewriteRule ^wp-login\.php$ / [R=301,L]
+
   # Redirect /page.html -> /page (so the address bar shows clean URLs)
   RewriteCond %{THE_REQUEST} \s/+([^.\s?]+)\.html[\s?] [NC]
   RewriteRule ^ /%1 [R=301,L]
+
+  # Strip trailing slashes on non-directories (/mortgages/ -> /mortgages),
+  # so relative CSS/image paths resolve and old WordPress URLs normalise
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
 
   # Internally serve the .html file for an extensionless request
   RewriteCond %{REQUEST_FILENAME} !-f
