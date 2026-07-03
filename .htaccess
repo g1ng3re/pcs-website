@@ -1,5 +1,13 @@
 # Property Clinic Solutions — static site
 
+# Kill LiteSpeed's server-level page cache: stale WordPress pages from the
+# deleted WP install live in this cache and keep being served for old URLs.
+<IfModule LiteSpeed>
+  RewriteEngine On
+  CacheDisable public /
+  RewriteRule .* - [E=Cache-Control:no-cache]
+</IfModule>
+
 # Serve index.html as the directory default (beats any leftover index.php)
 DirectoryIndex index.html
 
