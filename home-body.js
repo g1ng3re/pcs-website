@@ -545,7 +545,7 @@
         justifyContent: "center"
       }
     }, /*#__PURE__*/React.createElement("img", {
-      src: "assets/photos/event-flyer.jpg",
+      src: "assets/photos/event-flyer-2026.png",
       alt: "Empowerment Through Property: Landlord and Investment Expo flyer",
       onError: e => {
         e.currentTarget.onerror = null;
