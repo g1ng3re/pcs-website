@@ -700,6 +700,23 @@
       strokeLinejoin: "round"
     }));
   }
+  /* Relative "time ago" from a YYYY-MM-DD date, computed at render so review
+     ages stay correct on their own as weeks pass (Google-style wording). */
+  function revAge(date) {
+    if (!date) return "";
+    const then = new Date(date + "T00:00:00");
+    const days = Math.max(0, Math.round((Date.now() - then) / 86400000));
+    if (days <= 0) return "today";
+    if (days === 1) return "a day ago";
+    if (days < 7) return days + " days ago";
+    const weeks = Math.floor(days / 7);
+    if (weeks < 9) return weeks === 1 ? "a week ago" : weeks + " weeks ago";
+    const months = Math.floor(days / 30);
+    if (months < 12) return months <= 1 ? "a month ago" : months + " months ago";
+    const years = Math.floor(days / 365);
+    return years <= 1 ? "a year ago" : years + " years ago";
+  }
+  W.revAge = revAge;
   function ReviewCard({
     r
   }) {
@@ -752,7 +769,7 @@
         font: "500 13px var(--font-sans)",
         color: "var(--text-muted)"
       }
-    }, r.when)), /*#__PURE__*/React.createElement(GoogleG, null)), /*#__PURE__*/React.createElement("div", {
+    }, revAge(r.date))), /*#__PURE__*/React.createElement(GoogleG, null)), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         alignItems: "center",
@@ -800,58 +817,68 @@
     const trackRef = React.useRef(null);
     const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Property+Clinic+Solutions";
     const reviews = [{
-      name: "Patience Mensah",
-      when: "3 weeks ago",
+      name: "d a",
+      date: "2026-07-08",
       rating: 5,
-      text: "Emmanuel work is professional and unique we just met Emmanuel two months ago with sad and sorrow but Emmanuel told us, he will help us to get a mortgage offer that time our hope was gone because we was having a different broker who didn't help us to got an offer and our money was wasted but when we met Emmanuel everything was consistently and happy😊😃 and Emmanuel brought hope to our side. Anytime we give Emmanuel a message, he responds quickly, and even weekends always respond to our calls. Recently, Emmanuel has been the best broker. I recommended Emmanuel to everybody who is struggling to get a mortgage offer. We are thankful for your tremendous support during this time. Your generous work was a blessing to us. Word can not express how grateful we are. thank you very much. God bless you Emmanuel 🙏❤️"
+      text: "Emmanuel has been exceptional he really went over and beyond for my mortgage. Was always available when I needed him. Thank you sooo much for all your hard work"
+    }, {
+      name: "Jas Rai",
+      date: "2026-07-06",
+      rating: 5,
+      text: "Emmanuel is the best guy for the job! He helped purchasing my dream home & I will always be grateful to him!"
+    }, {
+      name: "Patience Mensah",
+      date: "2026-05-24",
+      rating: 5,
+      text: "Emmanuel work is professional and unique we just met Emmanuel two months ago with sad and sorrow but Emmanuel told us, he will help us to get a mortgage offer that time our hope was gone because we was having a different broker who didn't help us to got an offer and our money was wasted but when we met Emmanuel everything was consistently and happy😊😃 and Emmanuel brought hope to our side. Anytime we give Emmanuel a message, he responds quickly, and even weekends always respond to our calls. Recently, Emmanuel has been the best broker. I recommended Emmanuel to everybody who is struggling to get a mortgage offer. Emmanuel is very expect. come, and you will laugh 😃 we are thankful for your tremendous support during this time. Your generous work was a blessing to us. Your thoughtfulness and generosity deeply move us to get an offer. We're overwhelmed with gratitude for your kindness. Word can not express how grateful we are. thank you very much. God bless you Emmanuel 🙏❤️ ♥️ 💖 Patience 🙏"
     }, {
       name: "Mary Oberiko",
-      when: "4 weeks ago",
+      date: "2026-05-17",
       rating: 5,
       text: "We cannot recommend Emmanuel enough. From the very beginning, he was straightforward, professional, and incredibly easy to talk to. He kept us informed throughout the whole process and made what had been a stressful journey feel much more manageable. Not only did he secure our mortgage offer, but he also went the extra mile to negotiate us a better deal, which we truly appreciated. His communication, knowledge, and dedication were outstanding from start to finish. Emmanuel was genuinely a breath of fresh air, and we now feel we have a trusted broker for life. We would highly recommend him to anyone looking for a reliable, honest, and hardworking mortgage broker."
     }, {
       name: "Adeola Banjo",
-      when: "6 weeks ago",
+      date: "2026-05-03",
       rating: 5,
       text: "I am happy I chose PCS. Thank you for a job well-done."
     }, {
       name: "Aasia Henry",
-      when: "10 weeks ago",
+      date: "2026-04-05",
       rating: 5,
       text: "I had an outstanding experience with Property Clinic Solutions. After several unsuccessful attempts to secure a mortgage with other providers, they made what felt impossible, possible. Emmanuel, in particular, went above and beyond, working tirelessly, staying persistent, and guiding me through every step of the process. His dedication, expertise, and clear communication made all the difference. I’m incredibly grateful for the support I received and would highly recommend Property Clinic Solutions to anyone struggling to get a mortgage. Truly a first-class service."
     }, {
       name: "Sheila Nyaluyima",
-      when: "15 weeks ago",
+      date: "2026-03-01",
       rating: 5,
       text: "Emmanuel was a great help to me in achieving my mortgage offer. He worked really hard and was there to answer any questions I had. I would greatly recommend him. He was not frustrated once with the painful process of applying to different lenders each time, really appreciate all you did for me and my family. Thank you from the bottom of my heart."
     }, {
       name: "Risikat Adekoluejo",
-      when: "15 weeks ago",
+      date: "2026-03-01",
       rating: 5,
       text: "I had an exceptional experience working with Property Clinic Solutions. From the very beginning, it was clear that he always puts his clients first. He was incredibly dedicated, never backing down until we received that important call confirming our mortgage approval. His perseverance and commitment made a significant difference in our journey to homeownership. The day we walked into our new house, we felt a wave of gratitude, knowing that we had the best support throughout the process. I highly recommend Mr Emmanuel Olutokun to anyone looking to secure a mortgage. His professionalism and client-focused approach truly set him apart from others. Thank you for your time, support, help and service 🙏"
     }, {
       name: "Augustus Kodua",
-      when: "16 weeks ago",
+      date: "2026-02-22",
       rating: 5,
       text: "The entire Property Clinic Solutions team were brilliant and went over and beyond in helping me own my 1st ever home. Emmanuel was extremely helpful in liaising with the solicitors and although they had got me a mortgage, they continued to offer support until I finally completed and got my keys. I will surely be using them again and will recommend them to all my family and friends."
     }, {
       name: "Shazna Begum",
-      when: "16 weeks ago",
+      date: "2026-02-22",
       rating: 5,
       text: "I had an excellent experience with Property Clinic. Emmanuel was a great adviser who supported me throughout the process of securing a mortgage on my Right to Buy property. The process took around two years, and during that time he was extremely helpful, particularly when it came to renewing my mortgage. I am very grateful for his consistent support and the clear, reliable communication he provided throughout. I would highly recommend Emmanuel to anyone considering purchasing a home or needing expert mortgage advice."
     }, {
       name: "Elizabeth Afon",
-      when: "20 weeks ago",
+      date: "2026-01-25",
       rating: 5,
       text: "It took sometime to get a good broker, I tried 5 different brokers who made it seem getting on the ladder was almost impossible. However I was referred to Property Clinic Solutions and everything happened so smoothly. Mr Emmanuel was so professional and calmly talked/walked me through the process (whilst being also very practical). I do not regret using Property Clinic Solutions and would recommend them over and over again. Thank you for making this journey easy and possible."
     }, {
       name: "Femi Olowe",
-      when: "21 weeks ago",
+      date: "2026-01-18",
       rating: 5,
       text: "Great service, enquiries responded to on time."
     }, {
       name: "Emmanuel",
-      when: "21 weeks ago",
+      date: "2026-01-18",
       rating: 5,
       text: "The absolute best. Demonstrated in-depth knowledge of the processes, very warm attitude, courteous and professional. I highly recommend."
     }];
