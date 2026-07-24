@@ -14,6 +14,7 @@
 <link rel="apple-touch-icon" href="icon-192.png"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="desk-restore.js" onerror="window.__DESK_RESTORE__=null"></script>
+<script src="desk-updates.js" onerror="window.__DESK_PATCHES__=null"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -431,6 +432,7 @@ body.locked{overflow:hidden}
     <span class="saved-tag" id="savedTag"></span>
     <button class="ibtn" onclick="openLead(null)">+ Lead</button>
     <button class="ibtn" onclick="exportData()">Export</button>
+    <button class="ibtn" onclick="openPatch()">Paste update</button>
     <button class="ibtn" onclick="document.getElementById('importFile').click()">Import</button>
     <input type="file" id="importFile" accept="application/json" class="hidden" onchange="importData(event)">
     <button class="ibtn" id="logoutBtn" onclick="doLogout()" style="display:none">Sign out</button>
@@ -440,6 +442,17 @@ body.locked{overflow:hidden}
 <div class="nav"><div class="nav-inner" id="navInner"></div></div>
 <div class="wrap" id="wrap"></div>
 <div id="toast"></div>
+
+<!-- PASTE UPDATE -->
+<div class="overlay" id="patchOverlay"><div class="modal" style="max-width:640px">
+  <div class="modal-head"><span class="mt">Paste an update</span><button class="mx" onclick="closePatch()">&times;</button></div>
+  <div class="modal-body">
+    <p style="font-size:13px;color:var(--n600);line-height:1.6;margin-bottom:13px">Paste the block Claude gives you. It <b>merges</b>: it updates the leads named in it, adds any that are new, and leaves everything else alone. Nothing is deleted.</p>
+    <textarea id="patchText" style="width:100%;min-height:210px;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;padding:13px;border:1px solid var(--n300);border-radius:12px" placeholder='{ "leads": [ { "id": 3, "stage": "m2" } ] }'></textarea>
+    <div id="patchMsg" style="font-size:12.5px;font-weight:600;margin-top:11px;min-height:20px;line-height:1.5"></div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-ghost" onclick="closePatch()">Cancel</button><button class="btn btn-blue" onclick="applyPatch()">Preview changes</button></div>
+</div></div>
 
 <div class="signin" id="loginOverlay">
   <div class="si-panel">
@@ -814,6 +827,7 @@ let CLIENT_HOOKS={};
 /* ============ STATE ============ */
 let leads=JSON.parse(JSON.stringify(SEED));
 let leadQ='';
+let appliedPatches=[];
 let tab='home', filterSrc='all', selectedClient=null, mView='qualify', mIdx=0, checks={}, qualAnswers={}, showParked=false;
 /* ---- SAVING ----
    Local first: every change writes to this browser's storage straight away.
@@ -829,7 +843,7 @@ function saveLocal(){
   if(!LS_OK){paintSaved();return;}
   try{
     lastSaved=new Date();
-    localStorage.setItem(LS_KEY,JSON.stringify({v:DATA_VERSION,savedAt:lastSaved.toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS}));
+    localStorage.setItem(LS_KEY,JSON.stringify({v:DATA_VERSION,savedAt:lastSaved.toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS,appliedPatches}));
   }catch(e){lastSaved=null;}
   paintSaved();
 }
@@ -848,7 +862,7 @@ function loadLocal(){
   if(d.checks)checks=d.checks;
   if(d.suit)suit=d.suit;
   if(d.qualAnswers)qualAnswers=d.qualAnswers;
-  if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;
+  if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;
   lastSaved=d.savedAt?new Date(d.savedAt):null;
   return true;
 }
@@ -856,7 +870,7 @@ function restoreBackup(){
   if(!staleBackup)return;
   if(!confirm('Replace what is on screen with your previous saved copy? The desk update from '+DATA_VERSION+' will be discarded.'))return;
   const d=staleBackup;
-  leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;
+  leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;
   staleBackup=null;persist();render();toast('Previous copy restored');
 }
 function downloadBackup(){
@@ -882,8 +896,22 @@ function paintSaved(){
 }
 setInterval(paintSaved,60000);
 function scheduleSave(){if(!CLOUD||!currentUser)return;clearTimeout(saveTimer);saveTimer=setTimeout(saveState,800);}
-async function saveState(){if(!sb||!currentUser)return;try{await sb.from('protection_state').upsert({user_id:currentUser.id,data:{leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS},updated_at:new Date().toISOString()});}catch(e){console.warn('save failed',e);}}
-async function loadState(){if(!sb||!currentUser)return;try{const{data}=await sb.from('protection_state').select('data').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data){const d=data.data;if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;}else{await saveState();}}catch(e){console.warn('load failed',e);}}
+async function saveState(){
+  if(!sb||!currentUser)return;
+  try{
+    /* Read-modify-write. An empty scripts/hooks object on THIS device must never
+       overwrite a populated one in the cloud, or opening the desk somewhere the
+       restore file does not exist would silently destroy the meeting scripts. */
+    let existing={};
+    try{const{data}=await sb.from('protection_state').select('data').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data)existing=data.data;}catch(e){}
+    const payload=Object.assign({},existing,{leads,checks,suit,qualAnswers,appliedPatches});
+    if(Object.keys(CLIENT_SCRIPTS).length)payload.scripts=CLIENT_SCRIPTS;
+    if(Object.keys(CLIENT_HOOKS).length)payload.hooks=CLIENT_HOOKS;
+    await sb.from('protection_state').upsert({user_id:currentUser.id,data:payload,updated_at:new Date().toISOString()});
+    lastSaved=new Date();paintSaved();
+  }catch(e){console.warn('save failed',e);}
+}
+async function loadState(){if(!sb||!currentUser)return;try{const{data}=await sb.from('protection_state').select('data').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data){const d=data.data;if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;}else{await saveState();}}catch(e){console.warn('load failed',e);}}
 
 /* ============ HELPERS ============ */
 function today(){const d=new Date();d.setHours(0,0,0,0);return d;}
@@ -1216,6 +1244,21 @@ function mData(){
         return {id:sl+'-ab'+i,title:abTitle(s.label),note:push?'Only use this if they put death first.':(i===0?'One step at a time. Ask, pause, let them do the maths out loud, then move on.':''),scripts:[{label:push?'Only if they lead with death':'Ask',text:s.text}],items:[{id:sl+'-abc'+i,text:push?'Reframed, order revisited':'Covered'}]};});
       const out=[];M1.forEach(sec=>{if(sec.id==='factfind')return;if(sec.id==='abcdef'){steps.forEach(st=>out.push(st));}else out.push(sec);});
       return out;}}
+  if(mView==='m2'){const c=curClient();const m2=c&&CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].m2;
+    if(Array.isArray(m2)&&m2.length){
+      const byStep={};
+      m2.forEach(x=>{const k=x.at||'rec';(byStep[k]=byStep[k]||[]).push(x);});
+      return M2.map(sec=>{
+        const mine=byStep[sec.id];
+        if(!mine)return sec;
+        const own=mine.map(x=>({label:(x.label||'For '+c.name.split(' ')[0]),text:x.text}));
+        const note=mine.map(x=>x.note).filter(Boolean).join(' ');
+        return Object.assign({},sec,{
+          note:note||sec.note,
+          scripts:own.concat(sec.scripts||[])
+        });
+      });
+    }}
   return mView==='m1'?M1:M2;
 }
 function ckey(id){return (mView)+':'+id;}
@@ -1457,15 +1500,78 @@ function saveLead(){
 function deleteLead(){const id=parseInt(document.getElementById('f-id').value);if(!id)return;if(!confirm('Delete this lead?'))return;leads=leads.filter(x=>x.id!==id);persist();closeLead();render();}
 
 
+/* ============ UPDATES FROM CLAUDE ============
+   Claude writes desk-updates.js into the Protection folder on the Mac. Each entry
+   has an id. On load, anything not already applied is merged in and pushed to the
+   cloud, so the iPad gets it too. Applying twice is a no-op. */
+function mergeInto(d){
+  const done=[];
+  (d.leads||[]).forEach(pl=>{
+    let t=null;
+    if(pl.id!=null)t=leads.find(l=>l.id===pl.id);
+    if(!t&&pl.name)t=leads.find(l=>l.name===pl.name);
+    if(t){Object.assign(t,pl);done.push('updated '+t.name);}
+    else{const nl=Object.assign({stage:'new',source:'Colleague / mortgage',notes:''},pl);if(nl.id==null)nl.id=(leads.reduce((m,l)=>Math.max(m,l.id),0)||0)+1;leads.push(nl);done.push('added '+(nl.name||'a lead'));}
+  });
+  if(d.scripts){Object.assign(CLIENT_SCRIPTS,d.scripts);Object.keys(d.scripts).forEach(k=>done.push('script for '+k));}
+  if(d.hooks)Object.assign(CLIENT_HOOKS,d.hooks);
+  if(d.suit)Object.assign(suit,d.suit);
+  return done;
+}
+function applyPendingUpdates(){
+  const list=window.__DESK_PATCHES__;
+  if(!Array.isArray(list)||!list.length)return false;
+  const pending=list.filter(p=>p&&p.id&&appliedPatches.indexOf(p.id)===-1);
+  if(!pending.length)return false;
+  let all=[];
+  pending.forEach(p=>{all=all.concat(mergeInto(p));appliedPatches.push(p.id);});
+  persist();
+  setTimeout(()=>toast(pending.length+' update'+(pending.length>1?'s':'')+' from Claude applied'),600);
+  console.log('Applied updates:',all);
+  return true;
+}
+
+/* ============ PASTE UPDATE (merge, never destroy) ============ */
+let patchStaged=null;
+function openPatch(){patchStaged=null;document.getElementById('patchText').value='';document.getElementById('patchMsg').textContent='';document.getElementById('patchOverlay').classList.add('show');}
+function closePatch(){patchStaged=null;document.getElementById('patchOverlay').classList.remove('show');}
+function applyPatch(){
+  const msg=document.getElementById('patchMsg');
+  if(patchStaged){                       /* second press = confirm */
+    mergeInto(patchStaged);
+    persist();closePatch();render();toast('Update applied');
+    return;
+  }
+  let d;
+  try{d=JSON.parse(document.getElementById('patchText').value);}
+  catch(e){msg.style.color='var(--red)';msg.textContent='That is not valid JSON. Paste the whole block including the outer { }.';return;}
+  if(!d||typeof d!=='object'){msg.style.color='var(--red)';msg.textContent='Nothing to apply.';return;}
+  const lines=[];
+  (d.leads||[]).forEach(pl=>{
+    let t=null;
+    if(pl.id!=null)t=leads.find(l=>l.id===pl.id);
+    if(!t&&pl.name)t=leads.find(l=>l.name===pl.name);
+    const fields=Object.keys(pl).filter(k=>k!=='id'&&k!=='name');
+    lines.push(t?('Update '+t.name+': '+(fields.join(', ')||'no change')):('ADD new lead: '+(pl.name||'unnamed')));
+  });
+  if(d.scripts)Object.keys(d.scripts).forEach(k=>lines.push((CLIENT_SCRIPTS[k]?'Replace':'Add')+' meeting script: '+k));
+  if(d.hooks)Object.keys(d.hooks).forEach(k=>lines.push((CLIENT_HOOKS[k]?'Replace':'Add')+' booking hook: '+k));
+  if(d.suit)lines.push('Update the suitability draft');
+  if(!lines.length){msg.style.color='var(--red)';msg.textContent='Valid JSON, but nothing in it that I recognise.';return;}
+  patchStaged=d;
+  msg.style.color='var(--n700)';
+  msg.innerHTML='<b>This will:</b><br>'+lines.map(l=>'&middot; '+esc(l)).join('<br>')+'<br><br><b>Press Preview changes again to apply.</b>';
+}
+
 /* ============ EXPORT / IMPORT ============ */
-function exportData(){const payload={v:DATA_VERSION,savedAt:new Date().toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pcs-protection-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Exported');}
-function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(Array.isArray(d)){leads=d;}else{if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;}persist();render();toast('Imported');}catch(err){alert('Could not read that file.');}};r.readAsText(f);}
+function exportData(){const payload={v:DATA_VERSION,savedAt:new Date().toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS,appliedPatches};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pcs-protection-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Exported');}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(Array.isArray(d)){leads=d;}else{if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;}persist();render();toast('Imported');}catch(err){alert('Could not read that file.');}};r.readAsText(f);}
 document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeLead();});
 
 /* ============ AUTH + BOOT ============ */
 let offline=false;
 function showLogin(){document.getElementById('loginOverlay').classList.add('show');document.body.classList.add('locked');}
-function workOffline(){offline=true;hideLogin();applyRestore();paintSaved();render();toast('Working offline');}
+function workOffline(){offline=true;hideLogin();applyRestore();applyPendingUpdates();paintSaved();render();toast('Working offline');}
 function hideLogin(){document.getElementById('loginOverlay').classList.remove('show');document.body.classList.remove('locked');}
 async function doLogin(){
   const email=document.getElementById('li-email').value.trim();
@@ -1480,14 +1586,14 @@ async function doLogout(){if(sb){try{await sb.auth.signOut();}catch(e){}}locatio
 async function boot(){
   renderNav();
   loadLocal();
-  if(!CLOUD)applyRestore();
+  if(!CLOUD){applyRestore();applyPendingUpdates();}
   paintSaved();
   render();                      /* always paint the desk first, never a blank screen */
   if(CLOUD){
     const lb=document.getElementById('logoutBtn');if(lb)lb.style.display='';
     try{const{data:{session}}=await sb.auth.getSession();
       if(!session){showLogin();return;}
-      currentUser=session.user;await loadState();applyRestore();render();
+      currentUser=session.user;await loadState();applyRestore();applyPendingUpdates();paintSaved();render();
     }catch(e){showLogin();}
   }
 }
