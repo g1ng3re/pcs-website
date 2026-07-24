@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Protection Desk</title>
+<meta name="robots" content="noindex,nofollow,noarchive"/>
+<meta name="referrer" content="no-referrer"/>
+<meta name="theme-color" content="#0C1A3A"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="apple-mobile-web-app-title" content="Protection Desk"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="desk-restore.js" onerror="window.__DESK_RESTORE__=null"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#002AB1;--blue-h:#00239A;--blue-t:#E7ECFA;
+  --ink:#0C1A3A;--emerald:#109E6C;--emerald-t:#E3F4EC;--emerald-h:#0E8C60;
+  --gold:#DB9F1F;--gold-t:#FBF2DB;--red:#C0392B;--red-t:#FBE9E7;
+  --paper:#F7F7F4;--card:#FFFFFF;--sunken:#EEF0F4;
+  --n200:#E6E7EC;--n300:#D3D7E0;--n400:#AEB4C2;--n500:#7E8699;--n600:#5A6173;--n700:#3D4254;
+  --f:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;   /* reading, UI, labels */
+  --fd:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;          /* display, headings, numbers */
+  --sh1:0 1px 2px rgba(12,26,58,.04),0 1px 1px rgba(12,26,58,.03);
+  --sh2:0 2px 4px rgba(12,26,58,.05),0 6px 16px rgba(12,26,58,.06);
+  --sh3:0 8px 20px rgba(12,26,58,.10),0 24px 48px rgba(12,26,58,.10);
+  --hair:#E6E7EC;
+}
+body{font-family:var(--f);font-weight:500;line-height:1.6;background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:var(--fd);font-weight:800;line-height:1.2}
+a{color:inherit}
+
+/* HEADER */
+.hd{background:var(--ink);color:#fff;padding:14px 20px;position:sticky;top:0;z-index:40}
+.hd-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);border-left:1px solid rgba(255,255,255,.2);padding-left:11px}
+.client-sel{margin-left:auto;display:flex;align-items:center;gap:8px}
+.client-sel label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.4);font-weight:700}
+.client-sel select{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;font-family:var(--f);font-size:12.5px;font-weight:700;padding:7px 10px;border-radius:9px;outline:none;max-width:200px}
+.client-sel select option{color:#111}
+.hd-btns{display:flex;gap:7px}
+.ibtn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.82);font-family:var(--f);font-size:12px;font-weight:600;padding:8px 12px;border-radius:9px;cursor:pointer;transition:.16s}
+.ibtn:hover{background:rgba(255,255,255,.16)}
+
+/* NAV */
+.nav{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);position:sticky;top:56px;z-index:39}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;padding:0 12px;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nv{flex-shrink:0;padding:13px 15px;background:transparent;border:none;cursor:pointer;font-family:var(--f);font-size:12.5px;font-weight:600;letter-spacing:.01em;color:rgba(255,255,255,.52);border-bottom:2px solid transparent;transition:.16s;white-space:nowrap}
+.nv.on{color:#fff;border-bottom-color:var(--gold)}
+.nv:hover:not(.on){color:rgba(255,255,255,.8)}
+
+/* WRAP */
+.wrap{max-width:1240px;margin:0 auto;padding:28px 24px 90px}
+
+/* GENERIC */
+.btn{padding:11px 17px;border-radius:11px;border:none;cursor:pointer;font-family:var(--f);font-size:13px;font-weight:700;letter-spacing:.005em;transition:.16s}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-h)}
+.btn-emerald{background:var(--emerald);color:#fff}.btn-emerald:hover{background:var(--emerald-h)}
+.btn-ghost{background:var(--sunken);color:var(--n700);border:1.5px solid var(--n200)}.btn-ghost:hover{background:var(--n200)}
+.empty{color:var(--n400);font-size:12.5px;text-align:center;padding:18px 0;font-weight:600}
+.callout{background:var(--gold-t);border:1px solid rgba(219,159,31,.3);border-radius:12px;padding:13px 16px;font-size:13px;color:#7a5a0a;line-height:1.6;font-weight:600;margin-bottom:18px;display:flex;gap:10px}
+.callout.blue{background:var(--blue-t);border-color:rgba(0,42,177,.2);color:var(--blue)}
+.callout span:empty,.cn-bar span:empty{display:none}
+/* QUALIFIER */
+.q-opener{margin-bottom:16px}
+.gate{background:var(--card);border:1.5px solid var(--n200);border-radius:14px;padding:15px 16px;margin-bottom:10px}
+.gate-q{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:11px}
+.gate-opts{display:flex;flex-direction:column;gap:7px}
+.gopt{text-align:left;border:1.5px solid var(--n200);background:var(--paper);border-radius:11px;padding:11px 13px;cursor:pointer;font-family:var(--f);font-size:13px;font-weight:600;color:var(--n700);transition:.13s;display:flex;align-items:center;gap:10px;width:100%}
+.gopt:hover{border-color:var(--n400)}
+.gopt .dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--n300);flex-shrink:0}
+.gopt.sel{border-width:2px}
+.gopt.sel.go{border-color:var(--emerald);background:var(--emerald-t)}.gopt.sel.go .dot{background:var(--emerald);border-color:var(--emerald)}
+.gopt.sel.amber,.gopt.sel.hold{border-color:var(--gold);background:var(--gold-t)}.gopt.sel.amber .dot,.gopt.sel.hold .dot{background:var(--gold);border-color:var(--gold)}
+.gopt.sel.red,.gopt.sel.stop{border-color:var(--red);background:var(--red-t)}.gopt.sel.red .dot,.gopt.sel.stop .dot{background:var(--red);border-color:var(--red)}
+.gopt-note{font-size:11.5px;color:var(--n600);font-weight:600;margin-top:8px;padding:9px 11px;background:var(--sunken);border-radius:9px;line-height:1.5}
+.outcome{border-radius:16px;padding:18px 20px;margin-top:16px;border:2px solid}
+.outcome.green{background:var(--emerald-t);border-color:var(--emerald)}
+.outcome.amber{background:var(--gold-t);border-color:var(--gold)}
+.outcome.red{background:var(--red-t);border-color:var(--red)}
+.outcome.wait{background:var(--sunken);border-color:var(--n300)}
+.oc-verdict{font-family:var(--fd);font-size:20px;font-weight:800;letter-spacing:-.02em}
+.oc-verdict.green{color:var(--emerald-h)}.oc-verdict.amber{color:#9a6f0f}.oc-verdict.red{color:var(--red)}.oc-verdict.wait{color:var(--n600)}
+.oc-action{font-size:13.5px;font-weight:700;color:var(--ink);margin-top:6px;line-height:1.5}
+.oc-list{margin:11px 0 0;padding:0;list-style:none}
+.oc-list li{font-size:12.5px;color:var(--n700);font-weight:600;padding:5px 0 5px 15px;position:relative;line-height:1.5}
+.oc-list li:before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45}
+.oc-script{background:rgba(255,255,255,.72);border-radius:10px;padding:11px 13px;margin-top:12px;font-size:13.5px;font-style:italic;line-height:1.65;color:var(--n700)}
+.oc-script .sl{display:block;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--n500);margin-bottom:5px;font-style:normal}
+.q-reset{margin-top:12px}
+/* COMPACT PIPELINE */
+.pipe-toggle{background:var(--sunken);border:1.5px solid var(--n200);border-radius:10px;padding:9px 14px;cursor:pointer;font-family:var(--f);font-size:12.5px;font-weight:700;color:var(--n600)}
+.pipe-toggle:hover{background:var(--n200)}
+.lead-card.compact{padding:11px 13px}
+.h3{font-family:var(--fd);font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.13em;color:var(--n500);margin:0 0 13px}
+.h3 span{color:var(--n400)}
+.section-gap{margin-top:24px}
+
+/* HOME */
+.greet{margin-bottom:20px}
+.greet .g1{font-family:var(--fd);font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1.12}
+.greet .g2{font-size:13.5px;color:var(--n500);font-weight:500;margin-top:5px;letter-spacing:.005em}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin-bottom:26px}
+.stat{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:17px 19px;box-shadow:var(--sh1)}
+.stat .l{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--n500);font-weight:700;margin-bottom:8px}
+.stat .v{font-family:var(--fd);font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .s{font-size:11px;color:var(--n500);font-weight:500;margin-top:5px;line-height:1.4}
+.v.gold{color:var(--gold)}.v.emerald{color:var(--emerald)}.v.warn{color:#B9791C}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px}
+.qbtn{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:17px 18px;cursor:pointer;text-align:left;transition:border-color .16s,box-shadow .16s,transform .16s;box-shadow:var(--sh1)}
+.qbtn:hover{border-color:var(--blue);box-shadow:var(--sh2);transform:translateY(-1px)}
+.qbtn .qi{font-size:22px}
+.qbtn .qt{font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:-.01em}
+.qbtn .qs{font-size:11.5px;color:var(--n500);font-weight:500;margin-top:3px}
+
+/* CALL / LEAD CARDS */
+.call-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:13px}
+.call-card{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:17px 18px;cursor:pointer;transition:border-color .16s,box-shadow .16s,transform .16s;box-shadow:var(--sh1)}
+.call-card:hover{border-color:var(--n300);box-shadow:var(--sh2);transform:translateY(-1px)}
+.cc-top{display:flex;align-items:flex-start;gap:10px}
+.cc-name{font-family:var(--fd);font-size:15.5px;font-weight:700;letter-spacing:-.012em;color:var(--ink)}
+.cc-stage{font-size:11px;font-weight:700;color:var(--n500);margin-top:2px}
+.cc-due{margin-left:auto;font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;white-space:nowrap;background:var(--sunken);color:var(--n500)}
+.cc-due.over{background:var(--red-t);color:var(--red)}.cc-due.soon{background:var(--gold-t);color:#9a6f0f}
+.cc-phone{display:inline-block;margin-top:10px;font-size:14.5px;font-weight:800;color:var(--blue);text-decoration:none}
+.cc-phone:hover{text-decoration:underline}
+.cc-actions{display:flex;gap:6px;margin-top:11px}
+.cc-mini{font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;background:var(--sunken);border:1px solid var(--n200);cursor:pointer;color:var(--n700)}
+.cc-mini:hover{background:var(--blue-t);border-color:var(--blue);color:var(--blue)}
+.cc-note{font-size:12px;color:var(--n600);line-height:1.5;margin-top:10px}
+.lc-age{font-size:11px;font-weight:600;color:var(--n400)}
+.lc-src{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-top:8px}
+.src-client{background:var(--emerald-t);color:var(--emerald-h)}
+.src-colleague{background:var(--blue-t);color:var(--blue)}
+.src-introducer{background:var(--gold-t);color:#9a6f0f}
+.src-social{background:#F0E7FB;color:#7A3FC0}.src-event{background:#FBE7F0;color:#B03F72}
+
+/* PIPELINE BOARD */
+.filters{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.chip{padding:6px 12px;border-radius:999px;border:1.5px solid var(--n200);background:var(--card);cursor:pointer;font-size:12px;font-weight:700;color:var(--n600)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.board{display:flex;gap:12px;overflow-x:auto;padding-bottom:12px}
+.col{flex:0 0 224px;background:var(--sunken);border-radius:14px;padding:10px;min-height:70px}
+.col-head{display:flex;align-items:center;gap:7px;margin-bottom:9px;padding:0 3px}
+.col-dot{width:9px;height:9px;border-radius:50%}
+.col-name{font-size:11.5px;font-weight:800;color:var(--n700);text-transform:uppercase;letter-spacing:.03em}
+.col-count{font-size:11px;font-weight:700;color:var(--n400);background:var(--card);border-radius:999px;padding:1px 8px;margin-left:auto}
+.lead-card{background:var(--card);border:1px solid var(--n200);border-radius:11px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:.12s;border-left:3px solid var(--n300)}
+.lead-card:hover{border-color:var(--blue)}
+.lc-name{font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px}
+.lc-note{font-size:11px;color:var(--n600);line-height:1.4;margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lc-due{font-size:10.5px;font-weight:700;margin-top:6px}
+.lc-due.over{color:var(--red)}.lc-due.soon{color:#9a6f0f}.lc-due.ok{color:var(--n500)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--n200)}
+.tbl th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--n500);font-weight:800;padding:11px 14px;background:var(--sunken);border-bottom:1.5px solid var(--n200)}
+.tbl td{padding:12px 14px;font-size:12.5px;border-bottom:1px solid var(--n200);color:var(--n700);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--sunken)}
+.appt{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;padding:6px 9px;border-radius:9px;margin-top:7px;letter-spacing:.01em}
+.appt.set{background:var(--emerald-t);color:var(--emerald-h)}
+.appt.tbc{background:var(--gold-t);color:#9a6f0f}
+.appt .ad{font-size:14px;line-height:1}
+.lc-appt{font-size:10.5px;font-weight:800;margin-top:5px;padding:3px 7px;border-radius:7px;display:inline-block}
+.lc-appt.set{background:var(--emerald-t);color:var(--emerald-h)}
+.lc-appt.tbc{background:var(--gold-t);color:#9a6f0f}
+.cc-note{margin-top:9px}
+.nlead{font-size:11.8px;line-height:1.5;color:var(--n600);font-weight:600}
+.nmore{margin-top:7px;background:none;border:0;padding:0;font:inherit;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);cursor:pointer}
+.nmore:hover{color:var(--blue-h);text-decoration:underline}
+.ndet{margin-top:9px;padding-top:10px;border-top:1px solid var(--n200)}
+.nsec-t{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin:11px 0 4px}
+.ndet .nsec-t:first-child{margin-top:0}
+.np{font-size:11.8px;line-height:1.55;color:var(--n700);margin:0 0 5px}
+.nlist{margin:0 0 5px;padding-left:15px}
+.nlist li{font-size:11.8px;line-height:1.5;color:var(--n700);margin-bottom:3px}
+.nlog{display:flex;flex-direction:column;gap:6px}
+.nlg{display:grid;grid-template-columns:66px 1fr;gap:9px;align-items:start}
+.nlg-d{font-size:9.5px;font-weight:800;color:var(--n500);background:var(--sunken);border-radius:5px;padding:3px 5px;text-align:center;letter-spacing:-.01em}
+.nlg span:last-child{font-size:11.6px;line-height:1.45;color:var(--n700)}
+.saved-tag{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--n500);padding:0 8px 0 2px;white-space:nowrap;align-self:center}
+.saved-tag.ok{color:var(--emerald-h)}
+.saved-tag.bad{color:var(--red)}
+.banner{border-radius:13px;padding:14px 16px;margin-bottom:16px;font-size:12.5px;line-height:1.55;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.banner.bad{background:var(--red-t);color:var(--red);border:1px solid var(--red)}
+.banner.warn{background:var(--gold-t);color:#7a5808;border:1px solid var(--gold)}
+.banner .bbtns{display:flex;gap:7px;flex-wrap:wrap}
+.tries{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;padding:6px 9px;border-radius:9px;margin-top:7px;background:var(--gold-t);color:#9a6f0f}
+.tries.max{background:var(--red-t);color:var(--red)}
+.tbump{margin-left:auto;background:rgba(0,0,0,.06);border:0;border-radius:6px;padding:2px 7px;font:inherit;font-size:10.5px;font-weight:800;cursor:pointer;color:inherit}
+.tbump:hover{background:rgba(0,0,0,.13)}
+.lsearch{width:100%;padding:12px 14px;border:1px solid var(--n300);border-radius:11px;font:inherit;font-size:13.5px;background:var(--card)}
+.lsearch:focus{outline:0;border-color:var(--blue)}
+.lsearch-hint{font-size:11px;font-weight:600;color:var(--n500);margin-top:7px}
+.wait-list{display:flex;flex-direction:column;gap:7px}
+.wrow{background:var(--card);border:1px dashed var(--n300);border-radius:12px;padding:11px 14px;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:center}
+.wrow:hover{border-color:var(--n400)}
+.wrow .wn{font-size:13.5px;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wrow .wt{grid-column:1;font-size:11.5px;font-weight:600;color:var(--n500)}
+.wrow .wd{grid-row:1/3;font-size:11px;font-weight:800;color:var(--n500);text-align:right;white-space:nowrap}
+.diary{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:22px}
+.dcard{background:var(--card);border:1px solid var(--hair);border-left:3px solid var(--emerald);border-radius:16px;padding:15px 17px;cursor:pointer;box-shadow:var(--sh1);transition:box-shadow .16s,transform .16s}
+.dcard:hover{box-shadow:var(--sh2);transform:translateY(-1px)}
+.dcard.tbc{border-left-color:var(--gold)}
+.dcard .dwhen{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--n500)}
+.dcard .dtime{font-family:var(--fd);font-size:27px;font-weight:800;color:var(--ink);line-height:1.08;margin:3px 0 5px;letter-spacing:-.03em}
+.dcard .dname{font-family:var(--fd);font-size:13.5px;font-weight:700;color:var(--ink);letter-spacing:-.008em}
+.dcard .dmeta{font-size:11px;font-weight:600;color:var(--n500);margin-top:3px}
+.wf{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:19px 21px;margin-bottom:16px;box-shadow:var(--sh1)}
+.wf-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--n200);font-size:13px}
+.wf-row:last-child{border-bottom:0}
+.wf-row .wl{font-weight:600;color:var(--n700)}
+.wf-row .wl small{display:block;font-size:10.5px;font-weight:600;color:var(--n500);margin-top:2px}
+.wf-row .wv{font-family:var(--fd);font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.015em}
+.wf-row.neg .wv{color:var(--red)}
+.wf-row.tot{border-top:2px solid var(--ink);margin-top:4px}
+.wf-row.tot .wl,.wf-row.tot .wv{font-weight:800;color:var(--emerald-h);font-size:15px}
+.pill{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 9px;border-radius:999px}
+.pill-risk{background:var(--red-t);color:var(--red)}.pill-safe{background:var(--emerald-t);color:var(--emerald-h)}
+.money{font-variant-numeric:tabular-nums;font-weight:700}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin-bottom:20px}
+.mcard{background:var(--card);border:1px solid var(--n200);border-radius:14px;padding:16px 18px}
+.mcard .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--n500);font-weight:800;margin-bottom:8px}
+.mcard .big{font-size:25px;font-weight:800;letter-spacing:-.02em}
+.mcard .sub{font-size:12px;color:var(--n500);font-weight:600;margin-top:4px}
+.bar{height:7px;background:var(--n200);border-radius:5px;overflow:hidden;margin-top:12px;display:flex}.bar span{height:100%}
+
+/* MEETING RUNNER */
+.subtabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.st{padding:8px 15px;border-radius:10px;border:1.5px solid var(--n200);background:var(--card);cursor:pointer;font-size:13px;font-weight:800;color:var(--n600)}
+.st.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.snav{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}.snav::-webkit-scrollbar{display:none}
+.sn{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;cursor:pointer;padding:2px 3px}
+.sn-dot{width:29px;height:29px;border-radius:50%;border:2px solid var(--n300);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--n400);background:var(--card)}
+.sn.done .sn-dot{background:var(--emerald);border-color:var(--emerald);color:#fff}
+.sn.cur .sn-dot{background:var(--blue);border-color:var(--blue);color:#fff}
+.sn-lbl{font-size:9px;font-weight:700;color:var(--n500);max-width:52px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sn.cur .sn-lbl{color:var(--blue);font-weight:800}.sn.done .sn-lbl{color:var(--emerald)}
+.sec-card{background:var(--card);border-radius:18px;overflow:hidden;border:1.5px solid var(--n200)}
+.sec-accent{height:4px;background:var(--blue)}.sec-accent.compliance{background:var(--gold)}
+.sec-head{padding:17px 18px 13px;border-bottom:1.5px solid var(--n200)}
+.sec-title-row{display:flex;align-items:center;gap:10px}
+.sec-icon{font-size:22px}.sec-title{font-size:17px;font-weight:800;flex:1}
+.cbadge{font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--gold-t);color:#9a6f0f;border:1px solid rgba(219,159,31,.25)}
+.prog-row{display:flex;align-items:center;gap:8px;margin-top:10px}
+.prog-track{flex:1;height:3px;background:var(--n200);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--emerald));border-radius:2px;transition:.4s}
+.prog-label{font-size:11px;font-weight:700;color:var(--n500)}
+.cn-bar{display:flex;gap:8px;padding:11px 18px;background:var(--gold-t);border-bottom:1px solid rgba(219,159,31,.2);font-size:12.5px;color:#7a5a0a;font-weight:600;line-height:1.5}
+.note-bar{padding:11px 18px;background:var(--sunken);border-bottom:1px solid var(--n200);font-size:12.5px;color:var(--n600);line-height:1.55;font-style:italic}
+.scripts-area{padding:15px 18px;background:var(--sunken)}
+.script-card{background:var(--card);border-radius:12px;border:1px solid var(--n200);border-left:3.5px solid var(--blue);padding:13px 15px;margin-bottom:8px}
+.script-card:last-child{margin-bottom:0}.script-card.note-style{border-left-color:var(--gold)}
+.s-lbl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.note-style .s-lbl{color:#9a6f0f}
+.s-txt{font-size:14px;line-height:1.75;color:var(--n700)}.s-txt.quote{font-style:italic}
+.confirms{padding:14px 18px 18px}
+.confirms-label{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--n400);margin-bottom:10px}
+.conf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.conf-grid.solo{grid-template-columns:1fr}
+.conf-btn{background:var(--paper);border:2px solid var(--n200);border-radius:13px;padding:13px 13px 11px;cursor:pointer;text-align:left;transition:.15s;display:flex;flex-direction:column;gap:5px}
+.conf-btn.done{background:var(--emerald-t);border-color:rgba(16,158,108,.35)}
+.conf-inner{display:flex;align-items:flex-start;gap:8px}
+.conf-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--n300);display:flex;align-items:center;justify-content:center;background:var(--card);flex-shrink:0;margin-top:1px}
+.conf-btn.done .conf-check{background:var(--emerald);border-color:var(--emerald)}
+.conf-check svg{opacity:0}.conf-btn.done .conf-check svg{opacity:1}
+.conf-text{font-size:12.5px;line-height:1.4;color:var(--ink);font-weight:500}
+.conf-btn.done .conf-text{text-decoration:line-through;opacity:.45}
+.conf-btn.bold-item .conf-text{font-weight:700}
+.mnav{display:flex;gap:10px;margin-top:14px}
+.mnav .btn{flex:1}
+
+/* EMAILS */
+.email-card{background:var(--card);border:1px solid var(--n200);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.email-head{padding:13px 16px;background:var(--sunken);border-bottom:1px solid var(--n200);display:flex;align-items:center;gap:10px}
+.email-head .en{font-size:13.5px;font-weight:800}
+.email-head .es{font-size:11px;color:var(--n500);font-weight:600}
+.email-head .btn{margin-left:auto}
+.email-body{padding:15px 16px;font-size:13px;line-height:1.6;color:var(--n700);white-space:pre-wrap}
+.email-sub{font-size:12px;font-weight:700;color:var(--ink);padding:11px 16px 0}
+
+/* SUITABILITY */
+.suit-grid{display:grid;grid-template-columns:340px 1fr;gap:16px}
+@media(max-width:820px){.suit-grid{grid-template-columns:1fr}}
+.suit-form{background:var(--card);border:1px solid var(--n200);border-radius:14px;padding:16px;max-height:76vh;overflow-y:auto}
+.fld{margin-bottom:12px}
+.fld label{display:block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--n500);margin-bottom:5px}
+.fld input,.fld select,.fld textarea{width:100%;padding:8px 10px;border-radius:9px;border:1.5px solid var(--n200);font-family:var(--f);font-size:13px;color:var(--ink);background:var(--paper);outline:none}
+.fld textarea{resize:vertical;min-height:52px}
+.fld input:focus,.fld textarea:focus,.fld select:focus{border-color:var(--blue);background:#fff}
+.frow{display:flex;gap:9px}.frow .fld{flex:1}
+.chkrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chk{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--n700);background:var(--paper);border:1.5px solid var(--n200);padding:7px 10px;border-radius:9px;cursor:pointer}
+.chk input{width:15px;height:15px}
+.suit-out{background:var(--card);border:1px solid var(--n200);border-radius:14px;padding:20px 22px;font-size:13px;line-height:1.65;color:var(--n700);max-height:76vh;overflow-y:auto;white-space:pre-wrap}
+.suit-out h4{font-size:14px;color:var(--ink);margin:16px 0 5px;font-weight:800}
+.suit-out .lh{font-weight:800;color:var(--ink)}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(12,26,58,.55);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:28px 16px;overflow-y:auto}
+.overlay.show{display:flex}
+.modal{background:var(--card);border-radius:20px;width:100%;max-width:480px;overflow:hidden;box-shadow:var(--sh3)}
+.modal-head{background:var(--ink);color:#fff;padding:15px 20px;display:flex;align-items:center}
+.modal-head .mt{font-family:var(--fd);font-size:16.5px;font-weight:700;letter-spacing:-.015em}
+.modal-head .mx{margin-left:auto;cursor:pointer;font-size:20px;color:rgba(255,255,255,.6);background:none;border:none}
+.modal-body{padding:17px 20px}
+.comm-block{background:var(--sunken);border-radius:12px;padding:13px;margin-top:6px;display:none}
+.comm-block.show{display:block}
+.comm-block .ch{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--emerald-h);margin-bottom:9px}
+.modal-foot{padding:13px 20px;border-top:1.5px solid var(--n200);display:flex;gap:9px}.modal-foot .btn{flex:1}
+.btn-del{background:var(--red-t);color:var(--red)}.btn-del:hover{background:#f7ded9}
+.hidden{display:none!important}
+/* ============ SIGN IN ============ */
+body.locked{overflow:hidden}
+.firstrun{max-width:520px;margin:52px auto;background:var(--card);border:1px solid var(--hair);border-radius:20px;padding:40px 38px;text-align:center;box-shadow:var(--sh2)}
+.firstrun h2{font-family:var(--fd);font-size:23px;font-weight:800;letter-spacing:-.025em;margin:18px 0 12px}
+.firstrun p{font-size:13.5px;color:var(--n600);line-height:1.65;margin-bottom:12px}
+.firstrun .fr-warn{font-size:12px;color:#9a6f0f;background:var(--gold-t);border-radius:11px;padding:11px 14px;margin-top:18px;margin-bottom:0}
+.fr-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.signin{position:fixed;inset:0;z-index:300;display:none;background:var(--paper)}
+.signin.show{display:grid;grid-template-columns:1.05fr 1fr}
+.si-panel{background:var(--ink);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:56px 60px;position:relative;overflow:hidden}
+.si-panel:before{content:'';position:absolute;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(0,42,177,.55),transparent 68%);top:-190px;right:-200px}
+.si-panel:after{content:'';position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(33,192,136,.20),transparent 70%);bottom:-160px;left:-130px}
+.si-mark{position:relative;z-index:1;margin-bottom:26px}
+.si-word{position:relative;z-index:1;font-family:var(--fd);font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.si-word span{color:var(--emerald);letter-spacing:.13em;display:block;font-size:26px;margin-top:2px}
+.si-rule{position:relative;z-index:1;width:52px;height:3px;background:var(--gold);border-radius:2px;margin:26px 0 20px}
+.si-strap{position:relative;z-index:1;font-size:15px;font-weight:500;color:rgba(255,255,255,.62);letter-spacing:.01em}
+.si-form{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 32px;overflow-y:auto}
+.si-box{width:100%;max-width:372px}
+.si-eyebrow{font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.si-h{font-family:var(--fd);font-size:33px;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin-bottom:9px}
+.si-sub{font-size:13.5px;color:var(--n500);line-height:1.6;margin-bottom:28px}
+.si-fld{margin-bottom:15px}
+.si-fld label{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.11em;color:var(--n600);margin-bottom:7px}
+.si-fld input{width:100%;padding:14px 15px;border:1px solid var(--n300);border-radius:12px;font-family:var(--f);font-size:15px;font-weight:500;background:var(--card);color:var(--ink);transition:.16s}
+.si-fld input:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,42,177,.11)}
+.si-err{color:var(--red);font-size:12.5px;font-weight:600;min-height:19px;margin-bottom:6px;line-height:1.45}
+.si-btn{width:100%;padding:15px;border:0;border-radius:12px;background:var(--emerald);color:#fff;font-family:var(--f);font-size:14.5px;font-weight:700;cursor:pointer;transition:.16s;box-shadow:var(--sh1)}
+.si-btn:hover{background:var(--emerald-h);box-shadow:var(--sh2)}
+.si-or{display:flex;align-items:center;gap:13px;margin:20px 0 16px;color:var(--n400);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.si-or:before,.si-or:after{content:'';flex:1;height:1px;background:var(--hair)}
+.si-alt{width:100%;padding:13px;border:1px solid var(--n300);border-radius:12px;background:transparent;color:var(--n700);font-family:var(--f);font-size:13.5px;font-weight:600;cursor:pointer;transition:.16s}
+.si-alt:hover{background:var(--card);border-color:var(--n400)}
+.si-note{font-size:11.5px;color:var(--n500);line-height:1.6;margin-top:13px}
+.si-foot{margin-top:34px;font-size:11px;color:var(--n400);font-weight:500;letter-spacing:.02em}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:900px){
+  .signin.show{grid-template-columns:1fr}
+  .si-panel{padding:34px 28px;min-height:auto}
+  .si-panel:before{width:340px;height:340px;top:-130px;right:-120px}
+  .si-panel:after{display:none}
+  .si-mark svg{width:46px;height:46px}
+  .si-mark{margin-bottom:16px}
+  .si-word{font-size:25px}.si-word span{font-size:19px}
+  .si-rule{margin:17px 0 13px}
+  .si-strap{font-size:13px}
+  .si-form{padding:32px 24px 48px}
+}
+/* iPad and touch: bigger targets, roomier type */
+@media(pointer:coarse){
+  .nv{padding:15px 17px;font-size:13.5px}
+  .btn{padding:14px 20px;font-size:14px}
+  .ibtn{padding:11px 14px;font-size:13px}
+  .st{padding:13px 17px!important;font-size:13.5px!important}
+  .gopt{padding:15px 16px;font-size:14px}
+  .cc-mini{padding:11px 13px!important;font-size:12.5px!important}
+  .nmore{padding:8px 0!important;font-size:11.5px}
+  .tbump{padding:6px 12px}
+  .lead-card{padding:14px 15px}
+  .lead-card.compact{padding:14px 15px}
+  input,select,textarea{font-size:16px!important}   /* stops iOS zooming on focus */
+  .wrow{padding:15px 16px}
+  .dcard{padding:17px 19px}
+}
+/* Tablet */
+@media(max-width:1024px){
+  .wrap{padding:24px 20px 90px}
+  .board{overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+/* Phone */
+@media(max-width:640px){
+  .wrap{padding:20px 15px 96px}
+  .greet .g1{font-size:24px}
+  .stats{grid-template-columns:repeat(2,1fr);gap:9px}
+  .stat{padding:14px 15px}
+  .stat .v{font-size:21px}
+  .quick{grid-template-columns:repeat(2,1fr)}
+  .call-grid,.diary{grid-template-columns:1fr}
+  .hd{padding:11px 15px}
+  .hd-inner{gap:10px}
+  .client-sel{order:3;margin-left:0;width:100%}
+  .client-sel select{max-width:none;flex:1}
+  .hd-btns{margin-left:auto}
+  .saved-tag{font-size:9.5px}
+  .wrow{grid-template-columns:1fr}
+  .wrow .wd{grid-row:auto;text-align:left}
+  .suit-grid{grid-template-columns:1fr!important}
+  .tbl{font-size:12px}
+  .modal{border-radius:18px}
+}
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(60px);z-index:200;background:var(--ink);color:#fff;padding:11px 22px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;transition:.3s;box-shadow:0 6px 24px rgba(12,26,58,.4)}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media(max-width:640px){.nav{top:52px}.brand .t{font-size:16px}}
+</style>
+</head>
+<body>
+
+<div class="hd"><div class="hd-inner">
+  <div class="brand">
+    <span class="logo"><svg viewBox="0 0 470 128" style="height:26px;width:auto;display:block" xmlns="http://www.w3.org/2000/svg" fill="none"><svg x="22" y="24" width="80" height="80" viewBox="0 0 100 100"><rect x="62" y="29" width="7.5" height="22" rx="1.2" fill="#FFFFFF"></rect><path d="M18 70 L50 26" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round"></path><path d="M50 26 L82 70" stroke="#21C088" stroke-width="13" stroke-linecap="round"></path><rect x="45.5" y="60" width="9" height="22" fill="#FFFFFF"></rect><rect x="38" y="67" width="24" height="9" fill="#FFFFFF"></rect></svg><text x="124" y="62" font-family="Archivo, sans-serif" font-size="27" font-weight="800" letter-spacing="0.3" fill="#FFFFFF">PROPERTY CLINIC</text><text x="124" y="92" font-family="Archivo, sans-serif" font-size="27" font-weight="800" letter-spacing="4.4" fill="#21C088">SOLUTIONS</text></svg></span>
+    <span class="tag">Protection Desk</span>
+  </div>
+  <div class="client-sel">
+    <label>Client</label>
+    <select id="clientSel" onchange="setClient(this.value)"></select>
+  </div>
+  <div class="hd-btns">
+    <span class="saved-tag" id="savedTag"></span>
+    <button class="ibtn" onclick="openLead(null)">+ Lead</button>
+    <button class="ibtn" onclick="exportData()">Export</button>
+    <button class="ibtn" onclick="document.getElementById('importFile').click()">Import</button>
+    <input type="file" id="importFile" accept="application/json" class="hidden" onchange="importData(event)">
+    <button class="ibtn" id="logoutBtn" onclick="doLogout()" style="display:none">Sign out</button>
+  </div>
+</div></div>
+
+<div class="nav"><div class="nav-inner" id="navInner"></div></div>
+<div class="wrap" id="wrap"></div>
+<div id="toast"></div>
+
+<div class="signin" id="loginOverlay">
+  <div class="si-panel">
+    <div class="si-mark">
+      <svg viewBox="0 0 100 100" width="62" height="62" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <rect x="62" y="29" width="7.5" height="22" rx="1.2" fill="#FFFFFF"></rect>
+        <path d="M18 70 L50 26" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round"></path>
+        <path d="M50 26 L82 70" stroke="#21C088" stroke-width="13" stroke-linecap="round"></path>
+        <rect x="45.5" y="60" width="9" height="22" fill="#FFFFFF"></rect>
+        <rect x="38" y="67" width="24" height="9" fill="#FFFFFF"></rect>
+      </svg>
+    </div>
+    <div class="si-word">Property Clinic <span>Solutions</span></div>
+    <div class="si-rule"></div>
+    <div class="si-strap">Advise. Protect. Teach. For life.</div>
+  </div>
+  <div class="si-form">
+    <div class="si-box">
+      <div class="si-eyebrow">Protection Desk</div>
+      <h1 class="si-h">Sign in</h1>
+      <p class="si-sub">Client records are held securely. This desk is for the adviser named on the account only.</p>
+      <div class="si-fld"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false"></div>
+      <div class="si-fld"><label for="li-pw">Password</label><input id="li-pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div id="li-err" class="si-err"></div>
+      <button class="si-btn" onclick="doLogin()">Sign in</button>
+      <div class="si-or"><span>or</span></div>
+      <button class="si-alt" onclick="workOffline()">Work offline on this device</button>
+      <p class="si-note">Offline uses the copy saved in this browser. Everything keeps working, it just will not sync to your other devices until you sign in.</p>
+    </div>
+    <div class="si-foot">Property Clinic Solutions Ltd &middot; FRN 816566</div>
+  </div>
+</div>
+
+<!-- LEAD MODAL -->
+<div class="overlay" id="overlay"><div class="modal">
+  <div class="modal-head"><span class="mt" id="modalTitle">Lead</span><button class="mx" onclick="closeLead()">&times;</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="f-id">
+    <div class="frow"><div class="fld" style="flex:2"><label>Name</label><input id="f-name"></div><div class="fld"><label>Age</label><input id="f-age"></div></div>
+    <div class="frow"><div class="fld"><label>Phone</label><input id="f-phone"></div><div class="fld"><label>Source</label><select id="f-source"></select></div></div>
+    <div class="frow"><div class="fld"><label>Stage</label><select id="f-stage" onchange="onStageChange()"></select></div><div class="fld"><label>Next check</label><input type="date" id="f-next"></div></div>
+    <div class="comm-block show" style="background:var(--emerald-t)"><div class="ch">Booked meeting</div>
+      <div class="fld"><label>Contact attempts (max 3, then reassess)</label><input type="number" id="f-tries" min="0" max="9"></div>
+      <div class="frow"><div class="fld"><label>Meeting date</label><input type="date" id="f-appt"></div><div class="fld"><label>Time</label><input type="time" id="f-apptT"><div style="font-size:10.5px;font-weight:600;color:var(--n500);margin-top:4px">Shows as 12h everywhere else</div></div></div>
+      <div class="fld"><label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:13px"><input type="checkbox" id="f-apptOK" style="width:auto;margin:0"> Confirmed with the client</label></div>
+    </div>
+    <div class="fld" id="waitFld" style="display:none"><label>Waiting on (what has to happen first)</label><input id="f-wait" placeholder="e.g. Mortgage completion. Emmanuel to give the go-ahead."></div>
+    <div class="fld"><label>Notes</label><textarea id="f-notes" style="min-height:200px"></textarea>
+      <div style="font-size:10.5px;font-weight:600;color:var(--n500);margin-top:5px;line-height:1.5">First line is the headline. Start a block with <b>## Case</b>, <b>## Priority</b>, <b>## Do next</b>, <b>## Confirm at M1</b>, <b>## Log</b>, <b>## Files</b>. Use <b>- </b> for bullets. In Log, write <b>24/07/2026: what happened</b>.</div>
+    </div>
+    <div class="comm-block" id="commBlock"><div class="ch"> Placed policy</div>
+      <div class="frow"><div class="fld"><label>Premium /mo (£)</label><input id="f-premium"></div><div class="fld"><label>Commission (£)</label><input id="f-comm"></div></div>
+      <div class="frow"><div class="fld"><label>Your share (auto, 32.5%)</label><input id="f-share" disabled style="background:var(--sunken);color:var(--n600)"></div><div class="fld"><label>Basis</label><select id="f-basis"><option>Indemnity</option><option>Non-indemnity</option></select></div></div>
+      <div class="fld"><label>Clawback ends</label><input type="date" id="f-clawback"></div>
+    </div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-del" id="delBtn" onclick="deleteLead()">Delete</button><button class="btn btn-blue" onclick="saveLead()">Save</button></div>
+</div></div>
+
+<script>
+/* ============ DATA ============ */
+const STAGES=[
+  {key:'new',label:'Referral in',dot:'#7E8699'},{key:'qualify',label:'Qualify',dot:'#DB9F1F'},
+  {key:'m1',label:'Meeting 1',dot:'#002AB1'},{key:'research',label:'Research',dot:'#002AB1'},
+  {key:'m2',label:'Meeting 2',dot:'#002AB1'},{key:'application',label:'Application',dot:'#109E6C'},
+  {key:'placed',label:'Placed',dot:'#109E6C'},{key:'postsale',label:'Post-sale',dot:'#109E6C'},
+  {key:'review',label:'Review',dot:'#109E6C'},
+];
+const PARKED=[{key:'hold',label:'Hold'},{key:'cold',label:'Cold'},{key:'skip',label:'Skip'},{key:'lost',label:'Lost'}];
+const ALLSTAGES=[...STAGES,...PARKED];
+const SOURCES=['Client referral','Colleague / mortgage','Introducer','Social media','Event'];
+const SRCCLASS={'Client referral':'src-client','Colleague / mortgage':'src-colleague','Introducer':'src-introducer','Social media':'src-social','Event':'src-event'};
+const ACTIVE=['new','qualify','m1','research','m2','application','postsale','review'];
+
+/* ---- COMMISSION SPLIT (confirmed 24/07/2026) ----
+   Insurer pays gross -> BSL passes 75% to PCS -> PCS retains 10 points of gross
+   as a clawback reserve -> the remaining 65% is split 50/50 between PCS and Ginger.
+   Ginger's share = 32.5% of gross.
+   OPEN: is the 10% reserve released to the split once clawback expires? */
+const SPLIT={bsl:0.75,reserve:0.10,adviserOfNet:0.50};
+SPLIT.net=SPLIT.bsl-SPLIT.reserve;                 /* 0.65 */
+SPLIT.adviser=SPLIT.net*SPLIT.adviserOfNet;        /* 0.325 */
+SPLIT.pcs=SPLIT.net-SPLIT.adviser;                 /* 0.325 */
+function myShare(gross){const g=parseFloat(gross)||0;return g*SPLIT.adviser;}
+function pct(x){return (Math.round(x*10000)/100)+'%';}
+
+/* No client data lives in this file. Everything is loaded from your account.
+   To put data in for the first time, sign in and use Import. */
+const SEED=[];
+
+
+/* ---- QUALIFY (Stage 2 gate) ---- */
+const QUALIFY=[
+  {id:'q-open',title:'Open',icon:'',
+   note:'A 10-minute call before you commit an hour to a fact-find. Goal: confirm there is a real need, this is the decision-maker, and there is intent. Warm, quick, no pitch.',
+   scripts:[
+     {label:'Opener',text:'"Hi [Name], it’s Ginger from Property Clinic Solutions. Emmanuel Olukotun mentioned you’ve just [bought / remortgaged] - congratulations. Have you got two minutes? I just want to make sure it’s worth booking you a proper appointment rather than waste your time."'},
+   ],
+   items:[{id:'q0',text:'Reached the client, got two minutes'}]},
+  {id:'q-decision',title:'Decision-maker',icon:'',compliance:false,
+   note:'The decision-maker gate. If they are not the one who decides, you are advising the wrong person.',
+   scripts:[
+     {label:'Ask',text:'"Is the mortgage in your name, and are you one of the people whose income actually pays it each month?"'},
+     {label:'Then',text:'"Is there anyone else who’d need to be part of a decision about protecting the mortgage or your income?"'},
+   ],
+   items:[{id:'q1',text:'Client is a decision-maker on the cover',bold:true},{id:'q2',text:'No blocking third party (or they can be included)'}]},
+  {id:'q-need',title:'The need',icon:'',
+   scripts:[
+     {label:'Surface the gap',text:'"If you were off work sick for a few months, what would you fall back on - does your employer pay you, and for how long? What happens after that?"'},
+     {label:'Existing cover',text:'"Have you got any protection already, through work or personally?"'},
+   ],
+   items:[{id:'q3',text:'A real income / mortgage to protect exists',bold:true},{id:'q4',text:'Sick-pay / savings gap identified'}]},
+  {id:'q-intent',title:'Intent & budget',icon:'',
+   scripts:[
+     {label:'Test intent',text:'"Putting the right cover in place is usually less than people expect. If we found something that protected your income and your home for a figure you were comfortable with, is that something you’d want to sort now - or are you just curious at this stage?"'},
+   ],
+   items:[{id:'q5',text:'Genuine intent to act, not just curious',bold:true}]},
+  {id:'q-close',title:'Outcome',icon:'',
+   note:'Green = all three gates passed, book M1 now. Amber = need but timing or decision-maker off, set a follow-up date, do not book. Red = no decision-maker / no need / no intent, mark Skip with the reason.',
+   scripts:[
+     {label:'Green - book it',text:'"Great, let’s get you booked. I’ll send a calendar invite and a short document explaining who we are and how we’re paid. Nothing to prepare - it’s just a conversation."'},
+     {label:'Amber - hold',text:'"Sounds like the right time isn’t quite now. I’ll make a note and check back in [timeframe] - does that work?"'},
+     {label:'Red - close politely',text:'"That’s completely fine. If anything changes down the line, you’ve got my number. Take care."'},
+   ],
+   items:[{id:'q6',text:'Outcome set: booked M1 / hold / skip',bold:true},{id:'q7',text:'Stage updated on the pipeline'}]},
+];
+
+/* ---- QUALIFY GATES (interactive branching) ---- */
+const QUAL_GATES=[
+  {id:'g_reach',q:'Did you reach them and get a couple of minutes?',opts:[
+    {k:'yes',label:'Yes, talking now',v:'go'},
+    {k:'no',label:'No answer / not a good time',v:'stop',note:'Do not push. Leave it, log as left message, set a follow-up date.'},
+  ]},
+  {id:'g_decision',q:'Are they a decision-maker on the cover (their income, their name on the mortgage)?',opts:[
+    {k:'yes',label:'Yes, it is their call',v:'go'},
+    {k:'third',label:'No, but the real decision-maker can join',v:'amber',note:'Rebook with the decision-maker present. Never run Meeting 1 with the wrong person.'},
+    {k:'no',label:'No, and they cannot influence it',v:'red',note:'Do not book. The decision was never theirs to make.'},
+  ]},
+  {id:'g_third',q:'Is there a third party whose agreement is needed (parent, partner, business)?',opts:[
+    {k:'none',label:'No third party',v:'go'},
+    {k:'inc',label:'Yes, but they can be brought in',v:'amber',note:'Get them on the call or into the decision. Note who they are and their likely concern.'},
+    {k:'block',label:'Yes, and they are blocking it',v:'hold',note:'Hold. Nothing to advise until the blocker is resolved. Set a follow-up.'},
+  ]},
+  {id:'g_need',q:'Is there a real income or mortgage to protect?',opts:[
+    {k:'yes',label:'Yes, clear need',v:'go'},
+    {k:'unfelt',label:'There is, but they do not feel it yet',v:'amber',note:'A real need they are not feeling. Bookable if willing, but lead hard on the sick-pay gap in Meeting 1.'},
+    {k:'none',label:'Genuinely nothing to protect',v:'red',note:'No need to advise on. Mark Skip with the reason.'},
+  ]},
+  {id:'g_intent',q:'Do they actually want to act on this?',opts:[
+    {k:'yes',label:'Yes, they want it sorted',v:'go'},
+    {k:'curious',label:'No, just curious / not now',v:'hold',note:'Not ready. No booking. Set a follow-up date and move on.'},
+  ]},
+];
+
+/* ---- MEETING 1 / 2 / POST (from the Meeting Guide) ---- */
+const M1=[
+  {id:"pre",title:"Before",icon:"",items:[{id:"pre1",text:"Appointment booked - IDD emailed at same time"},{id:"pre2",text:"Meeting time and Google Meet link confirmed"}]},
+  {id:"transcript",title:"Transcript",icon:"",compliance:true,complianceNote:"Record verbal consent in file before proceeding.",
+   scripts:[{label:"Say this",text:'"Before we get into anything - I am going to turn on the meeting transcript now. It means I can focus on you properly rather than taking notes. Are you happy with that?"'}],
+   items:[{id:"tr1",text:"Transcript on"},{id:"tr2",text:"Consent noted in file"}]},
+  {id:"welcome",title:"Welcome",icon:"",note:"A comfortable client is an honest client.",
+   scripts:[{label:"Openers",text:'"How are you doing? How has the week been?"\n"How long have you been in the house now?"\n"How is the family?"'},{label:"Accessibility check",text:'"Is there anything I need to consider in how the meeting runs today?"'}],
+   items:[{id:"w1",text:"Accessibility check done"}]},
+  {id:"idd",title:"IDD Check",icon:"",compliance:true,complianceNote:"IDD confirmed read or fully covered. Record in file.",
+   scripts:[{label:"Opening",text:'"Did you get a chance to read the Initial Disclosure Document I sent?"'},{label:"If YES",text:'"Great. Any questions - or happy with everything?"'},{label:"If NO - cover these three",text:'"Your data - only goes to the insurer at point of application.\n\nFees - no charge to you. We are paid commission by the insurer.\n\nProvider - independent, whole of market, not tied to any single insurer."'}],
+   items:[{id:"idd1",text:"IDD read or covered in full"},{id:"idd2",text:"Client confirmed happy to proceed"}]},
+  {id:"agenda",title:"Agenda",icon:"",
+   scripts:[{label:"Script",text:'"Here is how today runs. Questions first, then we work out your actual needs. I go away, do my research, come back with a recommendation. You decide then. No recommendation today, nothing to sign. Around 30 to 60 minutes. Does that work?"'},{label:"Referral plant",text:'"At the end, if today goes well, I would love to ask you for five people you know who might benefit from the same conversation. I am sure you know at least five who do."'}],
+   items:[{id:"ag1",text:"No recommendation today, nothing to sign - said clearly"}]},
+  {id:"factfind",title:"Fact Find",icon:"",compliance:true,complianceNote:"Read duty of care disclosure verbatim before any questions.",
+   scripts:[{label:"Duty of care - read verbatim",text:'"You are under a duty to take reasonable care not to make any misrepresentation of the facts; failure to take reasonable care may affect any future claims."'},{label:"Sick pay - the critical question",text:'"If you were off sick tomorrow, what would your employer actually pay you, and how long for? What happens after that?"'},{label:"Existing cover",text:'"Do you have any life insurance, critical illness, or income protection anywhere - through work or personally?"'},{label:"Medical history",text:'"Any significant medical history? Anything diagnosed, treated, or currently on medication for?"'},{label:"Mental health - ask directly",text:'"And mental health - any history of anxiety, depression, stress-related conditions? I need to ask because it comes up in the application."'}],
+   items:[{id:"ff0",text:"Duty of care read verbatim",bold:true},{id:"ff1",text:"Dependants - who, ages"},{id:"ff2",text:"Employment type - PAYE / self-employed / director"},{id:"ff3",text:"Work benefits - death in service, PHI"},{id:"ff4",text:"Sick pay - full / half / SSP / nothing",bold:true},{id:"ff5",text:"Mortgage outstanding + remaining term"},{id:"ff6",text:"Total essential monthly outgoings"},{id:"ff7",text:"Savings - amount and accessibility"},{id:"ff8",text:"Existing cover anywhere"},{id:"ff9",text:"Smoker in last 12 months"},{id:"ff10",text:"Medical history covered"},{id:"ff11",text:"Mental health - asked directly",bold:true},{id:"ff12",text:"Height and weight"}]},
+  {id:"abcdef",title:"ABCDEF",icon:"",note:"Lead with consequences, never products. Use their numbers. Let the client do the maths out loud.",
+   scripts:[{label:"A - Anchor income",text:'"When you applied for your mortgage, what was the one thing the lender cared most about? Your income is the engine - the [£X] you bring home is what pays the mortgage, covers the kids, runs the car. Everything comes down to one question: what happens if the engine stops?"'},{label:"B - Ordinary illness",text:'"Say you wake up tomorrow and your back has gone. Doctor signs you off for three months. Full sick pay runs for [X weeks]. After that - Statutory Sick Pay, around £118 a week. Outgoings are still [£X] every month. How long do savings cover that gap?"'},{label:"C - Serious diagnosis",text:'"Same person, off work - but this time a diagnosis. Months, not weeks. The income gap runs far longer. Plus costs nobody plans for: appointments, a partner cutting hours. Not replacing your wage month by month - a single sum that takes the financial worry off the table."'},{label:"D - Death",text:'"If something happened to you tomorrow, that [£X] mortgage does not go anywhere. [Partner] is left on [£X] with [dependants]. Right now - is there enough to clear the house and give them room to breathe?"'},{label:"D - No dependants",text:'"You do not have dependants relying on your income, so this is less urgent. Being honest about that - it changes the priority order."'},{label:"F - Summary and priority question",text:'"[Summarise all three risks on their actual numbers.]\n\nPut those three risks in order. Income risk, serious illness, death. Most important to least - and tell me why."'},{label:"F - If death first, push back",text:'"The instinct to protect the family is right - but your sick pay runs out in [X weeks] and savings last [X months]. Off for 6 months? Your family is in the same position as if you died - mortgage does not get paid either way. Same outcome, far more probable route. Does that change the order?"'}],
+   items:[{id:"a1",text:"A - Income anchored using the mortgage",bold:true},{id:"b1",text:"B - Client did the maths out loud on the gap"},{id:"c1",text:"C - Framed as lump sum, not income replacement"},{id:"d1",text:"D - No dependants? Honest about lower priority"},{id:"f1",text:"Priority order agreed and recorded",bold:true}]},
+  {id:"budget",title:"Budget",icon:"",compliance:true,complianceNote:"Confirmed budget must be recorded in file.",note:"Work from household disposable income. Never suggest a number - let them name it.",
+   scripts:[{label:"The rule",text:"Never say a number first. Use comfortable, not budget - budget signals a cap, comfortable signals a decision. Ask, then stop talking. The first person to speak loses."},{label:"The question",text:'"Based on everything you have told me - if we put something in place that covers your most important risk properly - what monthly figure would feel comfortable?"\n\n[Ask. Then stop. Say nothing.]'},{label:"If they say I don’t know",text:'"That is fine. If cost were no factor - what would ideal protection look like? [Let them describe it.] Right - you have around [£X] disposable a month. Covering that properly typically sits in the [£A-£B] range on a household like yours. Where inside that feels workable?"'},{label:"If the number is low - the ladder",text:'"Before you land on that - the difference between [£X] and [£Y] a month is [describe the cover gap]. For that extra [amount] we go from partially covered to properly covered. Worth knowing before you decide."'}],
+   items:[{id:"bu1",text:"Household disposable calculated - includes partner income"},{id:"bu2",text:"Question asked - then stayed silent",bold:true},{id:"bu3",text:"Budget confirmed and recorded"}]},
+  {id:"close1",title:"Close M1",icon:"",
+   scripts:[{label:"Close",text:'"I am going to take everything you have told me, do my research, and come back with options built around your priorities and the budget we agreed. Two options - you see what you get at different levels. Nothing to sign. Can we get a follow-up booked now?"'},{label:"If they say they will call",text:'"I would rather lock something in now while we are both here. What does next week look like?"'}],
+   items:[{id:"cl1",text:"Follow-up booked before ending the call",bold:true},{id:"cl2",text:"Smartr365 fact-find updated within 24 hours"}]},
+];
+const M2=[
+  {id:"open2",title:"Recap",icon:"",scripts:[{label:"Recap",text:'"Just to recap. The risk that concerned you most was [their answer]. Priority order: [1, 2, 3]. Budget: [£X] a month. Everything I have built is around that. Does that still make sense?"'}],items:[{id:"o1",text:"Priority order confirmed"},{id:"o2",text:"Client has illustration open"}]},
+  {id:"illustrations",title:"Illustrations",icon:"",note:"Always two options. Client chooses with full information.",scripts:[{label:"Option A",text:'"Option A fits within [£X] a month. Covers [priority 1] and [priority 2] properly. [Priority 3] is noted - we come back to it. This is the sensible starting point."'},{label:"Option B",text:'"Option B shows full coverage - all three risks. [£X] a month. Sometimes the gap between A and B is smaller than people expect."'}],items:[{id:"il1",text:"Option A presented - within budget"},{id:"il2",text:"Option B presented - full stack"},{id:"il3",text:"Choice recorded in file"}]},
+  {id:"rec",title:"Recommendation",icon:"",compliance:true,complianceNote:"All three needs documented. Deferred needs recorded as outstanding in suitability letter.",scripts:[{label:"Link back to the scenario",text:'"Do you remember the [bad back / diagnosis / death] scenario we walked through last week? This is the policy that closes that gap."'},{label:"Explaining IP",text:'"Income protection pays a monthly income if you cannot work - not just named conditions, anything that stops you working. Deferred period is [X weeks] - lines up exactly with when your sick pay stops."'},{label:"Level vs decreasing life",text:'"I am recommending level term. Decreasing tracks the mortgage down and is cheaper - level keeps the sum fixed. With [dependants], the surplus above the mortgage matters."'},{label:"Explaining CI",text:'"Critical illness pays a lump sum if diagnosed with a listed condition at a specific severity. I will send the Key Facts document."'}],items:[{id:"r1",text:"Each policy linked to its scenario from M1",bold:true},{id:"r2",text:"Cost per policy and combined total shown"},{id:"r3",text:"Deferred need noted in suitability letter"}]},
+  {id:"objections",title:"Objections",icon:"",note:"Every objection is a question in disguise. Probe first - never argue.",scripts:[{label:'"I need to think about it"',text:'"Absolutely - I want you to be sure. Can I ask, what is it specifically that you are not sure about? Is it the cost, the type of cover, or just whether now is the right time? [Address that specific thing.]"'},{label:'"It’s too expensive"',text:'"I hear you. Too expensive compared to what? When we worked through the numbers, your sick pay runs out in [X weeks] and there is a [£X] gap every month after. The cover is [£X] a month. At what point does the gap become more expensive than the cover? [Stop.]"'},{label:'"Speak to my partner first"',text:'"That makes sense - this affects both of you. Is there any reason [partner] could not join us for 20 minutes? I would rather explain it to both of you than have questions I am not there to answer."'},{label:'"I have cover through work"',text:'"Do you know exactly what you have? Death in service is typically 3-4x salary, not linked to your mortgage, no CI or income cover, and it disappears the day you leave. It is a benefit, you do not own it."'}],items:[{id:"obj1",text:"Objection identified and addressed specifically"},{id:"obj2",text:"Client confirmed to proceed"}]},
+  {id:"cooling",title:"Cooling Off",icon:"",compliance:true,complianceNote:"Must be explained before application.",scripts:[{label:"Script",text:'"You have a 14-day cooling off period - full refund if you change your mind. But only go ahead if you genuinely plan to keep this long term. Cancelling early can affect your ability to get cover again."'}],items:[{id:"co1",text:"14-day cooling off explained"},{id:"co2",text:"Client intends to keep long term - confirmed"}]},
+  {id:"close2",title:"Close",icon:"",compliance:true,complianceNote:"Client email confirmation required before starting application. Save to Smartr365.",scripts:[{label:"Close question",text:'"Are you happy for me to go ahead and apply?"'},{label:"Email confirmation",text:'"I am emailing the illustration now. Can you reply to that email while we are on the call to confirm you are happy to proceed?"'},{label:"Income proof",text:'"I will need proof of income. Employed - a recent payslip. Self-employed - last tax return or SA302. Can you send that across now?"'}],items:[{id:"cl1m2",text:"Illustration emailed - reply received"},{id:"cl2m2",text:"Email reply saved to Smartr365",bold:true},{id:"cl3m2",text:"IP or over £150/month - income proof requested",bold:true}]},
+  {id:"outcomes",title:"Outcomes",icon:"",compliance:true,complianceNote:"All five outcomes explained before application.",scripts:[{label:"The five outcomes",text:'"Before we start - five things can come back. One: accepted on standard terms. Two: loaded - higher premium. Three: exclusions. Four: postponed - review in 6-12 months. Five: declined. Whatever comes back, I contact you first. Nothing gets agreed without your sign-off."'}],items:[{id:"out1",text:"All five outcomes explained"},{id:"out2",text:"Likely outcome flagged based on disclosures"}]},
+  {id:"application",title:"Application",icon:"",compliance:true,complianceNote:"Read each question EXACTLY as written. Never paraphrase.",scripts:[{label:"Set the tone",text:'"I am going to read each question exactly as written. If you are not sure, we include it - better to add too much than leave something out."'},{label:"Underwriting caveat",text:'"I cannot guarantee the outcome - the insurer decides. If anything comes back other than standard terms, I contact you before anything is agreed."'}],items:[{id:"ap1",text:"Each question read verbatim",bold:true},{id:"ap2",text:"Mental health - asked directly, disclosed fully",bold:true},{id:"ap3",text:"Underwriting outcome cannot be guaranteed - stated"}]},
+  {id:"payment",title:"Payment",icon:"",compliance:true,complianceNote:"Direct debit mandate confirmed verbally in the application.",scripts:[{label:"Script",text:'"The total premium of [£X] a month will be collected by direct debit. Which account? And you are authorising a monthly direct debit of [£X] from that account for these policies?"'}],items:[{id:"pay1",text:"Total premium confirmed"},{id:"pay2",text:"Sort code and account number collected"},{id:"pay3",text:"Direct debit authorisation confirmed verbally"}]},
+  {id:"trusts",title:"Trusts",icon:"",compliance:true,complianceNote:"Cannot advise on tax. Direct to accountant. Record in file.",scripts:[{label:"Without a trust",text:'"On death, money goes into the estate - probate, delays, potentially inheritance tax."'},{label:"With a trust",text:'"Write it in trust and it bypasses all of that. Money goes directly to [the person you name] - usually within days. Costs nothing to set up."'}],items:[{id:"t1",text:"Trust recommended - or reason noted"},{id:"t2",text:"Cannot advise on tax - accountant directed"},{id:"t3",text:"Trust discussion recorded in file"}]},
+  {id:"referrals",title:"Referrals",icon:"",note:"Plant it in M1, close it strong here. You have just done a professional job - that is your leverage.",scripts:[{label:"The ask",text:'"Because we offer a professional service and we do not charge a fee, the one thing I ask at the end, if you are happy with my advice and feel I have been professional, is that you refer me to five friends or family. That way you win by getting the best service, they win by getting the same advice, and we grow the business through word of mouth. Would that be okay?"'},{label:"Make it concrete",text:'"Could you look through your phone now and give me five names and numbers of people who have children, are self-employed, or have a mortgage. This genuinely helps me and the business. Would that be okay?" [Then stay quiet and let them look.]'}],items:[{id:"ref1",text:"Referral ask made",bold:true},{id:"ref2",text:"Names and numbers noted (with consent to contact)"}]},
+  {id:"close3",title:"Close M2",icon:"",scripts:[{label:"Close",text:'"That is everything. Well done for getting this sorted - a lot of people put it off for years. As of today, [income / family / home] is protected."'},{label:"Deferred cover",text:'"In [X months] I want to come back and close the [CI / IP / life] gap. Diarising that now."'}],items:[{id:"fin1",text:"Deferred needs confirmed in suitability letter"},{id:"fin2",text:"Follow-up diarised for deferred cover"}]},
+];
+const POST=[
+  {id:"p1",text:"Protection Submission Form - within 24h of decision",compliance:true},
+  {id:"p2",text:"Smartr365 updated - within 5 days (not working days)",compliance:true},
+  {id:"p3",text:"Income proof uploaded - IP or any policy over £150/month",compliance:true},
+  {id:"p4",text:"Suitability letter issued and proof of sending saved",compliance:true},
+  {id:"p5",text:"Medical Disclaimer saved (not required for MetLife)",compliance:true},
+  {id:"p6",text:"Priority question recorded - initial and revised answers",compliance:true},
+  {id:"p7",text:"Budget confirmed and recorded"},
+  {id:"p8",text:"Case check: 5 days after submission - Pass or Pending With Adviser"},
+];
+
+/* ---- EMAILS ---- */
+const EMAILS=[
+  {id:'e1',label:'1 · Meeting confirmation + IDD',when:'After the booking call',subject:'Your appointment with Property Clinic Solutions - [Date] at [Time]',
+   body:`Hi [Name],
+
+Thanks for taking my call and confirming your appointment. Looking forward to it.
+
+Here are the details:
+- Date: [Date]
+- Time: [Time]
+- Where: Google Meet
+- Join link: [Meet link]
+
+I have attached our Initial Disclosure Document. It explains who we are, confirms that we research the whole of the market, and sets out how we are paid. Please have a quick read before we meet.
+
+There is nothing for you to prepare. This first meeting is simply a conversation so I can understand your situation and what matters most to you.
+
+Speak soon,
+Ginger
+Property Clinic Solutions`},
+  {id:'e2',label:'2 · After Meeting 1 - recap',when:'Same day as Meeting 1',subject:'Summary of our conversation and next steps',
+   body:`Hi [Name],
+
+Thank you for your time today. It was good to understand more about your situation.
+
+To confirm what we discussed:
+- Your situation: [e.g. homeowner, two children, sole earner]
+- What you want to protect: [e.g. the mortgage, family income]
+- The priorities we agreed: [list]
+- The budget you are comfortable with: [£X per month]
+
+My next step is to research the whole of the market and find the most suitable option for those needs. I will bring a clear illustration to our next meeting and talk you through my recommendation.
+
+Our next meeting is booked for:
+- Date: [Date]
+- Time: [Time]
+- A Google Meet invite will follow.
+
+In the meantime, could you confirm [outstanding item, e.g. any existing cover details] so my research is accurate.
+
+Speak soon,
+Ginger
+Property Clinic Solutions`},
+  {id:'e3',label:'3 · Meeting 2 invite',when:'When research is ready',subject:'Your recommendation meeting - [Date] at [Time]',
+   body:`Hi [Name],
+
+Looking forward to speaking with you again. I have completed my research across the market and have a recommendation ready to walk you through.
+
+Here are the details:
+- Date: [Date]
+- Time: [Time]
+- Where: Google Meet
+- Join link: [Meet link]
+
+In this meeting I will show you the illustration, explain why it fits the priorities we agreed, and answer any questions. If you are happy to proceed, we can start the application in the same session.
+
+[For IP cases or premiums over £150/month:] It would help to have a recent payslip to hand so we can complete everything in one go if you decide to go ahead.
+
+Speak soon,
+Ginger
+Property Clinic Solutions`},
+  {id:'e4',label:'4 · After Meeting 2 - application submitted',when:'After submitting the application',subject:'Your application has been submitted',
+   body:`Hi [Name],
+
+Thank you for your time today and for deciding to put this cover in place. I am pleased to confirm your application has been submitted to [Insurer].
+
+What happens next:
+- Underwriting: the insurer reviews your application. They may request medical information such as a GP report. I will guide you through anything they need.
+- Timescales: straightforward cases are often accepted within a few working days, though this can take longer where medical evidence is required.
+- Updates: I will keep you informed at each stage and let you know as soon as your cover is accepted and live.
+
+I will also send your suitability letter separately. This sets out my recommendation and the reasons it meets your needs. Please keep it for your records.
+
+If you have any questions in the meantime, just reply or call me on [Phone].
+
+Speak soon,
+Ginger
+Property Clinic Solutions`},
+  {id:'e5',label:'5 · Policy on risk - cover live',when:'When the insurer accepts',subject:'Good news - your cover is now in place',
+   body:`Hi [Name],
+
+I am pleased to let you know your application has been accepted and your cover is now live.
+
+For your records:
+- Policy: [Product and Insurer]
+- Monthly premium: [£X]
+- Start date: [Date]
+- Policy number: [Number]
+
+[Where trust applies:] As discussed, I will arrange for the policy to be written in trust so the benefit reaches the right people without delay. I will send the paperwork separately.
+
+Your insurer will send your full policy documents directly. I would recommend storing them somewhere safe alongside the suitability letter.
+
+I will be in touch to review your cover at our agreed point to make sure it still fits your circumstances. If anything changes before then, please let me know.
+
+Thank you for trusting me with this.
+
+Ginger
+Property Clinic Solutions`},
+  {id:'e6',label:'6 · Review / follow-up',when:'At the diarised review point',subject:'Time for a quick review of your cover',
+   body:`Hi [Name],
+
+It has been a little while since we put your protection in place, and I wanted to check in as promised.
+
+A quick review makes sure your cover still fits your circumstances. It is worth a look if any of the following have changed:
+- Your income, job, or hours
+- Your mortgage or living costs
+- Your family - a new child or dependant
+- Any cover you previously said you would revisit [e.g. income protection]
+
+If you have 15 minutes on Google Meet, I will run through it with you and flag anything worth adjusting. When suits you over the next couple of weeks?
+
+Speak soon,
+Ginger
+Property Clinic Solutions`},
+  {id:'u1',label:'Chaser · No response',when:'Reply inside the original thread, do not start a new email',subject:'Re: (your existing thread with them)',
+   body:`Hi [Name],
+
+Just following up on my note from last week. I know things get busy, so no pressure at all.
+
+Whenever you have a moment, could you send over [the documents / a time that works] and I will take it from there.
+
+If now is not the right time, just say the word and I will check back in when it suits you better.
+
+Speak soon,
+Ginger
+Property Clinic Solutions`},
+  {id:'u2',label:'Chaser · No-show',when:'After a missed appointment',subject:'Sorry we missed each other today',
+   body:`Good afternoon [Name],
+
+We had a call booked for [Time] today but it looks like we missed each other. No problem at all, these things happen.
+
+Whenever it suits you, just let me know a better time and I will get it rebooked. Happy to work around your schedule.
+
+Speak soon,
+Ginger
+Property Clinic Solutions`},
+  {id:'cal',label:'Calendar invite text - M1 & M2',when:'Paste into the Google Meet calendar invite',subject:'Calendar invite descriptions',
+   body:`MEETING 1
+Title: Property Clinic Solutions - Initial Insurance Review
+Description: Hi [Name], looking forward to speaking with you. This first meeting is simply a conversation so I can understand your situation, what matters most to you, and what you would want to protect. There is nothing for you to prepare. We will join on Google Meet using the link below. If you need to rearrange, just let me know.
+
+MEETING 2
+Title: Property Clinic Solutions - Your Recommendation
+Description: Hi [Name], thank you again for your time. In this meeting I will walk you through the research I have completed across the market, show you a clear illustration, and explain why it fits the priorities we agreed. You can ask anything, and if you are happy to proceed we can start the application in the same session. We will meet on Google Meet using the link below.
+
+Internal diary label (client never sees this):
+PCS | [Surname] | M1 Discovery   ·   PCS | [Surname] | M2 Recommendation`},
+];
+
+/* ============ CLOUD CONFIG ============ */
+/* Paste your Supabase project URL and public anon key below to switch on the login + live sync.
+   Leave them blank and the app runs locally (no login), exactly as before. */
+const CFG={url:'https://gxtpvguyflyiuzvvetuv.supabase.co',anonKey:'sb_publishable_m94sNHH2ji5UJWI3W1j15Q_ZJDvw9ng'};
+const CLOUD=!!(CFG.url&&CFG.anonKey);
+const sb=(CLOUD&&window.supabase)?window.supabase.createClient(CFG.url,CFG.anonKey):null;
+let currentUser=null, saveTimer=null;
+
+/* ============ CASE-SPECIFIC MEETING SCRIPTS ============ */
+/* Client-specific meeting scripts. Held in your account, not in this file. */
+let CLIENT_SCRIPTS={};
+let CLIENT_HOOKS={};
+
+
+/* ============ STATE ============ */
+let leads=JSON.parse(JSON.stringify(SEED));
+let leadQ='';
+let tab='home', filterSrc='all', selectedClient=null, mView='qualify', mIdx=0, checks={}, qualAnswers={}, showParked=false;
+/* ---- SAVING ----
+   Local first: every change writes to this browser's storage straight away.
+   DATA_VERSION is stamped by Claude whenever the SEED in this file is edited.
+   If the file is newer than your saved copy, the file wins and your old copy is
+   kept as a recoverable backup, so a desk update never silently overwrites work. */
+const DATA_VERSION='2026-07-24.3';
+const LS_KEY='pcs-protection-desk';
+const LS_OK=(()=>{try{localStorage.setItem('__t','1');localStorage.removeItem('__t');return true;}catch(e){return false;}})();
+let lastSaved=null, staleBackup=null;
+function persist(){saveLocal();scheduleSave();}
+function saveLocal(){
+  if(!LS_OK){paintSaved();return;}
+  try{
+    lastSaved=new Date();
+    localStorage.setItem(LS_KEY,JSON.stringify({v:DATA_VERSION,savedAt:lastSaved.toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS}));
+  }catch(e){lastSaved=null;}
+  paintSaved();
+}
+function loadLocal(){
+  if(!LS_OK)return false;
+  let raw;try{raw=localStorage.getItem(LS_KEY);}catch(e){return false;}
+  if(!raw)return false;
+  let d;try{d=JSON.parse(raw);}catch(e){return false;}
+  if(!d||!Array.isArray(d.leads))return false;
+  if(d.v!==DATA_VERSION){
+    staleBackup=d;
+    try{localStorage.setItem(LS_KEY+':backup',raw);}catch(e){}
+    return false;
+  }
+  leads=d.leads;
+  if(d.checks)checks=d.checks;
+  if(d.suit)suit=d.suit;
+  if(d.qualAnswers)qualAnswers=d.qualAnswers;
+  if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;
+  lastSaved=d.savedAt?new Date(d.savedAt):null;
+  return true;
+}
+function restoreBackup(){
+  if(!staleBackup)return;
+  if(!confirm('Replace what is on screen with your previous saved copy? The desk update from '+DATA_VERSION+' will be discarded.'))return;
+  const d=staleBackup;
+  leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;
+  staleBackup=null;persist();render();toast('Previous copy restored');
+}
+function downloadBackup(){
+  if(!staleBackup)return;
+  const blob=new Blob([JSON.stringify(staleBackup,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='pcs-protection-backup-'+(staleBackup.savedAt||'').slice(0,10)+'.json';a.click();
+  toast('Backup downloaded');
+}
+function dismissBackup(){staleBackup=null;render();}
+function paintSaved(){
+  const e=document.getElementById('savedTag');if(!e)return;
+  if(!LS_OK){e.className='saved-tag bad';e.textContent='Not saving';return;}
+  if(!lastSaved){e.className='saved-tag';e.textContent='No changes yet';return;}
+  const mins=Math.round((Date.now()-lastSaved.getTime())/60000);
+  e.className='saved-tag ok';
+  const when=(mins<1?'just now':mins<60?mins+'m ago':lastSaved.toLocaleString('en-GB',{weekday:'short',hour:'numeric',minute:'2-digit'}));
+  e.textContent=(CLOUD&&currentUser?'Synced ':'Saved ')+when+(CLOUD&&!currentUser?' · this device only':'');
+}
+setInterval(paintSaved,60000);
+function scheduleSave(){if(!CLOUD||!currentUser)return;clearTimeout(saveTimer);saveTimer=setTimeout(saveState,800);}
+async function saveState(){if(!sb||!currentUser)return;try{await sb.from('protection_state').upsert({user_id:currentUser.id,data:{leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS},updated_at:new Date().toISOString()});}catch(e){console.warn('save failed',e);}}
+async function loadState(){if(!sb||!currentUser)return;try{const{data}=await sb.from('protection_state').select('data').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data){const d=data.data;if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;}else{await saveState();}}catch(e){console.warn('load failed',e);}}
+
+/* ============ HELPERS ============ */
+function today(){const d=new Date();d.setHours(0,0,0,0);return d;}
+function parseD(s){if(!s)return null;const d=new Date(s+'T00:00:00');return isNaN(d)?null:d;}
+function fmtD(s){const d=parseD(s);return d?d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'';}
+function daysB(a,b){return Math.round((a-b)/86400000);}
+function gbp(n){const v=parseFloat(n);return isNaN(v)?'-':'£'+v.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function gbp0(n){const v=parseFloat(n);return isNaN(v)?'-':'£'+Math.round(v).toLocaleString('en-GB');}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* ---- STRUCTURED NOTES ----
+   Convention: "## Section" starts a block. A line "- thing" is a bullet.
+   In a "## Log" block, "DD/MM/YYYY: what happened" renders as a dated entry. */
+let openNotes=new Set();
+function toggleNote(id){openNotes.has(id)?openNotes.delete(id):openNotes.add(id);render();}
+function parseNote(txt){
+  if(!txt)return [];
+  const secs=[];let cur={t:'',lines:[]};
+  txt.split(/\r?\n/).forEach(raw=>{
+    const line=raw.trim();
+    if(/^##\s+/.test(line)){if(cur.t||cur.lines.length)secs.push(cur);cur={t:line.replace(/^##\s+/,''),lines:[]};}
+    else if(line)cur.lines.push(line);
+  });
+  if(cur.t||cur.lines.length)secs.push(cur);
+  return secs;
+}
+function noteLead(txt){
+  const secs=parseNote(txt);if(!secs.length)return '';
+  if(!secs[0].t)return secs[0].lines.join(' ');
+  return (txt||'').split(/\r?\n/)[0].trim();
+}
+function noteHTML(txt){
+  const secs=parseNote(txt);if(!secs.length)return '';
+  return secs.map(sec=>{
+    const isLog=/^log$/i.test(sec.t);
+    let body;
+    if(isLog){
+      body='<div class="nlog">'+sec.lines.map(l=>{
+        const m=/^(\d{1,2}\/\d{1,2}\/\d{4}):\s*(.*)$/.exec(l);
+        return m?'<div class="nlg"><span class="nlg-d">'+esc(m[1])+'</span><span>'+esc(m[2])+'</span></div>'
+                :'<div class="nlg"><span class="nlg-d">-</span><span>'+esc(l)+'</span></div>';
+      }).join('')+'</div>';
+    }else if(sec.lines.length&&sec.lines.every(l=>l.indexOf('- ')===0)){
+      body='<ul class="nlist">'+sec.lines.map(l=>'<li>'+esc(l.slice(2))+'</li>').join('')+'</ul>';
+    }else{
+      body=sec.lines.map(l=>'<p class="np">'+esc(l)+'</p>').join('');
+    }
+    return (sec.t?'<div class="nsec-t">'+esc(sec.t)+'</div>':'')+body;
+  }).join('');
+}
+function noteBlock(l){
+  if(!l.notes)return '';
+  const open=openNotes.has(l.id);
+  const lead=noteLead(l.notes);
+  const secs=parseNote(l.notes);
+  const more=secs.length>1||!lead;
+  return '<div class="cc-note">'+(lead?'<div class="nlead">'+esc(lead)+'</div>':'')
+    +(more?'<button class="nmore" onclick="event.stopPropagation();toggleNote('+l.id+')">'+(open?'Hide detail':'Show detail')+'</button>':'')
+    +(open?'<div class="ndet">'+noteHTML(l.notes)+'</div>':'')+'</div>';
+}
+
+const DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+function fmt12(t){
+  if(!t)return '';
+  const m=/^(\d{1,2}):(\d{2})/.exec(t);if(!m)return t;
+  let h=parseInt(m[1],10);const mins=m[2];
+  const ap=h<12?'am':'pm';h=h%12;if(h===0)h=12;
+  return h+(mins==='00'?'':':'+mins)+ap;
+}
+function apptD(l){return l.appt?parseD(l.appt):null;}
+function apptWhen(l){
+  const d=apptD(l);if(!d)return '';
+  const df=daysB(d,today());
+  if(df===0)return 'Today';if(df===1)return 'Tomorrow';if(df<0)return DOW[d.getDay()]+' '+fmtD(l.appt)+' (past)';
+  return (df<7?DOW[d.getDay()]:DOW[d.getDay()].slice(0,3)+' '+fmtD(l.appt));
+}
+function apptLabel(l){const w=apptWhen(l);if(!w)return '';return w+' · '+(l.apptT?fmt12(l.apptT):'time TBC');}
+function triesChip(l){
+  const n=parseInt(l.tries)||0;
+  if(!n||l.appt)return '';
+  const done=n>=3;
+  return `<div class="tries ${done?'max':''}">Attempt ${n} of 3${done?' · reassess, do not keep chasing':''}
+    <button class="tbump" onclick="event.stopPropagation();bumpTries(${l.id})">+1</button></div>`;
+}
+function bumpTries(id){const l=leads.find(x=>x.id===id);if(!l)return;l.tries=(parseInt(l.tries)||0)+1;persist();render();toast('Attempt logged');}
+function apptChip(l){
+  if(!l.appt)return '';
+  const ok=l.apptOK&&l.apptT;
+  return `<div class="appt ${ok?'set':'tbc'}"><span class="ad">${ok?'\u25cf':'\u25cb'}</span><span>${esc(apptLabel(l))}${ok?'':' · unconfirmed'}</span></div>`;
+}
+function apptMini(l){
+  if(!l.appt)return '';
+  const ok=l.apptOK&&l.apptT;
+  return `<div class="lc-appt ${ok?'set':'tbc'}">${esc(apptLabel(l))}</div>`;
+}
+function upcoming(){
+  const t=today();
+  return leads.filter(l=>l.appt&&apptD(l)&&daysB(apptD(l),t)>=0)
+    .sort((a,b)=>{const d=apptD(a)-apptD(b);return d||((a.apptT||'99:99').localeCompare(b.apptT||'99:99'));});
+}
+function srcChip(s){return `<span class="lc-src ${SRCCLASS[s]||''}">${esc(s)}</span>`;}
+function stageLabel(k){return (ALLSTAGES.find(s=>s.key===k)||{}).label||k;}
+function isDue(l){if(!ACTIVE.includes(l.stage))return false;const d=parseD(l.next);return d?daysB(d,today())<=7:false;}
+let toastT;function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),1800);}
+function greeting(){const h=new Date().getHours();return h<12?'Good morning':h<18?'Good afternoon':'Good evening';}
+
+/* ============ NAV ============ */
+const TABS=[['home','Home'],['pipeline','Pipeline'],['meeting','Meeting'],['emails','Emails'],['suit','Suitability'],['money','Money'],['leads','Leads']];
+function renderNav(){document.getElementById('navInner').innerHTML=TABS.map(([k,l])=>`<button class="nv ${tab===k?'on':''}" onclick="setTab('${k}')">${l}</button>`).join('');}
+function setTab(t){tab=t;renderNav();render();window.scrollTo({top:0,behavior:'smooth'});}
+function renderClientSel(){
+  const opts=['<option value="">- none -</option>'].concat(
+    leads.filter(l=>l.stage!=='skip'&&l.stage!=='lost').sort((a,b)=>a.name.localeCompare(b.name)).map(l=>`<option value="${l.id}" ${selectedClient==l.id?'selected':''}>${esc(l.name)}</option>`));
+  document.getElementById('clientSel').innerHTML=opts.join('');
+}
+function setClient(id){selectedClient=id?parseInt(id):null;render();}
+function curClient(){return selectedClient?leads.find(l=>l.id===selectedClient):null;}
+
+/* ============ RENDER ROUTER ============ */
+function render(){
+  renderClientSel();
+  const w=document.getElementById('wrap');
+  if(tab==='home')w.innerHTML=viewHome();
+  else if(tab==='pipeline')w.innerHTML=viewPipeline();
+  else if(tab==='meeting')w.innerHTML=viewMeeting();
+  else if(tab==='emails')w.innerHTML=viewEmails();
+  else if(tab==='suit')w.innerHTML=viewSuit();
+  else if(tab==='money')w.innerHTML=viewMoney();
+  else if(tab==='leads')w.innerHTML=viewLeads();
+}
+
+/* ============ HOME ============ */
+function viewHome(){
+  const t=today();
+  const inPipe=leads.filter(l=>ACTIVE.includes(l.stage)).length;
+  const placed=leads.filter(l=>l.stage==='placed');
+  const commGen=placed.reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
+  const atRisk=placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
+  const up=upcoming();
+  const callable=leads.filter(l=>['new','qualify','m1','research','m2','application','postsale'].includes(l.stage));
+  function urg(l){const d=parseD(l.next);if(!d)return 1.5;const df=daysB(d,t);return df<0?0:df<=7?1:2;}
+  const callnow=callable.filter(l=>urg(l)<=1).sort((a,b)=>{const u=urg(a)-urg(b);if(u)return u;const da=parseD(a.next),db=parseD(b.next);return da&&db?da-db:0;});
+  const stats=`<div class="stats">
+    <div class="stat"><div class="l">Next meeting</div><div class="v" style="font-size:19px">${up.length?esc(apptWhen(up[0])+(up[0].apptT?' '+fmt12(up[0].apptT):'')):'-'}</div><div class="s">${up.length?esc(up[0].name.split(' &')[0]):'nothing booked'}</div></div>
+    <div class="stat"><div class="l">Call now</div><div class="v">${callnow.length}</div><div class="s">this week</div></div>
+    <div class="stat"><div class="l">In pipeline</div><div class="v">${inPipe}</div><div class="s">${leads.length} leads total</div></div>
+    <div class="stat"><div class="l">Placed</div><div class="v emerald">${placed.length}</div><div class="s">on the book</div></div>
+    <div class="stat"><div class="l">Your commission</div><div class="v gold">${gbp0(placed.reduce((s2,l)=>s2+myShare(l.comm),0))}</div><div class="s">${gbp0(commGen)} gross</div></div>
+    <div class="stat"><div class="l">Your money at risk</div><div class="v warn">${gbp0(myShare(atRisk))}</div><div class="s">${gbp0(atRisk)} gross under clawback</div></div>
+  </div>`;
+  const quick=`<div class="quick">
+    <div class="qbtn" onclick="setTab('meeting')"><div class="qt">Run a meeting</div><div class="qs">Qualify, M1, M2, Post</div></div>
+    <div class="qbtn" onclick="setTab('emails')"><div class="qt">Send an email</div><div class="qs">Templates, auto-filled</div></div>
+    <div class="qbtn" onclick="setTab('suit')"><div class="qt">Draft suitability</div><div class="qs">Compile the letter</div></div>
+    <div class="qbtn" onclick="setTab('pipeline')"><div class="qt">Pipeline</div><div class="qs">Move leads through</div></div>
+  </div>`;
+  const cards=callnow.length?`<div class="call-grid">${callnow.map(callCard).join('')}</div>`:'<div class="empty">Nobody urgent to call. Empty pipeline is the lead-gen signal.</div>';
+  const diary=up.length?`<h3 class="h3">Booked <span>(${up.length})</span></h3><div class="diary">${up.map(l=>{
+    const ok=l.apptOK&&l.apptT;
+    return `<div class="dcard ${ok?'':'tbc'}" onclick="openLead(${l.id})">
+      <div class="dwhen">${esc(apptWhen(l))}</div>
+      <div class="dtime">${esc(l.apptT?fmt12(l.apptT):'TBC')}</div>
+      <div class="dname">${esc(l.name)}</div>
+      <div class="dmeta">${esc(stageLabel(l.stage))}${ok?'':' · not confirmed'}</div>
+    </div>`;}).join('')}</div>`:'';
+  const held=leads.filter(l=>l.stage==='hold').sort((a,b)=>{
+    const da=parseD(a.next),db=parseD(b.next);
+    if(da&&db)return da-db; if(da)return -1; if(db)return 1; return a.name.localeCompare(b.name);});
+  const waiting=held.length?`<h3 class="h3" style="margin-top:26px">Waiting <span>(${held.length})</span></h3>
+    <div class="callout" style="margin-bottom:10px"><span></span><span>Not to be called yet. These sit outside Call now on purpose, so nothing here creates a false deadline.</span></div>
+    <div class="wait-list">${held.map(l=>`<div class="wrow" onclick="openLead(${l.id})">
+      <div class="wn"><b>${esc(l.name)}</b>${srcChip(l.source)}</div>
+      <div class="wt">${esc(l.wait||'No trigger recorded. Open the lead and set one.')}</div>
+      <div class="wd">${l.next?fmtD(l.next):'no date'}</div>
+    </div>`).join('')}</div>`:'';
+  if(!leads.length){
+    return `<div class="firstrun">
+      <div class="fr-mark"><svg viewBox="0 0 100 100" width="46" height="46" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <rect x="62" y="29" width="7.5" height="22" rx="1.2" fill="#002AB1"></rect>
+        <path d="M18 70 L50 26" stroke="#002AB1" stroke-width="13" stroke-linecap="round"></path>
+        <path d="M50 26 L82 70" stroke="#109E6C" stroke-width="13" stroke-linecap="round"></path>
+        <rect x="45.5" y="60" width="9" height="22" fill="#002AB1"></rect>
+        <rect x="38" y="67" width="24" height="9" fill="#002AB1"></rect></svg></div>
+      <h2>Nothing on the desk yet</h2>
+      <p>This file holds no client data. Your pipeline lives in your account, and it loads once you sign in.</p>
+      <p><b>First time here?</b> Import your data file once. After that it syncs to every device you sign in on.</p>
+      <div class="fr-btns">
+        <button class="btn btn-blue" onclick="document.getElementById('importFile').click()">Import a data file</button>
+        <button class="btn btn-ghost" onclick="openLead(null)">Add a lead by hand</button>
+      </div>
+      ${currentUser?'':'<p class="fr-warn">You are not signed in, so nothing will sync. Reload and sign in first if you want this on your iPad too.</p>'}
+    </div>`;
+  }
+  let banners='';
+  if(!LS_OK)banners+=`<div class="banner bad"><b>This browser is not saving your changes.</b> Anything you tick, edit or move will be lost when you close the tab. Open the desk in Chrome, or use Export before you close. If you are already in Chrome, the file may be opening from a restricted location.</div>`;
+  if(staleBackup)banners+=`<div class="banner warn"><div><b>The desk was updated to ${esc(DATA_VERSION)}.</b> Your previous saved copy (${staleBackup.savedAt?new Date(staleBackup.savedAt).toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}):'date unknown'}) has been set aside so nothing was lost. You are looking at the updated version.</div><div class="bbtns"><button class="ibtn" onclick="downloadBackup()">Download old copy</button><button class="ibtn" onclick="restoreBackup()">Restore it instead</button><button class="ibtn" onclick="dismissBackup()">Dismiss</button></div></div>`;
+  return banners+`<div class="greet"><div class="g1">${greeting()}, Ginger</div><div class="g2">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · Here is what needs you today.</div></div>
+    ${stats}${diary}${quick}
+    <h3 class="h3">Call now <span>(${callnow.length})</span></h3>${cards}${waiting}`;
+}
+function callCard(l){
+  const d=parseD(l.next);const df=d?daysB(d,today()):null;
+  let tag='',cls='ok';
+  if(df===null){tag='No date';cls='soon';}else if(df<0){tag=(-df)+'d overdue';cls='over';}else if(df===0){tag='Today';cls='over';}else if(df<=7){tag='In '+df+'d';cls='soon';}else{tag=fmtD(l.next);}
+  return `<div class="call-card">
+    <div class="cc-top" onclick="openLead(${l.id})" style="cursor:pointer"><div><div class="cc-name">${esc(l.name)}${l.age?` <span class="lc-age">${esc(String(l.age))}</span>`:''}</div><div class="cc-stage">${stageLabel(l.stage)}</div></div><div class="cc-due ${cls}">${tag}</div></div>
+    ${triesChip(l)}${apptChip(l)}
+    <a class="cc-phone" href="tel:${esc(l.phone)}">${esc(l.phone||'no number')}</a>
+    <div>${srcChip(l.source)}</div>
+    <div class="cc-actions"><button class="cc-mini" onclick="prepClient(${l.id})"> Prep meeting</button><button class="cc-mini" onclick="openLead(${l.id})">Edit</button></div>
+    ${noteBlock(l)}
+  </div>`;
+}
+function prepClient(id){selectedClient=id;mView='qualify';mIdx=0;setTab('meeting');}
+
+/* ============ PIPELINE ============ */
+function viewPipeline(){
+  const f=l=>filterSrc==='all'||l.source===filterSrc;
+  let chips=`<div class="chip ${filterSrc==='all'?'on':''}" onclick="setFilter('all')">All sources</div>`;
+  SOURCES.forEach(s=>chips+=`<div class="chip ${filterSrc===s?'on':''}" onclick="setFilter('${s.replace(/'/g,"\\'")}')">${esc(s)}</div>`);
+  const activeCols=STAGES.map(st=>({st,items:leads.filter(l=>l.stage===st.key&&f(l))})).filter(x=>x.items.length);
+  const cols=activeCols.length?activeCols.map(({st,items})=>`<div class="col"><div class="col-head"><span class="col-dot" style="background:${st.dot}"></span><span class="col-name">${st.label}</span><span class="col-count">${items.length}</span></div>${items.map(l=>leadCard(l,true)).join('')}</div>`).join(''):'<div class="empty">No active leads for this filter.</div>';
+  const groups=PARKED.map(st=>({st,items:leads.filter(l=>l.stage===st.key&&f(l))})).filter(x=>x.items.length);
+  const pc=groups.reduce((n,x)=>n+x.items.length,0);
+  const parked=(showParked&&pc)?`<div class="board" style="margin-top:10px">${groups.map(({st,items})=>`<div class="col" style="background:#fff;border:1px dashed var(--n300)"><div class="col-head"><span class="col-name">${st.label}</span><span class="col-count">${items.length}</span></div>${items.map(l=>leadCard(l,true)).join('')}</div>`).join('')}</div>`:'';
+  const toggle=pc?`<button class="pipe-toggle" onclick="toggleParked()">${showParked?'Hide':'Show'} parked (${pc})</button>`:'';
+  return `<div class="filters">${chips}</div><div class="board">${cols}</div><div class="section-gap">${toggle}${parked}</div>`;
+}
+function toggleParked(){showParked=!showParked;render();}
+function setFilter(s){filterSrc=s;render();}
+function leadCard(l,compact){
+  const b=SRCCLASS[l.source]==='src-client'?'#109E6C':SRCCLASS[l.source]==='src-introducer'?'#DB9F1F':'#002AB1';
+  const d=parseD(l.next);let due='';if(d){const df=daysB(d,today());const c=df<0?'over':df<=7?'soon':'ok';due=`<div class="lc-due ${c}">${df<0?'Overdue':'Check'} ${fmtD(l.next)}</div>`;}
+  return `<div class="lead-card ${compact?'compact':''}" style="border-left-color:${b}" onclick="openLead(${l.id})"><div class="lc-name">${esc(l.name)} ${l.age?`<span class="lc-age">${esc(String(l.age))}</span>`:''}</div>${srcChip(l.source)}${apptMini(l)}${due}</div>`;
+}
+
+/* ============ MEETING RUNNER ============ */
+function viewMeeting(){
+  const c=curClient();
+  const hasScript=!!(c&&CLIENT_SCRIPTS[c.name]);
+  const banner=`<div class="callout blue"><span></span><span>${c?`Running with <b>${esc(c.name)}</b>. ${hasScript?'Their ABCDEF is built from their own numbers. Other steps still use [placeholders], read those in as you go.':'Scripts use [placeholders], read them in their numbers as you go.'}`:'No client selected. Pick one in the header to run their meeting, or just use the scripts as a reference.'}</span></div>`;
+  const sub=`<div class="subtabs">
+    <button class="st ${mView==='qualify'?'on':''}" onclick="setMView('qualify')">Qualify</button>
+    <button class="st ${mView==='booking'?'on':''}" onclick="setMView('booking')">Booking</button>
+    <button class="st ${mView==='m1'?'on':''}" onclick="setMView('m1')">Meeting 1</button>
+    <button class="st ${mView==='m2'?'on':''}" onclick="setMView('m2')">Meeting 2</button>
+    <button class="st ${mView==='post'?'on':''}" onclick="setMView('post')">Post</button>
+  </div>`;
+  if(mView==='qualify')return banner+sub+qualifierView();
+  if(mView==='booking')return banner+sub+bookingView();
+  if(mView==='post')return banner+sub+postView();
+  const data=mData();
+  if(mIdx>data.length-1)mIdx=0;
+  const sec=data[mIdx];
+  const nav=`<div class="snav">${data.map((s,i)=>{const done=s.items.every(x=>checks[ckey(x.id)]);return `<div class="sn ${i===mIdx?'cur':done?'done':''}" onclick="setMIdx(${i})"><div class="sn-dot">${i+1}</div><div class="sn-lbl">${s.title}</div></div>`;}).join('')}</div>`;
+  return banner+sub+nav+secCard(sec)+mnav(data);
+}
+function qualifierView(){
+  const opener=`<div class="script-card q-opener"><div class="s-lbl">Opener</div><div class="s-txt quote">"Hi [Name], it’s Ginger from Property Clinic Solutions. Emmanuel Olukotun mentioned you’ve just bought or remortgaged - congratulations. Have you got two minutes? I just want to make sure it’s worth booking you a proper appointment rather than waste your time."</div></div>`;
+  const gates=QUAL_GATES.map(g=>{
+    const sel=qualAnswers[g.id];
+    const opts=g.opts.map(o=>`<button class="gopt ${sel===o.k?'sel '+o.v:''}" onclick="setQual('${g.id}','${o.k}')"><span class="dot"></span><span>${esc(o.label)}</span></button>`).join('');
+    const so=g.opts.find(o=>o.k===sel);
+    const note=so&&so.note?`<div class="gopt-note">${esc(so.note)}</div>`:'';
+    return `<div class="gate"><div class="gate-q">${esc(g.q)}</div><div class="gate-opts">${opts}</div>${note}</div>`;
+  }).join('');
+  return opener+gates+outcomePanel()+`<button class="btn btn-ghost q-reset" onclick="resetQual()">Reset qualifier</button>`;
+}
+function bookingView(){
+  const c=curClient();
+  const names=c?c.name.split(' & ').map(x=>x.split(' ')[0]):['[Name]'];
+  const nm=esc(names.join(' and '));
+  const couple=!!(c&&c.name.includes(' & '));
+  const cpl=couple?' Because you’re both on the mortgage, it’s worth having you both on the call so nobody has to relay it second-hand.':'';
+  /* Per-client booking hooks live in your account, keyed by lead id. */
+  const hooks=(typeof CLIENT_HOOKS!=='undefined')?CLIENT_HOOKS:{};
+;
+  const hook=(c&&hooks[c.name])?hooks[c.name]:'it is worth making sure you are properly protected if anything happened to your income';
+  const note=`<div class="callout"><span></span><span>Booking call. The client is already qualified at the desk from their fact-find, so this is not a qualification call. The job here is one thing: agree a time for Meeting 1. Keep it to a few minutes.</span></div>`;
+  const opener=`<div class="script-card"><div class="s-lbl">Booking call (3-5 min)</div><div class="s-txt quote">"Hi ${nm}, it’s Ginger from Property Clinic Solutions. I work alongside Emmanuel Olukotun, who looked after your mortgage, and I handle the protection side. Congratulations on the new place.<br><br>I’d like to book a short meeting, about half an hour, to walk through what happens if things go wrong and make sure you’re properly protected, because ${esc(hook)}. There’s nothing to prepare and nothing to buy on the call, it’s just a conversation, then I go away and research options for you.${cpl}<br><br>What does your week look like? Are mornings or evenings easier for you?"</div></div>`;
+  const confirm=`<div class="script-card"><div class="s-lbl">Once a time is agreed</div><div class="s-txt quote">"Great, I’ll send a calendar invite for [day and time] on Google Meet, with a short document explaining who we are and how we’re paid. If anything changes, just let me know."</div></div>`;
+  const actions=`<div class="script-card note-style"><div class="s-lbl">After the call</div><div class="s-txt">Move the client from Qualify to Meeting 1.<br>Send confirmation email (template 1) with the IDD attached.<br>No answer: leave a voicemail and WhatsApp, then retry in 2 to 3 days at a different time of day (if you called mid-afternoon, try early evening), then about a week later. Max 3 attempts, then reassess.</div></div>`;
+  const light=`<div class="script-card"><div class="s-lbl">Light-touch variant (weak or hold cases)</div><div class="s-txt quote">"Hi ${nm}, it’s Ginger from Property Clinic Solutions. I work alongside Emmanuel Olukotun, who looked after your mortgage, and I handle the protection side. I had a look and, honestly, you look well covered already, so I won’t take up much of your time. There are just one or two things worth a quick word, and I wanted to check you’re happy. Have you got five minutes now, or shall I drop you a short note?"</div></div>`;
+  const whatsapp=`<div class="script-card"><div class="s-lbl">No answer: WhatsApp / text to send</div><div class="s-txt quote">"Hi ${nm}, it’s Ginger from Property Clinic Solutions. I work alongside Emmanuel Olukotun, who looked after your mortgage. I tried to call you just now about the protection side. Nothing urgent and nothing to buy, I’d just like to book a short call, about half an hour, to make sure you’re properly covered. When’s a good time to catch you this week? Happy to work around you."</div></div>`;
+  return note+opener+confirm+actions+whatsapp+light;
+}
+function computeQual(){
+  const chosen=QUAL_GATES.map(g=>{const k=qualAnswers[g.id];return k?g.opts.find(o=>o.k===k):null;});
+  const answered=chosen.filter(Boolean);
+  if(!answered.length)return {v:'wait',notes:[]};
+  const vs=answered.map(o=>o.v);
+  const notes=answered.filter(o=>o.note).map(o=>o.note);
+  if(vs.includes('red'))return {v:'red',notes};
+  if(vs.includes('stop'))return {v:'stop',notes};
+  if(vs.includes('hold'))return {v:'hold',notes};
+  if(!chosen.every(Boolean))return {v:'wait',notes};
+  if(vs.includes('amber'))return {v:'amber',notes};
+  return {v:'go',notes};
+}
+function outcomePanel(){
+  const r=computeQual();
+  const M={
+    wait:{cls:'wait',v:'Outcome pending',a:'Answer the gates above and the verdict appears here.',sl:null,s:null},
+    go:{cls:'green',v:'Book Meeting 1',a:'All gates clear. Book M1 now and send the confirmation email with the IDD.',sl:'Green, book it',s:'"Great, let’s get you booked. I’ll send a calendar invite and a short document explaining who we are and how we’re paid. Nothing to prepare, it’s just a conversation."'},
+    amber:{cls:'amber',v:'Book, with conditions',a:'There is a real case, but fix the flagged point first so you are not advising into a gap.',sl:'Amber, include the right people',s:'"Brilliant. It’s worth us having [the decision-maker / your partner] on the call too, so nobody has to relay it second-hand. When works for you both?"'},
+    hold:{cls:'amber',v:'Hold, do not book yet',a:'Not ready. Do not book M1. Set a follow-up date on the lead and move on.',sl:'Hold, set a follow-up',s:'"Sounds like now isn’t quite the right time. I’ll make a note and check back in [timeframe], does that work?"'},
+    stop:{cls:'red',v:'Couldn’t reach, park it',a:'Log as left message, set a follow-up date, try again. Max three attempts, then reassess.',sl:'Voicemail',s:'"Hi [Name], Ginger from Property Clinic Solutions. I’ll try you again shortly, or drop me a text with a good time and I’ll work around you."'},
+    red:{cls:'red',v:'Skip, do not book',a:'No qualified case here. Mark the lead Skip with the reason. This is the gate doing its job.',sl:'Close politely',s:'"That’s completely fine. If anything changes down the line, you’ve got my number. Take care."'},
+  };
+  const o=M[r.v];
+  const notes=(r.notes&&r.notes.length)?`<ul class="oc-list">${r.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:'';
+  const script=o.s?`<div class="oc-script"><span class="sl">${esc(o.sl)}</span>${esc(o.s)}</div>`:'';
+  return `<div class="outcome ${o.cls}"><div class="oc-verdict ${o.cls}">${esc(o.v)}</div><div class="oc-action">${esc(o.a)}</div>${notes}${script}</div>`;
+}
+function setQual(g,k){qualAnswers[g]=k;persist();render();}
+function resetQual(){qualAnswers={};persist();render();}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,16);}
+function abTitle(l){
+  if(/^A/.test(l))return 'A · Income';
+  if(/^B/.test(l))return 'B · Time off work';
+  if(/^C/.test(l))return 'C · Serious illness';
+  if(/^D/.test(l))return 'D · Death';
+  if(/Priority/i.test(l))return 'Priority';
+  if(/push back|death first/i.test(l))return 'If death first';
+  return l;
+}
+function mData(){
+  if(mView==='m1'){const c=curClient();const ab=c&&CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].abcdef;
+    if(ab){const sl=slug(c.name);
+      const steps=ab.map((s,i)=>{const push=/push back|death first/i.test(s.label);
+        return {id:sl+'-ab'+i,title:abTitle(s.label),note:push?'Only use this if they put death first.':(i===0?'One step at a time. Ask, pause, let them do the maths out loud, then move on.':''),scripts:[{label:push?'Only if they lead with death':'Ask',text:s.text}],items:[{id:sl+'-abc'+i,text:push?'Reframed, order revisited':'Covered'}]};});
+      const out=[];M1.forEach(sec=>{if(sec.id==='factfind')return;if(sec.id==='abcdef'){steps.forEach(st=>out.push(st));}else out.push(sec);});
+      return out;}}
+  return mView==='m1'?M1:M2;
+}
+function ckey(id){return (mView)+':'+id;}
+function setMView(v){mView=v;mIdx=0;render();}
+function setMIdx(i){const n=mData().length;if(i<0||i>=n)return;mIdx=i;render();window.scrollTo({top:120,behavior:'smooth'});}
+function secCard(sec){
+  const ids=sec.items.map(i=>i.id);const done=ids.filter(id=>checks[ckey(id)]).length;const pct=Math.round(done/ids.length*100);
+  const scripts=(sec.scripts||[]).map(s=>{const q=s.text.trim().startsWith('"');return `<div class="script-card ${q?'':'note-style'}"><div class="s-lbl">${esc(s.label)}</div><div class="s-txt ${q?'quote':''}">${esc(s.text).replace(/\n/g,'<br>')}</div></div>`;}).join('');
+  const solo=ids.length<=2;
+  const confirms=sec.items.map(it=>`<div class="conf-btn ${checks[ckey(it.id)]?'done':''} ${it.bold?'bold-item':''}" onclick="toggleCheck('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${esc(it.text)}</span></div></div>`).join('');
+  return `<div class="sec-card"><div class="sec-accent ${sec.compliance?'compliance':''}"></div>
+    <div class="sec-head"><div class="sec-title-row"><span class="sec-title">${esc(sec.title)}</span>${sec.compliance?'<span class="cbadge">Compliance</span>':''}</div>
+    <div class="prog-row"><div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div><span class="prog-label">${done}/${ids.length}</span></div></div>
+    ${sec.compliance&&sec.complianceNote?`<div class="cn-bar"><span></span><span>${esc(sec.complianceNote)}</span></div>`:''}
+    ${sec.note?`<div class="note-bar">${esc(sec.note)}</div>`:''}
+    ${scripts?`<div class="scripts-area">${scripts}</div>`:''}
+    <div class="confirms"><div class="confirms-label">Confirm</div><div class="conf-grid ${solo?'solo':''}">${confirms}</div></div></div>`;
+}
+function mnav(data){
+  const prev=data[mIdx-1],next=data[mIdx+1];
+  return `<div class="mnav"><button class="btn btn-ghost" onclick="setMIdx(${mIdx-1})" ${!prev?'disabled':''} style="${!prev?'opacity:.4':''}">← ${prev?esc(prev.title):''}</button><button class="btn btn-blue" onclick="setMIdx(${mIdx+1})" ${!next?'disabled':''} style="${!next?'opacity:.4':''}">${next?esc(next.title):'Done'} →</button></div>`;
+}
+function postView(){
+  const items=POST.map(it=>`<div class="conf-btn ${checks['post:'+it.id]?'done':''}" style="border-radius:13px" onclick="togglePost('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${it.compliance?' ':''}${esc(it.text)}</span></div></div>`).join('');
+  return `<div class="conf-grid" style="grid-template-columns:1fr">${items}</div>`;
+}
+function toggleCheck(id){checks[ckey(id)]=!checks[ckey(id)];persist();render();}
+function togglePost(id){checks['post:'+id]=!checks['post:'+id];persist();render();}
+
+/* ============ EMAILS ============ */
+function viewEmails(){
+  const c=curClient();
+  const banner=`<div class="callout blue"><span></span><span>${c?`Filling <b>[Name]</b> as ${esc(c.name)}. `:''}Copy, paste into your email, fill the remaining [brackets], send. ${c?'':'Select a client in the header to auto-fill their name.'}</span></div>`;
+  const cards=EMAILS.map(e=>{
+    let body=e.body, subject=e.subject;
+    if(c){body=body.replace(/\[Name\]/g,c.name);subject=subject.replace(/\[Name\]/g,c.name);if(c.phone)body=body.replace(/\[Phone\]/g,c.phone);}
+    return `<div class="email-card">
+      <div class="email-head"><div><div class="en">${esc(e.label)}</div><div class="es">${esc(e.when)}</div></div><button class="btn btn-ghost" onclick="copyEmail('${e.id}')">Copy</button></div>
+      <div class="email-sub">Subject: ${esc(subject)}</div>
+      <div class="email-body" id="email-${e.id}">${esc(body)}</div>
+    </div>`;
+  }).join('');
+  return banner+cards;
+}
+function copyEmail(id){
+  const el=document.getElementById('email-'+id);const sub=el.parentElement.querySelector('.email-sub').textContent;
+  const txt=sub+'\n\n'+el.textContent;
+  navigator.clipboard.writeText(txt).then(()=>toast('Email copied ')).catch(()=>toast('Copy failed'));
+}
+
+/* ============ SUITABILITY ============ */
+const SUIT_SEED={
+  name:'',
+  situation:'',
+  priorities:'',
+  insurer:'',
+  premiumType:'',
+  reasons:'',
+  providerReason:'',
+  ci:false,
+  ipDeferred:false
+};
+
+let suit=JSON.parse(JSON.stringify(SUIT_SEED));
+function viewSuit(){
+  const c=curClient();
+  if(c&&c.name!==suit.name&&!suit._touched){suit.name=c.name;}
+  const banner=`<div class="callout"><span></span><span>Fill the fields, tick what applies, then <b>Generate</b>. This compiles a first-draft suitability letter in your template. Copy it into Word, check every figure, and adjust. It is a draft to speed you up, not a letter to send unchecked.</span></div>`;
+  const form=`<div class="suit-form">
+    <div class="fld"><label>Client name</label><input id="su-name" value="${esc(suit.name)}" oninput="suitSet('name',this.value)"></div>
+    <div class="fld"><label>Address</label><textarea id="su-address" oninput="suitSet('address',this.value)">${esc(suit.address)}</textarea></div>
+    <div class="fld"><label>Letter date</label><input id="su-date" value="${esc(suit.date)}" oninput="suitSet('date',this.value)"></div>
+    <div class="fld"><label>Current situation</label><textarea style="min-height:120px" oninput="suitSet('situation',this.value)">${esc(suit.situation)}</textarea></div>
+    <div class="fld"><label>Objectives & priorities</label><textarea style="min-height:100px" oninput="suitSet('priorities',this.value)">${esc(suit.priorities)}</textarea></div>
+    <div class="h3" style="margin:16px 0 10px">Recommended cover</div>
+    <div class="frow"><div class="fld"><label>Insurer</label><input value="${esc(suit.insurer)}" oninput="suitSet('insurer',this.value)"></div><div class="fld"><label>Type</label><input value="${esc(suit.type)}" oninput="suitSet('type',this.value)"></div></div>
+    <div class="frow"><div class="fld"><label>Life assured</label><input value="${esc(suit.lifeassured||suit.name)}" oninput="suitSet('lifeassured',this.value)"></div><div class="fld"><label>Premium type</label><select onchange="suitSet('premiumType',this.value)"><option ${suit.premiumType!=='Reviewable'?'selected':''}>Guaranteed</option><option ${suit.premiumType==='Reviewable'?'selected':''}>Reviewable</option></select></div></div>
+    <div class="frow"><div class="fld"><label>Sum assured £</label><input value="${esc(suit.sum)}" oninput="suitSet('sum',this.value)"></div><div class="fld"><label>Term (yrs)</label><input value="${esc(suit.term)}" oninput="suitSet('term',this.value)"></div></div>
+    <div class="fld"><label>Term chosen... (completes "The term of X years has been chosen ___")</label><input value="${esc(suit.termReason||'')}" oninput="suitSet('termReason',this.value)"></div>
+    <div class="frow"><div class="fld"><label>This policy £/mo</label><input value="${esc(suit.premiumItem)}" oninput="suitSet('premiumItem',this.value)"></div><div class="fld"><label>Total £/mo</label><input value="${esc(suit.totalPremium)}" oninput="suitSet('totalPremium',this.value)"></div></div>
+    <div class="fld"><label>Commission £</label><input value="${esc(suit.commission)}" oninput="suitSet('commission',this.value)"></div>
+    <div class="fld"><label>Reasons for recommendation</label><textarea style="min-height:110px" oninput="suitSet('reasons',this.value)">${esc(suit.reasons)}</textarea></div>
+    <div class="fld"><label>Why this provider</label><textarea style="min-height:80px" oninput="suitSet('providerReason',this.value)">${esc(suit.providerReason)}</textarea></div>
+    <div class="h3" style="margin:16px 0 10px">Include sections</div>
+    <div class="chkrow">
+      <label class="chk"><input type="checkbox" ${suit.ci?'checked':''} onchange="suitSet('ci',this.checked)">Critical illness</label>
+      <label class="chk"><input type="checkbox" ${suit.wop?'checked':''} onchange="suitSet('wop',this.checked)">Waiver of premium</label>
+      <label class="chk"><input type="checkbox" ${suit.child?'checked':''} onchange="suitSet('child',this.checked)">Child cover</label>
+      <label class="chk"><input type="checkbox" ${suit.trust?'checked':''} onchange="suitSet('trust',this.checked)">Trust</label>
+      <label class="chk"><input type="checkbox" ${suit.will?'checked':''} onchange="suitSet('will',this.checked)">Will note</label>
+      <label class="chk"><input type="checkbox" ${suit.ipDeferred?'checked':''} onchange="suitSet('ipDeferred',this.checked)">IP deferred</label>
+    </div>
+    <div class="fld"><label>Trust beneficiary</label><input value="${esc(suit.trustBene)}" oninput="suitSet('trustBene',this.value)"></div>
+    <div class="fld"><label>IP deferred note</label><textarea style="min-height:80px" oninput="suitSet('ipText',this.value)">${esc(suit.ipText)}</textarea></div>
+    <button class="btn btn-blue" style="width:100%" onclick="genSuit()">Generate draft</button>
+  </div>`;
+  return banner+`<div class="suit-grid">${form}<div class="suit-out" id="suitOut">${suitDraft()}</div></div>`;
+}
+function suitSet(k,v){suit[k]=v;suit._touched=true;persist();if(typeof v==='boolean'||k==='ipDeferred'||k==='premiumType'){document.getElementById('suitOut').innerHTML=suitDraft();}}
+function genSuit(){document.getElementById('suitOut').innerHTML=suitDraft();toast('Draft generated ');}
+function suitDraft(){
+  const s=suit;
+  let o='';
+  o+=`<div class="lh">${esc(s.name)}</div>${esc(s.address).replace(/\n/g,'<br>')}<br>${esc(s.date)}<br><br>`;
+  o+=`Dear ${esc(s.name.split(' ')[0])},<br><br>`;
+  o+=`<h4>Introduction</h4>Following our discussions regarding your protection objectives, this report forms the basis of my recommendation to you. Please read it alongside our About our Insurance Services document previously provided, which explained I considered a fair analysis of the market from a wide panel of insurers before making my recommendation.`;
+  o+=`<h4>Important information - non-disclosure</h4>Insurers require full and honest disclosure of issues that might affect their decision to provide insurance. Failure to disclose material information could result in non-payment of the sum assured in the event of a claim.`;
+  o+=`<h4>The basis of my advice</h4>My advice is based upon the information you have disclosed. If this letter does not coincide with your view of the situation, or you require clarification, please contact me immediately.`;
+  o+=`<h4>Your current situation</h4>${esc(s.situation)}`;
+  o+=`<h4>Your objectives and priorities</h4>${esc(s.priorities)}<br><br>Please note you should not cancel any existing plan until the new plan is in force.`;
+  o+=`<h4>Recommended cover</h4><span class="lh">Insurer:</span> ${esc(s.insurer)}<br><span class="lh">Sum assured:</span> £${esc(s.sum)}<br><span class="lh">Life assured:</span> ${esc(s.lifeassured||s.name)}<br><span class="lh">Type of cover:</span> ${esc(s.type)}<br><span class="lh">Term:</span> ${esc(s.term)} years<br><span class="lh">Premium:</span> £${esc(s.premiumItem)}${s.wop?'<br><span class="lh">Additional features:</span> Waiver of Premium':''}`;
+  const isDec=/decreas/i.test(s.type||'');
+  o+=`<h4>Reasons for my recommendation</h4>${esc(s.reasons)}<br><br>`;
+  o+=isDec
+    ? `The initial amount of cover reduces each year, closely matching the outstanding capital on your mortgage, thereby paying off your mortgage in the event of your death, provided the interest rate does not exceed the level indicated in the illustration.`
+    : `The amount of cover remains level throughout the term. The full sum assured of £${esc(s.sum)} is payable at any point during the term and does not reduce as any mortgage balance falls.`;
+  o+=` The term of ${esc(s.term)} years has been chosen ${esc(s.termReason||'to meet the need identified above')}.<br><br>Please note this plan is designed to provide cover during the term of the policy. At the end of the term, or if premiums are not paid, cover will cease. At no time will this policy provide a cash-in value.`;
+  if(s.ipDeferred)o+=`<h4>Income protection (identified, deferred)</h4>${esc(s.ipText)}`;
+  if(s.child)o+=`<h4>Child cover</h4>Children can be covered from 6 months to their 18th birthday (23rd if in full-time education, excluding apprenticeships). Cover can be selected and removed from the policy at any time.`;
+  if(s.ci)o+=`<h4>Critical illness protection</h4>The critical illness option means the sum assured is paid on diagnosis of specified critical illnesses. These normally include heart attack, stroke, kidney failure, cancer, multiple sclerosis, major organ transplant, and coronary artery by-pass surgery - the core conditions that account for the majority of claims. If the policy pays out under a critical illness claim it will automatically cease and will not pay out on future death. You have decided to include this option; the cost is shown in the product illustration.`;
+  if(s.wop)o+=`<h4>Waiver of premium</h4>This option means the insurer will waive your monthly premiums should you become unable to work due to illness, until you are able to return to work, preventing the policy from lapsing. Waiver pays out after 6 months of incapacity on an own-occupation basis. You have decided to include this option; the cost is shown in the product illustration.`;
+  o+=`<h4>Affordability & budget</h4>As part of our fact find we discussed your income, financial commitments and outgoings. You confirmed your monthly budget of £${esc(s.totalPremium)} is affordable, and that it remains affordable throughout the term.`;
+  const isGtd=(s.premiumType||'Guaranteed')!=='Reviewable';
+  o+=`<h4>Premium type</h4>`+(isGtd
+    ? `The premium is guaranteed, which means it will not change during the life of the policy.`
+    : `The premium is reviewable. This means the insurer will review the premium at set intervals, normally every five years, and it may increase or decrease as a result. You should budget for the possibility of an increase over the term.`);
+  o+=`<h4>Significant exclusions & limitations</h4>Please refer to your policy documentation for full details of the cover provided.`;
+  o+=`<h4>Why ${esc(s.insurer)} has been recommended</h4>${esc(s.providerReason)}<br><br>The total monthly premium of £${esc(s.totalPremium)} is ${isGtd?'guaranteed throughout the term and ':'reviewable, and '}you confirmed this was affordable based on your disposable income. Please note the premium quoted could increase following underwriting.`;
+  o+=`<h4>Product literature and illustrations</h4>This documentation is important and contains information regarding the products recommended, including aims, risks, charges, legal and tax status, commission payable and your cancellation rights. Please read these documents carefully and contact me with any questions.`;
+  o+=`<h4>Remuneration</h4>For arranging this policy we will receive commission of £${esc(s.commission)}, paid as an initial lump sum by ${esc(s.insurer)}.`;
+  if(s.will)o+=`<h4>Wills</h4>You advised you do not have a valid Will in place. I strongly recommend you have a Will written as soon as possible to ensure your net estate goes to those intended.`;
+  if(s.trust)o+=`<h4>Use of trusts</h4>I have recommended that this policy is placed in trust for the benefit of ${esc(s.trustBene)}, so the proceeds remain outside your estate and are not subject to probate delays.`;
+  o+=`<br><br>Yours sincerely,<br><br>Franklyn Ginger<br>Property Clinic Solutions`;
+  return o;
+}
+
+/* ============ MONEY ============ */
+function viewMoney(){
+  const t=today();const placed=leads.filter(l=>l.stage==='placed');
+  const callout=`<div class="callout"><span></span><span><b>Split confirmed 24/07/2026.</b> BSL passes <b>${pct(SPLIT.bsl)}</b> of gross to PCS. PCS retains <b>${pct(SPLIT.reserve)}</b> of gross as a clawback reserve. The remaining <b>${pct(SPLIT.net)}</b> splits 50/50, so your share is <b>${pct(SPLIT.adviser)}</b> of gross. <b>Open:</b> confirm whether the ${pct(SPLIT.reserve)} reserve is released once clawback expires.</span></div>`;
+  if(!placed.length)return callout+'<div class="empty">No placed policies yet.</div>';
+  const commGen=placed.reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
+  const riskComm=placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
+  const myTotal=placed.reduce((s2,l)=>s2+myShare(l.comm),0);
+  const myRisk=placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s2,l)=>s2+myShare(l.comm),0);
+  const wf=`<div class="wf">
+    <div class="wf-row"><div class="wl">Gross commission from insurers<small>total written on the book</small></div><div class="wv">${gbp(commGen)}</div></div>
+    <div class="wf-row neg"><div class="wl">Retained by BSL<small>${pct(1-SPLIT.bsl)} of gross</small></div><div class="wv">-${gbp(commGen*(1-SPLIT.bsl))}</div></div>
+    <div class="wf-row"><div class="wl">Received by PCS<small>${pct(SPLIT.bsl)} of gross</small></div><div class="wv">${gbp(commGen*SPLIT.bsl)}</div></div>
+    <div class="wf-row neg"><div class="wl">PCS clawback reserve<small>${pct(SPLIT.reserve)} of gross, held back</small></div><div class="wv">-${gbp(commGen*SPLIT.reserve)}</div></div>
+    <div class="wf-row"><div class="wl">Splittable pot<small>${pct(SPLIT.net)} of gross, 50/50 with PCS</small></div><div class="wv">${gbp(commGen*SPLIT.net)}</div></div>
+    <div class="wf-row neg"><div class="wl">PCS half<small>${pct(SPLIT.pcs)} of gross</small></div><div class="wv">-${gbp(commGen*SPLIT.pcs)}</div></div>
+    <div class="wf-row tot"><div class="wl">Your share<small>${pct(SPLIT.adviser)} of gross</small></div><div class="wv">${gbp(myTotal)}</div></div>
+  </div>`;
+  const rows=placed.map(l=>{const cb=parseD(l.clawback);const risk=cb&&cb>t;const dl=cb?daysB(cb,t):null;return `<tr onclick="openLead(${l.id})" style="cursor:pointer"><td><b>${esc(l.name)}</b></td><td class="money">${gbp(l.premium)}</td><td class="money">${gbp(l.comm)}</td><td class="money"><b>${gbp(myShare(l.comm))}</b></td><td>${esc(l.basis||'')}</td><td>${l.clawback?fmtD(l.clawback):'-'}</td><td>${risk?`<span class="pill pill-risk">at risk · ${dl}d</span>`:cb?'<span class="pill pill-safe">safe</span>':'-'}</td></tr>`;}).join('');
+  return callout+`<div class="mini-grid"><div class="mcard"><div class="lbl">Gross commission</div><div class="big gold">${gbp0(commGen)}</div><div class="sub">${placed.length} placed</div></div><div class="mcard"><div class="lbl">Your share</div><div class="big" style="color:var(--emerald-h)">${gbp0(myTotal)}</div><div class="sub">${pct(SPLIT.adviser)} of gross</div></div><div class="mcard"><div class="lbl">Your money at clawback risk</div><div class="big">${gbp0(myRisk)}</div><div class="sub">of ${gbp0(riskComm)} gross reclaimable</div></div></div>
+    ${wf}
+    <table class="tbl"><thead><tr><th>Client</th><th>Premium/mo</th><th>Gross commission</th><th>Your share (${pct(SPLIT.adviser)})</th><th>Basis</th><th>Clawback ends</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+/* ============ LEADS ============ */
+const CONCLUDED=['placed','lost','skip'];
+function viewLeads(){
+  const callout=`<div class="callout"><span></span><span>Your own leads by channel. Almost everything is still colleague / mortgage. The build target: introducers, social and events becoming real columns.</span></div>`;
+  const concluded=leads.filter(l=>CONCLUDED.includes(l.stage));
+  const placed=leads.filter(l=>l.stage==='placed');
+  const open=leads.filter(l=>ACTIVE.includes(l.stage)&&l.stage!=='placed');
+  const held=leads.filter(l=>l.stage==='hold'||l.stage==='cold');
+  const rate=concluded.length?placed.length/concluded.length:0;
+  const myComm=placed.reduce((a,l)=>a+myShare(l.comm),0);
+  const perPlaced=placed.length?myComm/placed.length:0;
+  const perConcluded=concluded.length?myComm/concluded.length:0;
+
+  const funnel=`<div class="mini-grid">
+    <div class="mcard"><div class="lbl">Placement rate</div><div class="big ${rate>=0.2?'':'gold'}">${concluded.length?Math.round(rate*100)+'%':'-'}</div><div class="sub">${placed.length} placed of ${concluded.length} concluded</div></div>
+    <div class="mcard"><div class="lbl">Still open</div><div class="big">${open.length}</div><div class="sub">${held.length} on hold, ${leads.length} leads all time</div></div>
+    <div class="mcard"><div class="lbl">Your income per placed case</div><div class="big" style="color:var(--emerald-h)">${placed.length?gbp0(perPlaced):'-'}</div><div class="sub">average, your ${pct(SPLIT.adviser)} share</div></div>
+    <div class="mcard"><div class="lbl">Your income per lead worked</div><div class="big">${concluded.length?gbp0(perConcluded):'-'}</div><div class="sub">across every concluded lead</div></div>
+  </div>`;
+
+  const rows=SOURCES.map(sr=>{
+    const items=leads.filter(l=>l.source===sr);
+    if(!items.length)return '';
+    const c=items.filter(l=>CONCLUDED.includes(l.stage));
+    const pl=items.filter(l=>l.stage==='placed');
+    const r=c.length?Math.round(pl.length/c.length*100):null;
+    const inc=pl.reduce((a,l)=>a+myShare(l.comm),0);
+    return `<tr><td><b>${esc(sr)}</b></td><td>${items.length}</td><td>${items.filter(l=>ACTIVE.includes(l.stage)&&l.stage!=='placed').length}</td><td>${items.filter(l=>l.stage==='hold'||l.stage==='cold').length}</td><td>${pl.length}</td><td>${items.filter(l=>l.stage==='lost'||l.stage==='skip').length}</td><td>${r===null?'-':r+'%'}</td><td class="money">${inc?gbp0(inc):'-'}</td></tr>`;
+  }).join('');
+
+  const q=(leadQ||'').toLowerCase().trim();
+  const hits=q?leads.filter(l=>((l.name||'')+' '+(l.phone||'')+' '+(l.notes||'')+' '+(l.wait||'')).toLowerCase().includes(q)):[];
+  const search=`<h3 class="h3" style="margin-top:26px">Find a lead</h3>
+    <input class="lsearch" id="leadQ" value="${esc(leadQ||'')}" oninput="setLeadQ(this.value)" placeholder="Search name, number or anything in the notes">
+    ${q?(hits.length?`<div class="wait-list" style="margin-top:10px">${hits.map(l=>`<div class="wrow" onclick="openLead(${l.id})">
+        <div class="wn"><b>${esc(l.name)}</b>${srcChip(l.source)}<span class="pill" style="background:var(--sunken);color:var(--n600)">${esc(stageLabel(l.stage))}</span></div>
+        <div class="wt">${esc(noteLead(l.notes)||l.wait||'')}</div>
+        <div class="wd">${esc(l.phone||'')}</div></div>`).join('')}</div>`
+      :'<div class="empty" style="margin-top:10px">Nothing matches that.</div>')
+    :'<div class="lsearch-hint">Searches names, phone numbers and the full text of every note.</div>'}`;
+
+  return callout+funnel+`<table class="tbl"><thead><tr><th>Channel</th><th>Total</th><th>Open</th><th>Hold/Cold</th><th>Placed</th><th>Dead</th><th>Rate</th><th>Your income</th></tr></thead><tbody>${rows}</tbody></table>`+search;
+}
+function setLeadQ(v){leadQ=v;const el=document.getElementById('leadQ');const pos=el?el.selectionStart:null;render();const e2=document.getElementById('leadQ');if(e2){e2.focus();if(pos!==null)e2.setSelectionRange(pos,pos);}}
+
+function fillSel(id,arr,keyed){document.getElementById(id).innerHTML=arr.map(o=>keyed?`<option value="${o.key}">${o.label}</option>`:`<option>${o}</option>`).join('');}
+function openLead(id){
+  fillSel('f-source',SOURCES,false);fillSel('f-stage',ALLSTAGES,true);
+  const l=id?leads.find(x=>x.id===id):null;
+  document.getElementById('modalTitle').textContent=l?l.name:'New lead';
+  document.getElementById('f-id').value=l?l.id:'';
+  document.getElementById('f-name').value=l?l.name:'';document.getElementById('f-age').value=l&&l.age?l.age:'';
+  document.getElementById('f-phone').value=l?l.phone||'':'';document.getElementById('f-source').value=l?l.source:'Client referral';
+  document.getElementById('f-stage').value=l?l.stage:'new';document.getElementById('f-next').value=l?l.next||'':'';
+  document.getElementById('f-tries').value=l&&l.tries?l.tries:0;
+  document.getElementById('f-appt').value=l&&l.appt?l.appt:'';document.getElementById('f-apptT').value=l&&l.apptT?l.apptT:'';
+  document.getElementById('f-apptOK').checked=!!(l&&l.apptOK);
+  document.getElementById('f-wait').value=l&&l.wait?l.wait:'';
+  document.getElementById('f-notes').value=l?l.notes||'':'';
+  document.getElementById('f-premium').value=l&&l.premium?l.premium:'';document.getElementById('f-comm').value=l&&l.comm?l.comm:'';
+  document.getElementById('f-share').value=l&&l.comm?gbp(myShare(l.comm)):'';document.getElementById('f-basis').value=l&&l.basis?l.basis:'Indemnity';
+  document.getElementById('f-clawback').value=l&&l.clawback?l.clawback:'';
+  document.getElementById('delBtn').style.display=l?'block':'none';
+  onStageChange();document.getElementById('overlay').classList.add('show');
+}
+function onStageChange(){
+  const st=document.getElementById('f-stage').value;
+  document.getElementById('commBlock').classList.toggle('show',st==='placed');
+  document.getElementById('waitFld').style.display=(st==='hold')?'block':'none';
+}
+function closeLead(){document.getElementById('overlay').classList.remove('show');}
+function saveLead(){
+  const id=document.getElementById('f-id').value;const name=document.getElementById('f-name').value.trim();
+  if(!name){alert('Name is required.');return;}
+  const obj={name,age:document.getElementById('f-age').value.trim(),phone:document.getElementById('f-phone').value.trim(),source:document.getElementById('f-source').value,stage:document.getElementById('f-stage').value,next:document.getElementById('f-next').value,wait:document.getElementById('f-wait').value.trim(),tries:parseInt(document.getElementById('f-tries').value)||0,appt:document.getElementById('f-appt').value,apptT:document.getElementById('f-apptT').value,apptOK:document.getElementById('f-apptOK').checked,notes:document.getElementById('f-notes').value.trim(),premium:document.getElementById('f-premium').value.trim(),comm:document.getElementById('f-comm').value.trim(),basis:document.getElementById('f-basis').value,clawback:document.getElementById('f-clawback').value};
+  if(id){Object.assign(leads.find(x=>x.id===parseInt(id)),obj);}else{obj.id=(leads.reduce((m,l)=>Math.max(m,l.id),0)||0)+1;leads.push(obj);}
+  persist();closeLead();render();toast('Saved ');
+}
+function deleteLead(){const id=parseInt(document.getElementById('f-id').value);if(!id)return;if(!confirm('Delete this lead?'))return;leads=leads.filter(x=>x.id!==id);persist();closeLead();render();}
+
+
+/* ============ EXPORT / IMPORT ============ */
+function exportData(){const payload={v:DATA_VERSION,savedAt:new Date().toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pcs-protection-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Exported');}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(Array.isArray(d)){leads=d;}else{if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;}persist();render();toast('Imported');}catch(err){alert('Could not read that file.');}};r.readAsText(f);}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeLead();});
+
+/* ============ AUTH + BOOT ============ */
+let offline=false;
+function showLogin(){document.getElementById('loginOverlay').classList.add('show');document.body.classList.add('locked');}
+function workOffline(){offline=true;hideLogin();applyRestore();paintSaved();render();toast('Working offline');}
+function hideLogin(){document.getElementById('loginOverlay').classList.remove('show');document.body.classList.remove('locked');}
+async function doLogin(){
+  const email=document.getElementById('li-email').value.trim();
+  const pw=document.getElementById('li-pw').value;
+  const err=document.getElementById('li-err');err.textContent='';
+  try{const{data,error}=await sb.auth.signInWithPassword({email,password:pw});
+    if(error){err.textContent=error.message;return;}
+    currentUser=data.user;hideLogin();await loadState();render();
+  }catch(e){err.textContent='Login failed. Check your connection.';}
+}
+async function doLogout(){if(sb){try{await sb.auth.signOut();}catch(e){}}location.reload();}
+async function boot(){
+  renderNav();
+  loadLocal();
+  if(!CLOUD)applyRestore();
+  paintSaved();
+  render();                      /* always paint the desk first, never a blank screen */
+  if(CLOUD){
+    const lb=document.getElementById('logoutBtn');if(lb)lb.style.display='';
+    try{const{data:{session}}=await sb.auth.getSession();
+      if(!session){showLogin();return;}
+      currentUser=session.user;await loadState();applyRestore();render();
+    }catch(e){showLogin();}
+  }
+}
+/* One-time restore of anything missing, from the local file. Never overwrites
+   what is already there, and does nothing at all when the desk is hosted. */
+function applyRestore(){
+  const r=window.__DESK_RESTORE__;
+  if(!r)return false;
+  let filled=[];
+  if(!leads.length&&r.leads&&r.leads.length){leads=r.leads;filled.push(r.leads.length+' leads');}
+  if(!Object.keys(CLIENT_SCRIPTS).length&&r.scripts){CLIENT_SCRIPTS=r.scripts;filled.push(Object.keys(r.scripts).length+' meeting scripts');}
+  if(!Object.keys(CLIENT_HOOKS).length&&r.hooks){CLIENT_HOOKS=r.hooks;filled.push(Object.keys(r.hooks).length+' booking hooks');}
+  if(!Object.keys(checks||{}).length&&r.checks)checks=r.checks;
+  if(suit&&!suit.name&&r.suit)suit=r.suit;
+  if(!filled.length)return false;
+  persist();
+  setTimeout(()=>toast('Restored '+filled.join(', ')),400);
+  return true;
+}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+boot();
+</script>
+</body>
+</html>
