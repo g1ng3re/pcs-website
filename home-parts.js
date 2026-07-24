@@ -186,6 +186,7 @@
     tone = "blue",
     radius = 24,
     eager = false,
+    pos = "50% 50%",
     style,
     className = ""
   }) {
@@ -225,6 +226,7 @@
         width: "100%",
         height: "100%",
         objectFit: "cover",
+        objectPosition: pos,
         display: "block"
       }
     }));
