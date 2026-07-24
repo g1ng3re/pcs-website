@@ -430,6 +430,7 @@ body.locked{overflow:hidden}
   </div>
   <div class="hd-btns">
     <span class="saved-tag" id="savedTag"></span>
+    <button class="ibtn" id="syncBtn" onclick="syncNow()" title="Pull the latest from your other devices">Sync</button>
     <button class="ibtn" onclick="openLead(null)">+ Lead</button>
     <button class="ibtn" onclick="exportData()">Export</button>
     <button class="ibtn" onclick="openPatch()">Paste update</button>
@@ -881,6 +882,25 @@ function downloadBackup(){
   toast('Backup downloaded');
 }
 function dismissBackup(){staleBackup=null;render();}
+async function syncNow(){
+  const b=document.getElementById('syncBtn');
+  if(!CLOUD){toast('Cloud sync is not switched on');return;}
+  if(!currentUser){toast('Sign in to sync');return;}
+  if(b){b.disabled=true;b.textContent='Syncing';}
+  try{
+    await saveState();          /* push anything not yet written */
+    await loadState();          /* pull whatever the other device wrote */
+    applyRestore();
+    applyPendingUpdates();
+    lastSaved=new Date();
+    render();
+    toast('Up to date');
+  }catch(e){
+    toast('Sync failed, check your connection');
+  }
+  if(b){b.disabled=false;b.textContent='Sync';}
+  paintSaved();
+}
 function paintSaved(){
   const e=document.getElementById('savedTag');if(!e)return;
   if(!LS_OK){e.className='saved-tag bad';e.textContent='Not saving';return;}
@@ -1151,7 +1171,7 @@ function leadCard(l,compact){
 function viewMeeting(){
   const c=curClient();
   const hasScript=!!(c&&CLIENT_SCRIPTS[c.name]);
-  const banner=`<div class="callout blue"><span></span><span>${c?`Running with <b>${esc(c.name)}</b>. ${hasScript?'Their ABCDEF is built from their own numbers. Other steps still use [placeholders], read those in as you go.':'Scripts use [placeholders], read them in their numbers as you go.'}`:'No client selected. Pick one in the header to run their meeting, or just use the scripts as a reference.'}</span></div>`;
+  const banner=`<div class="callout blue"><span></span><span>${c?`Running with <b>${esc(c.name)}</b>. ${hasScript?(mView==='m1'?'Their ABCDEF is built from their own numbers. The other steps use [placeholders], read those in as you go.':(CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].m2?'Their own wording is on the steps I have written for them. The rest use [placeholders], read those in as you go.':'These steps use [placeholders], read them in with their numbers as you go.')):'Scripts use [placeholders], read them in their numbers as you go.'}`:'No client selected. Pick one in the header to run their meeting, or just use the scripts as a reference.'}</span></div>`;
   const sub=`<div class="subtabs">
     <button class="st ${mView==='qualify'?'on':''}" onclick="setMView('qualify')">Qualify</button>
     <button class="st ${mView==='booking'?'on':''}" onclick="setMView('booking')">Booking</button>
