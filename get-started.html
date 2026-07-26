@@ -117,8 +117,9 @@ const {
 } = window.PCSHome;
 
 /* ---- Question definitions ---- */
-/* Each "choice" step auto-advances on selection. The final step collects contact details. */
-const STEPS = [{
+/* Each "choice" step auto-advances on selection. The final step collects contact details.
+   The path branches on the first answer: mortgage, protection, or exploring. */
+const HELP_STEP = {
   key: "help",
   q: "How can we help?",
   sub: "Pick the closest option — we will refine the detail on the call.",
@@ -139,8 +140,46 @@ const STEPS = [{
     icon: "search",
     hint: "Just exploring my options"
   }]
-}, {
+};
+const BUYING_STEP = {
+  key: "purchaseType",
+  email: "Purchase type",
+  q: "What are you buying?",
+  sub: "Each of these has different lenders and criteria.",
+  choices: [{
+    value: "My first home",
+    icon: "home"
+  }, {
+    value: "My next home",
+    icon: "key"
+  }, {
+    value: "A buy-to-let",
+    icon: "trendingUp"
+  }]
+};
+const REMO_STEP = {
+  key: "dealEnd",
+  email: "Current deal ends",
+  q: "When does your current deal end?",
+  sub: "This tells us how urgent things are.",
+  choices: [{
+    value: "Within 3 months",
+    icon: "clock"
+  }, {
+    value: "3 to 6 months",
+    icon: "calendar"
+  }, {
+    value: "More than 6 months",
+    icon: "checkCircle"
+  }, {
+    value: "I'm on the standard variable rate",
+    icon: "scale",
+    hint: "Or my deal has already ended"
+  }]
+};
+const MORTGAGE_STEPS = [{
   key: "applicants",
+  email: "Applicants",
   q: "Who's applying?",
   sub: "This helps us assess affordability accurately.",
   two: true,
@@ -153,6 +192,7 @@ const STEPS = [{
   }]
 }, {
   key: "employment",
+  email: "Employment",
   q: "What's your employment status?",
   sub: "We work with every situation — including the tricky ones.",
   choices: [{
@@ -173,6 +213,7 @@ const STEPS = [{
   }]
 }, {
   key: "credit",
+  email: "Credit issues",
   q: "Any credit issues we should know about?",
   sub: "Honest answers help us point you to the right lender. It will not affect your credit score.",
   two: true,
@@ -184,11 +225,94 @@ const STEPS = [{
     icon: "scale",
     hint: "Defaults, CCJs, missed payments"
   }]
+}];
+const PROTECTION_STEPS = [{
+  key: "coverFor",
+  email: "Cover for",
+  q: "Who would the cover be for?",
+  sub: "This shapes the type and amount of cover we recommend.",
+  choices: [{
+    value: "Just me",
+    icon: "user"
+  }, {
+    value: "Me and my partner",
+    icon: "users"
+  }, {
+    value: "My family and dependants",
+    icon: "home"
+  }]
 }, {
-  key: "details"
-} // final contact step
-];
-const TOTAL = STEPS.length;
+  key: "coverType",
+  email: "Cover priority",
+  q: "What matters most to you?",
+  sub: "Pick the closest one. We will walk through the options together.",
+  choices: [{
+    value: "Life cover",
+    icon: "shield"
+  }, {
+    value: "Income if I cannot work",
+    icon: "trendingUp"
+  }, {
+    value: "Critical illness cover",
+    icon: "checkCircle"
+  }, {
+    value: "Not sure yet",
+    icon: "search"
+  }]
+}, {
+  key: "existingCover",
+  email: "Existing cover",
+  q: "Do you have any cover in place already?",
+  sub: "No problem either way. It just tells us where to start.",
+  choices: [{
+    value: "Yes",
+    icon: "checkCircle"
+  }, {
+    value: "No",
+    icon: "file"
+  }, {
+    value: "Not sure",
+    icon: "search"
+  }]
+}];
+const EXPLORING_STEPS = [{
+  key: "housing",
+  email: "Housing situation",
+  q: "What's your housing situation?",
+  sub: "This helps us point you to the right adviser first.",
+  choices: [{
+    value: "Own with a mortgage",
+    icon: "home"
+  }, {
+    value: "Renting",
+    icon: "key"
+  }, {
+    value: "Living with family",
+    icon: "users"
+  }, {
+    value: "Own outright",
+    icon: "checkCircle"
+  }]
+}, {
+  key: "dependants",
+  email: "Dependants",
+  q: "Does anyone depend on your income?",
+  sub: "A partner, children, or anyone else you support.",
+  two: true,
+  choices: [{
+    value: "Yes",
+    icon: "users"
+  }, {
+    value: "No",
+    icon: "user"
+  }]
+}];
+const stepsFor = help => {
+  const middle = help === "Protection & insurance" ? PROTECTION_STEPS : help === "Not sure yet" ? EXPLORING_STEPS : help === "Buying a home" ? [BUYING_STEP, ...MORTGAGE_STEPS] : help === "Remortgaging" ? [REMO_STEP, ...MORTGAGE_STEPS] : MORTGAGE_STEPS;
+  return [HELP_STEP, ...middle, {
+    key: "details"
+  }];
+};
 function ChoiceStep({
   step,
   value,
@@ -229,6 +353,7 @@ function DetailsStep({
   onSubmit,
   honeyRef
 }) {
+  const STEPS = stepsFor(answers.help);
   return /*#__PURE__*/React.createElement("form", {
     onSubmit: onSubmit,
     noValidate: false
@@ -360,6 +485,8 @@ function Funnel() {
   const [error, setError] = React.useState("");
   const honeyRef = React.useRef(null);
   const topRef = React.useRef(null);
+  const STEPS = stepsFor(answers.help);
+  const TOTAL = STEPS.length;
   const current = STEPS[step];
   const isDetails = current.key === "details";
   const pct = Math.round((step + (sent ? 1 : 0)) / TOTAL * 100);
@@ -388,9 +515,7 @@ function Funnel() {
       // Funnel answers first so the email leads with the enquiry type
       const fd = new FormData();
       fd.append("Enquiry type", lead);
-      fd.append("Applicants", answers.applicants || "");
-      fd.append("Employment", answers.employment || "");
-      fd.append("Credit issues", answers.credit || "");
+      STEPS.slice(1, -1).forEach(s => fd.append(s.email, answers[s.key] || ""));
       for (const [k, v] of src.entries()) fd.append(k, v);
       fd.append("access_key", "57947494-94ce-4eb8-97d9-781ae263bc37");
       fd.append("subject", "New website enquiry: " + lead);
