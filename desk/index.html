@@ -46,6 +46,8 @@ a{color:inherit}
 .client-sel label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.4);font-weight:700}
 .client-sel select{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;font-family:var(--f);font-size:12.5px;font-weight:700;padding:7px 10px;border-radius:9px;outline:none;max-width:200px}
 .client-sel select option{color:#111}
+.cs-go{background:rgba(33,192,136,.16);border:1px solid rgba(33,192,136,.5);color:#7BE3B8;font-family:var(--f);font-size:11.5px;font-weight:700;padding:7px 10px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.cs-go:hover{background:rgba(33,192,136,.26)}
 .hd-btns{display:flex;gap:7px}
 .ibtn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.82);font-family:var(--f);font-size:12px;font-weight:600;padding:8px 12px;border-radius:9px;cursor:pointer;transition:.16s}
 .ibtn:hover{background:rgba(255,255,255,.16)}
@@ -428,6 +430,7 @@ body.locked{overflow:hidden}
   <div class="client-sel">
     <label>Client</label>
     <select id="clientSel" onchange="setClient(this.value)"></select>
+    <button class="cs-go hidden" id="clientGo" onclick="setTab('meeting')"></button>
   </div>
   <div class="hd-btns">
     <span class="saved-tag" id="savedTag"></span>
@@ -1046,8 +1049,23 @@ function renderClientSel(){
   const opts=['<option value="">- none -</option>'].concat(
     leads.filter(l=>l.stage!=='skip'&&l.stage!=='lost').sort((a,b)=>a.name.localeCompare(b.name)).map(l=>`<option value="${l.id}" ${selectedClient==l.id?'selected':''}>${esc(l.name)}</option>`));
   document.getElementById('clientSel').innerHTML=opts.join('');
+  /* The selector only drives the Meeting tab, so on every other tab picking a
+     client used to look like nothing happened. Show a way through instead. */
+  const go=document.getElementById('clientGo');
+  if(!go)return;
+  const c=curClient();
+  if(c&&tab!=='meeting'){
+    const st=(ALLSTAGES.find(s=>s.key===c.stage)||{}).label||'';
+    go.textContent='Run '+c.name.split(' & ')[0].split(' ')[0]+(st?' ('+st+')':'');
+    go.classList.remove('hidden');
+  } else go.classList.add('hidden');
 }
-function setClient(id){selectedClient=id?parseInt(id):null;render();}
+function setClient(id){
+  selectedClient=id?parseInt(id):null;
+  const c=curClient();
+  render();
+  if(c&&tab!=='meeting')toast(c.name+' selected. Open the Meeting tab to run their call.');
+}
 function curClient(){return selectedClient?leads.find(l=>l.id===selectedClient):null;}
 
 /* ============ RENDER ROUTER ============ */
@@ -1190,7 +1208,15 @@ function viewMeeting(){
   return banner+sub+nav+secCard(sec)+mnav(data);
 }
 function qualifierView(){
-  const opener=`<div class="script-card q-opener"><div class="s-lbl">Opener</div><div class="s-txt quote">"Hi [Name], it’s Ginger from Property Clinic Solutions. Emmanuel Olukotun mentioned you’ve just bought or remortgaged - congratulations. Have you got two minutes? I just want to make sure it’s worth booking you a proper appointment rather than waste your time."</div></div>`;
+  const c=curClient();
+  const first=c?esc(c.name.split(' & ')[0].split(' ')[0]):'[Name]';
+  /* A client can carry their own qualify script (CLIENT_SCRIPTS[name].qualify).
+     Used for leads that did not come through a mortgage colleague, where the
+     generic Emmanuel opener and the mortgage questions do not apply. */
+  const own=c&&CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].qualify;
+  const opener=(Array.isArray(own)&&own.length)
+    ? own.map(s=>{const q=s.text.trim().startsWith('"');return `<div class="script-card q-opener ${q?'':'note-style'}"><div class="s-lbl">${esc(s.label||'Ask')}</div><div class="s-txt ${q?'quote':''}">${esc(s.text).replace(/\n/g,'<br>')}</div>${s.note?`<div class="gopt-note">${esc(s.note)}</div>`:''}</div>`;}).join('')
+    : `<div class="script-card q-opener"><div class="s-lbl">Opener</div><div class="s-txt quote">"Hi ${first}, it’s Ginger from Property Clinic Solutions. Emmanuel Olukotun mentioned you’ve just bought or remortgaged - congratulations. Have you got two minutes? I just want to make sure it’s worth booking you a proper appointment rather than waste your time."</div></div>`;
   const gates=QUAL_GATES.map(g=>{
     const sel=qualAnswers[g.id];
     const opts=g.opts.map(o=>`<button class="gopt ${sel===o.k?'sel '+o.v:''}" onclick="setQual('${g.id}','${o.k}')"><span class="dot"></span><span>${esc(o.label)}</span></button>`).join('');
