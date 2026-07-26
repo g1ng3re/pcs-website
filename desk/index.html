@@ -1568,13 +1568,19 @@ function mergeInto(d){
 function applyPendingUpdates(){
   const list=window.__DESK_PATCHES__;
   if(!Array.isArray(list)||!list.length)return false;
-  const pending=list.filter(p=>p&&p.id&&appliedPatches.indexOf(p.id)===-1);
+  /* Signed out on a cloud-enabled desk (offline mode) means nothing can ever
+     reach Supabase, so the update would live in this browser alone and be wiped
+     the next time you sign in and pull. Apply it so the desk is usable, but do
+     not tick it off, so it applies again for real once signed in. */
+  const canSync=(!CLOUD||!!currentUser);
+  const pending=list.filter(p=>p&&p.id&&(!canSync||appliedPatches.indexOf(p.id)===-1));
   if(!pending.length)return false;
   let all=[];
-  pending.forEach(p=>{all=all.concat(mergeInto(p));appliedPatches.push(p.id);});
+  pending.forEach(p=>{all=all.concat(mergeInto(p));if(canSync)appliedPatches.push(p.id);});
   persist();
-  setTimeout(()=>toast(pending.length+' update'+(pending.length>1?'s':'')+' from Claude applied'),600);
-  console.log('Applied updates:',all);
+  const n=pending.length+' update'+(pending.length>1?'s':'')+' from Claude';
+  setTimeout(()=>toast(canSync?(n+' applied'):(n+' applied on this device only. Sign in to sync.')),600);
+  console.log('Applied updates:',all,canSync?'(synced)':'(local only, not recorded)');
   return true;
 }
 
@@ -1618,7 +1624,7 @@ document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==
 /* ============ AUTH + BOOT ============ */
 let offline=false;
 function showLogin(){document.getElementById('loginOverlay').classList.add('show');document.body.classList.add('locked');}
-function workOffline(){offline=true;hideLogin();applyRestore();applyPendingUpdates();paintSaved();render();toast('Working offline');}
+function workOffline(){offline=true;hideLogin();applyRestore();applyPendingUpdates();paintSaved();render();toast('Working offline. Nothing saved here will reach your other devices.');}
 function hideLogin(){document.getElementById('loginOverlay').classList.remove('show');document.body.classList.remove('locked');}
 async function doLogin(){
   const email=document.getElementById('li-email').value.trim();
