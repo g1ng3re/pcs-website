@@ -510,7 +510,7 @@ body.locked{overflow:hidden}
     </div>
     <div class="comm-block" id="commBlock"><div class="ch"> Placed policy</div>
       <div class="frow"><div class="fld"><label>Premium /mo (£)</label><input id="f-premium"></div><div class="fld"><label>Commission (£)</label><input id="f-comm"></div></div>
-      <div class="frow"><div class="fld"><label>Your share (auto, 32.5%)</label><input id="f-share" disabled style="background:var(--sunken);color:var(--n600)"></div><div class="fld"><label>Basis</label><select id="f-basis"><option>Indemnity</option><option>Non-indemnity</option></select></div></div>
+      <div class="frow"><div class="fld"><label>Your share (auto)</label><input id="f-share" disabled style="background:var(--sunken);color:var(--n600)"></div><div class="fld"><label>Basis</label><select id="f-basis"><option>Indemnity</option><option>Non-indemnity</option></select></div></div>
       <div class="fld"><label>Clawback ends</label><input type="date" id="f-clawback"></div>
     </div>
   </div>
@@ -537,11 +537,19 @@ const ACTIVE=['new','qualify','m1','research','m2','application','postsale','rev
    as a clawback reserve -> the remaining 65% is split 50/50 between PCS and Ginger.
    Ginger's share = 32.5% of gross.
    OPEN: is the 10% reserve released to the split once clawback expires? */
-const SPLIT={bsl:0.75,reserve:0.10,adviserOfNet:0.50};
+const SPLIT={bsl:0.75,reserve:0.10,adviserOfNet:0.50,ownOfNet:0.70};
 SPLIT.net=SPLIT.bsl-SPLIT.reserve;                 /* 0.65 */
-SPLIT.adviser=SPLIT.net*SPLIT.adviserOfNet;        /* 0.325 */
+SPLIT.adviser=SPLIT.net*SPLIT.adviserOfNet;        /* 0.325, Emmanuel's lead */
+SPLIT.own=SPLIT.net*SPLIT.ownOfNet;                /* 0.455, Ginger's own lead */
 SPLIT.pcs=SPLIT.net-SPLIT.adviser;                 /* 0.325 */
-function myShare(gross){const g=parseFloat(gross)||0;return g*SPLIT.adviser;}
+SPLIT.pcsOwn=SPLIT.net-SPLIT.own;                  /* 0.195 */
+/* Whose lead is it? Agreed 26/07/2026: anything sourced through the mortgage
+   side is Emmanuel's and splits 50/50; every other channel is Ginger's own and
+   splits 70/30 in his favour, out of the same 65% pot. */
+const EMM_SOURCE='Colleague / mortgage';
+function isOwnLead(l){return !!l&&l.source!==EMM_SOURCE;}
+function shareRate(l){return isOwnLead(l)?SPLIT.own:SPLIT.adviser;}
+function myShare(gross,l){const g=parseFloat(gross)||0;return g*shareRate(l);}
 function pct(x){return (Math.round(x*10000)/100)+'%';}
 
 /* No client data lives in this file. Everything is loaded from your account.
@@ -1128,8 +1136,8 @@ function viewHome(){
     <div class="stat"><div class="l">Call now</div><div class="v">${callnow.length}</div><div class="s">this week</div></div>
     <div class="stat"><div class="l">In pipeline</div><div class="v">${inPipe}</div><div class="s">${leads.length} leads total</div></div>
     <div class="stat"><div class="l">Placed</div><div class="v emerald">${placed.length}</div><div class="s">on the book</div></div>
-    <div class="stat"><div class="l">Your commission</div><div class="v gold">${gbp0(placed.reduce((s2,l)=>s2+myShare(l.comm),0))}</div><div class="s">${gbp0(commGen)} gross</div></div>
-    <div class="stat"><div class="l">Your money at risk</div><div class="v warn">${gbp0(myShare(atRisk))}</div><div class="s">${gbp0(atRisk)} gross under clawback</div></div>
+    <div class="stat"><div class="l">Your commission</div><div class="v gold">${gbp0(placed.reduce((s2,l)=>s2+myShare(l.comm,l),0))}</div><div class="s">${gbp0(commGen)} gross</div></div>
+    <div class="stat"><div class="l">Your money at risk</div><div class="v warn">${gbp0(placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s2,l)=>s2+myShare(l.comm,l),0))}</div><div class="s">${gbp0(atRisk)} gross under clawback</div></div>
   </div>`;
   const quick=`<div class="quick">
     <div class="qbtn" onclick="setTab('meeting')"><div class="qt">Run a meeting</div><div class="qs">Qualify, M1, M2, Post</div></div>
@@ -1476,25 +1484,30 @@ function suitDraft(){
 /* ============ MONEY ============ */
 function viewMoney(){
   const t=today();const placed=leads.filter(l=>l.stage==='placed');
-  const callout=`<div class="callout"><span></span><span><b>Split confirmed 24/07/2026.</b> BSL passes <b>${pct(SPLIT.bsl)}</b> of gross to PCS. PCS retains <b>${pct(SPLIT.reserve)}</b> of gross as a clawback reserve. The remaining <b>${pct(SPLIT.net)}</b> splits 50/50, so your share is <b>${pct(SPLIT.adviser)}</b> of gross. <b>Open:</b> confirm whether the ${pct(SPLIT.reserve)} reserve is released once clawback expires.</span></div>`;
+  const callout=`<div class="callout"><span></span><span><b>Split, updated 26/07/2026.</b> BSL passes <b>${pct(SPLIT.bsl)}</b> of gross to PCS. PCS retains <b>${pct(SPLIT.reserve)}</b> of gross as a clawback reserve. The remaining <b>${pct(SPLIT.net)}</b> is the splittable pot. <b>Your own leads split 70/30 in your favour (${pct(SPLIT.own)} of gross); Emmanuel's leads stay 50/50 (${pct(SPLIT.adviser)} of gross).</b> Anything not sourced "${EMM_SOURCE}" counts as yours. <b>Open:</b> confirm whether the ${pct(SPLIT.reserve)} reserve is released once clawback expires.</span></div>`;
   if(!placed.length)return callout+'<div class="empty">No placed policies yet.</div>';
   const commGen=placed.reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
   const riskComm=placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
-  const myTotal=placed.reduce((s2,l)=>s2+myShare(l.comm),0);
-  const myRisk=placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s2,l)=>s2+myShare(l.comm),0);
+  const myTotal=placed.reduce((s2,l)=>s2+myShare(l.comm,l),0);
+  const myRisk=placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s2,l)=>s2+myShare(l.comm,l),0);
+  const ownComm=placed.filter(isOwnLead).reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
+  const emmComm=commGen-ownComm;
+  const blended=commGen?myTotal/commGen:0;
   const wf=`<div class="wf">
     <div class="wf-row"><div class="wl">Gross commission from insurers<small>total written on the book</small></div><div class="wv">${gbp(commGen)}</div></div>
     <div class="wf-row neg"><div class="wl">Retained by BSL<small>${pct(1-SPLIT.bsl)} of gross</small></div><div class="wv">-${gbp(commGen*(1-SPLIT.bsl))}</div></div>
     <div class="wf-row"><div class="wl">Received by PCS<small>${pct(SPLIT.bsl)} of gross</small></div><div class="wv">${gbp(commGen*SPLIT.bsl)}</div></div>
     <div class="wf-row neg"><div class="wl">PCS clawback reserve<small>${pct(SPLIT.reserve)} of gross, held back</small></div><div class="wv">-${gbp(commGen*SPLIT.reserve)}</div></div>
-    <div class="wf-row"><div class="wl">Splittable pot<small>${pct(SPLIT.net)} of gross, 50/50 with PCS</small></div><div class="wv">${gbp(commGen*SPLIT.net)}</div></div>
-    <div class="wf-row neg"><div class="wl">PCS half<small>${pct(SPLIT.pcs)} of gross</small></div><div class="wv">-${gbp(commGen*SPLIT.pcs)}</div></div>
-    <div class="wf-row tot"><div class="wl">Your share<small>${pct(SPLIT.adviser)} of gross</small></div><div class="wv">${gbp(myTotal)}</div></div>
+    <div class="wf-row"><div class="wl">Splittable pot<small>${pct(SPLIT.net)} of gross, split by whose lead it was</small></div><div class="wv">${gbp(commGen*SPLIT.net)}</div></div>
+    <div class="wf-row"><div class="wl">From your own leads<small>${gbp(ownComm)} gross, you take 70% of the pot</small></div><div class="wv">${gbp(ownComm*SPLIT.own)}</div></div>
+    <div class="wf-row"><div class="wl">From Emmanuel's leads<small>${gbp(emmComm)} gross, you take 50% of the pot</small></div><div class="wv">${gbp(emmComm*SPLIT.adviser)}</div></div>
+    <div class="wf-row neg"><div class="wl">PCS share<small>the rest of the pot</small></div><div class="wv">-${gbp(commGen*SPLIT.net-myTotal)}</div></div>
+    <div class="wf-row tot"><div class="wl">Your share<small>${pct(blended)} of gross blended</small></div><div class="wv">${gbp(myTotal)}</div></div>
   </div>`;
-  const rows=placed.map(l=>{const cb=parseD(l.clawback);const risk=cb&&cb>t;const dl=cb?daysB(cb,t):null;return `<tr onclick="openLead(${l.id})" style="cursor:pointer"><td><b>${esc(l.name)}</b></td><td class="money">${gbp(l.premium)}</td><td class="money">${gbp(l.comm)}</td><td class="money"><b>${gbp(myShare(l.comm))}</b></td><td>${esc(l.basis||'')}</td><td>${l.clawback?fmtD(l.clawback):'-'}</td><td>${risk?`<span class="pill pill-risk">at risk · ${dl}d</span>`:cb?'<span class="pill pill-safe">safe</span>':'-'}</td></tr>`;}).join('');
-  return callout+`<div class="mini-grid"><div class="mcard"><div class="lbl">Gross commission</div><div class="big gold">${gbp0(commGen)}</div><div class="sub">${placed.length} placed</div></div><div class="mcard"><div class="lbl">Your share</div><div class="big" style="color:var(--emerald-h)">${gbp0(myTotal)}</div><div class="sub">${pct(SPLIT.adviser)} of gross</div></div><div class="mcard"><div class="lbl">Your money at clawback risk</div><div class="big">${gbp0(myRisk)}</div><div class="sub">of ${gbp0(riskComm)} gross reclaimable</div></div></div>
+  const rows=placed.map(l=>{const cb=parseD(l.clawback);const risk=cb&&cb>t;const dl=cb?daysB(cb,t):null;return `<tr onclick="openLead(${l.id})" style="cursor:pointer"><td><b>${esc(l.name)}</b></td><td class="money">${gbp(l.premium)}</td><td class="money">${gbp(l.comm)}</td><td class="money"><b>${gbp(myShare(l.comm,l))}</b></td><td>${isOwnLead(l)?'<span class="pill pill-safe">yours 70/30</span>':'<span class="pill">Emmanuel 50/50</span>'}</td><td>${esc(l.basis||'')}</td><td>${l.clawback?fmtD(l.clawback):'-'}</td><td>${risk?`<span class="pill pill-risk">at risk · ${dl}d</span>`:cb?'<span class="pill pill-safe">safe</span>':'-'}</td></tr>`;}).join('');
+  return callout+`<div class="mini-grid"><div class="mcard"><div class="lbl">Gross commission</div><div class="big gold">${gbp0(commGen)}</div><div class="sub">${placed.length} placed</div></div><div class="mcard"><div class="lbl">Your share</div><div class="big" style="color:var(--emerald-h)">${gbp0(myTotal)}</div><div class="sub">${pct(blended)} of gross blended</div></div><div class="mcard"><div class="lbl">Your money at clawback risk</div><div class="big">${gbp0(myRisk)}</div><div class="sub">of ${gbp0(riskComm)} gross reclaimable</div></div></div>
     ${wf}
-    <table class="tbl"><thead><tr><th>Client</th><th>Premium/mo</th><th>Gross commission</th><th>Your share (${pct(SPLIT.adviser)})</th><th>Basis</th><th>Clawback ends</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
+    <table class="tbl"><thead><tr><th>Client</th><th>Premium/mo</th><th>Gross commission</th><th>Your share</th><th>Split</th><th>Basis</th><th>Clawback ends</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 /* ============ LEADS ============ */
@@ -1506,7 +1519,7 @@ function viewLeads(){
   const open=leads.filter(l=>ACTIVE.includes(l.stage)&&l.stage!=='placed');
   const held=leads.filter(l=>l.stage==='hold'||l.stage==='cold');
   const rate=concluded.length?placed.length/concluded.length:0;
-  const myComm=placed.reduce((a,l)=>a+myShare(l.comm),0);
+  const myComm=placed.reduce((a,l)=>a+myShare(l.comm,l),0);
   const perPlaced=placed.length?myComm/placed.length:0;
   const perConcluded=concluded.length?myComm/concluded.length:0;
 
@@ -1523,7 +1536,7 @@ function viewLeads(){
     const c=items.filter(l=>CONCLUDED.includes(l.stage));
     const pl=items.filter(l=>l.stage==='placed');
     const r=c.length?Math.round(pl.length/c.length*100):null;
-    const inc=pl.reduce((a,l)=>a+myShare(l.comm),0);
+    const inc=pl.reduce((a,l)=>a+myShare(l.comm,l),0);
     return `<tr><td><b>${esc(sr)}</b></td><td>${items.length}</td><td>${items.filter(l=>ACTIVE.includes(l.stage)&&l.stage!=='placed').length}</td><td>${items.filter(l=>l.stage==='hold'||l.stage==='cold').length}</td><td>${pl.length}</td><td>${items.filter(l=>l.stage==='lost'||l.stage==='skip').length}</td><td>${r===null?'-':r+'%'}</td><td class="money">${inc?gbp0(inc):'-'}</td></tr>`;
   }).join('');
 
@@ -1557,7 +1570,7 @@ function openLead(id){
   document.getElementById('f-wait').value=l&&l.wait?l.wait:'';
   document.getElementById('f-notes').value=l?l.notes||'':'';
   document.getElementById('f-premium').value=l&&l.premium?l.premium:'';document.getElementById('f-comm').value=l&&l.comm?l.comm:'';
-  document.getElementById('f-share').value=l&&l.comm?gbp(myShare(l.comm)):'';document.getElementById('f-basis').value=l&&l.basis?l.basis:'Indemnity';
+  document.getElementById('f-share').value=l&&l.comm?gbp(myShare(l.comm,l)):'';document.getElementById('f-basis').value=l&&l.basis?l.basis:'Indemnity';
   document.getElementById('f-clawback').value=l&&l.clawback?l.clawback:'';
   document.getElementById('delBtn').style.display=l?'block':'none';
   onStageChange();document.getElementById('overlay').classList.add('show');
