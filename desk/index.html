@@ -821,7 +821,7 @@ PCS | [Surname] | M1 Discovery   ·   PCS | [Surname] | M2 Recommendation`},
 const CFG={url:'https://gxtpvguyflyiuzvvetuv.supabase.co',anonKey:'sb_publishable_m94sNHH2ji5UJWI3W1j15Q_ZJDvw9ng'};
 const CLOUD=!!(CFG.url&&CFG.anonKey);
 const sb=(CLOUD&&window.supabase)?window.supabase.createClient(CFG.url,CFG.anonKey):null;
-let currentUser=null, saveTimer=null;
+let currentUser=null, saveTimer=null, cloudStamp=null;
 
 /* ============ CASE-SPECIFIC MEETING SCRIPTS ============ */
 /* Client-specific meeting scripts. Held in your account, not in this file. */
@@ -892,8 +892,8 @@ async function syncNow(){
   if(!currentUser){toast('Sign in to sync');return;}
   if(b){b.disabled=true;b.textContent='Syncing';}
   try{
-    await saveState();          /* push anything not yet written */
-    await loadState();          /* pull whatever the other device wrote */
+    await loadState();          /* pull first, so a stale device cannot clobber */
+    await saveState();          /* then push anything this device added */
     applyRestore();
     applyPendingUpdates();
     lastSaved=new Date();
@@ -926,16 +926,34 @@ async function saveState(){
     /* Read-modify-write. An empty scripts/hooks object on THIS device must never
        overwrite a populated one in the cloud, or opening the desk somewhere the
        restore file does not exist would silently destroy the meeting scripts. */
-    let existing={};
-    try{const{data}=await sb.from('protection_state').select('data').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data)existing=data.data;}catch(e){}
-    const payload=Object.assign({},existing,{leads,checks,suit,qualAnswers,appliedPatches});
+    let existing={},stamp=null;
+    try{const{data}=await sb.from('protection_state').select('data,updated_at').eq('user_id',currentUser.id).maybeSingle();if(data){if(data.data)existing=data.data;stamp=data.updated_at||null;}}catch(e){}
+    /* Has another device written since we last pulled? If so this device's copy
+       is stale, and replacing leads wholesale would delete their work. Merge by
+       id instead: cloud is the base, our version of a lead wins, nothing is lost.
+       Without this, opening the iPad on an old copy and pressing Sync wipes any
+       lead added on the Mac since. */
+    const stale=(stamp&&cloudStamp&&stamp!==cloudStamp)||(stamp&&!cloudStamp);
+    let outLeads=leads,outPatches=appliedPatches;
+    if(stale&&Array.isArray(existing.leads)){
+      const byId={};
+      existing.leads.forEach(l=>{byId[l.id]=l;});
+      leads.forEach(l=>{byId[l.id]=l;});
+      outLeads=Object.keys(byId).map(k=>byId[k]).sort((a,b)=>a.id-b.id);
+      outPatches=Array.from(new Set([].concat(existing.appliedPatches||[],appliedPatches||[])));
+      leads=outLeads;appliedPatches=outPatches;
+      console.warn('Cloud had changed since this device last pulled. Merged leads rather than overwriting.');
+    }
+    const payload=Object.assign({},existing,{leads:outLeads,checks,suit,qualAnswers,appliedPatches:outPatches});
     if(Object.keys(CLIENT_SCRIPTS).length)payload.scripts=CLIENT_SCRIPTS;
     if(Object.keys(CLIENT_HOOKS).length)payload.hooks=CLIENT_HOOKS;
-    await sb.from('protection_state').upsert({user_id:currentUser.id,data:payload,updated_at:new Date().toISOString()});
+    const now=new Date().toISOString();
+    await sb.from('protection_state').upsert({user_id:currentUser.id,data:payload,updated_at:now});
+    cloudStamp=now;
     lastSaved=new Date();paintSaved();
   }catch(e){console.warn('save failed',e);}
 }
-async function loadState(){if(!sb||!currentUser)return;try{const{data}=await sb.from('protection_state').select('data').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data){const d=data.data;if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;}else{await saveState();}}catch(e){console.warn('load failed',e);}}
+async function loadState(){if(!sb||!currentUser)return;try{const{data}=await sb.from('protection_state').select('data,updated_at').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data){cloudStamp=data.updated_at||null;const d=data.data;if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;}else{await saveState();}}catch(e){console.warn('load failed',e);}}
 
 /* ============ HELPERS ============ */
 function today(){const d=new Date();d.setHours(0,0,0,0);return d;}
