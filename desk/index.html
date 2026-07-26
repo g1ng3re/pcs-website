@@ -833,6 +833,10 @@ let CLIENT_HOOKS={};
 let leads=JSON.parse(JSON.stringify(SEED));
 let leadQ='';
 let appliedPatches=[];
+/* Ids of leads deliberately deleted. Without these, a delete on one device is
+   undone by the merge in saveState, because the other device still has the lead
+   and there is no way to tell "not seen yet" from "removed on purpose". */
+let deletedIds=[];
 let tab='home', filterSrc='all', selectedClient=null, mView='qualify', mIdx=0, checks={}, qualAnswers={}, showParked=false;
 /* ---- SAVING ----
    Local first: every change writes to this browser's storage straight away.
@@ -848,7 +852,7 @@ function saveLocal(){
   if(!LS_OK){paintSaved();return;}
   try{
     lastSaved=new Date();
-    localStorage.setItem(LS_KEY,JSON.stringify({v:DATA_VERSION,savedAt:lastSaved.toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS,appliedPatches}));
+    localStorage.setItem(LS_KEY,JSON.stringify({v:DATA_VERSION,savedAt:lastSaved.toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS,appliedPatches,deletedIds}));
   }catch(e){lastSaved=null;}
   paintSaved();
 }
@@ -867,7 +871,7 @@ function loadLocal(){
   if(d.checks)checks=d.checks;
   if(d.suit)suit=d.suit;
   if(d.qualAnswers)qualAnswers=d.qualAnswers;
-  if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;
+  if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;if(d.deletedIds)deletedIds=d.deletedIds;
   lastSaved=d.savedAt?new Date(d.savedAt):null;
   return true;
 }
@@ -875,7 +879,7 @@ function restoreBackup(){
   if(!staleBackup)return;
   if(!confirm('Replace what is on screen with your previous saved copy? The desk update from '+DATA_VERSION+' will be discarded.'))return;
   const d=staleBackup;
-  leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;
+  leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;if(d.deletedIds)deletedIds=d.deletedIds;
   staleBackup=null;persist();render();toast('Previous copy restored');
 }
 function downloadBackup(){
@@ -934,6 +938,9 @@ async function saveState(){
        Without this, opening the iPad on an old copy and pressing Sync wipes any
        lead added on the Mac since. */
     const stale=(stamp&&cloudStamp&&stamp!==cloudStamp)||(stamp&&!cloudStamp);
+    /* Deletions are union'd from both sides and always win over the merge, so a
+       lead removed on one device is never resurrected by the other. */
+    const gone=Array.from(new Set([].concat(existing.deletedIds||[],deletedIds||[])));
     let outLeads=leads,outPatches=appliedPatches;
     if(stale&&Array.isArray(existing.leads)){
       const byId={};
@@ -941,10 +948,11 @@ async function saveState(){
       leads.forEach(l=>{byId[l.id]=l;});
       outLeads=Object.keys(byId).map(k=>byId[k]).sort((a,b)=>a.id-b.id);
       outPatches=Array.from(new Set([].concat(existing.appliedPatches||[],appliedPatches||[])));
-      leads=outLeads;appliedPatches=outPatches;
       console.warn('Cloud had changed since this device last pulled. Merged leads rather than overwriting.');
     }
-    const payload=Object.assign({},existing,{leads:outLeads,checks,suit,qualAnswers,appliedPatches:outPatches});
+    outLeads=outLeads.filter(l=>gone.indexOf(l.id)===-1);
+    leads=outLeads;appliedPatches=outPatches;deletedIds=gone;
+    const payload=Object.assign({},existing,{leads:outLeads,checks,suit,qualAnswers,appliedPatches:outPatches,deletedIds:gone});
     if(Object.keys(CLIENT_SCRIPTS).length)payload.scripts=CLIENT_SCRIPTS;
     if(Object.keys(CLIENT_HOOKS).length)payload.hooks=CLIENT_HOOKS;
     const now=new Date().toISOString();
@@ -953,7 +961,12 @@ async function saveState(){
     lastSaved=new Date();paintSaved();
   }catch(e){console.warn('save failed',e);}
 }
-async function loadState(){if(!sb||!currentUser)return;try{const{data}=await sb.from('protection_state').select('data,updated_at').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data){cloudStamp=data.updated_at||null;const d=data.data;if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;}else{await saveState();}}catch(e){console.warn('load failed',e);}}
+async function loadState(){if(!sb||!currentUser)return;try{const{data}=await sb.from('protection_state').select('data,updated_at').eq('user_id',currentUser.id).maybeSingle();if(data&&data.data){cloudStamp=data.updated_at||null;const d=data.data;
+  /* Keep this device's own deletions when pulling, or a delete made here and not
+     yet pushed would be undone by the incoming copy. */
+  deletedIds=Array.from(new Set([].concat(d.deletedIds||[],deletedIds||[])));
+  if(d.leads)leads=d.leads.filter(l=>deletedIds.indexOf(l.id)===-1);
+  if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;}else{await saveState();}}catch(e){console.warn('load failed',e);}}
 
 /* ============ HELPERS ============ */
 function today(){const d=new Date();d.setHours(0,0,0,0);return d;}
@@ -1562,7 +1575,7 @@ function saveLead(){
   if(id){Object.assign(leads.find(x=>x.id===parseInt(id)),obj);}else{obj.id=(leads.reduce((m,l)=>Math.max(m,l.id),0)||0)+1;leads.push(obj);}
   persist();closeLead();render();toast('Saved ');
 }
-function deleteLead(){const id=parseInt(document.getElementById('f-id').value);if(!id)return;if(!confirm('Delete this lead?'))return;leads=leads.filter(x=>x.id!==id);persist();closeLead();render();}
+function deleteLead(){const id=parseInt(document.getElementById('f-id').value);if(!id)return;if(!confirm('Delete this lead?'))return;leads=leads.filter(x=>x.id!==id);if(deletedIds.indexOf(id)===-1)deletedIds.push(id);persist();closeLead();render();}
 
 
 /* ============ UPDATES FROM CLAUDE ============
@@ -1577,6 +1590,9 @@ function mergeInto(d){
     if(!t&&pl.name)t=leads.find(l=>l.name===pl.name);
     if(t){Object.assign(t,pl);done.push('updated '+t.name);}
     else{const nl=Object.assign({stage:'new',source:'Colleague / mortgage',notes:''},pl);if(nl.id==null)nl.id=(leads.reduce((m,l)=>Math.max(m,l.id),0)||0)+1;leads.push(nl);done.push('added '+(nl.name||'a lead'));}
+    /* Deliberately re-adding a lead clears any tombstone, so it is not filtered
+       straight back out on the next sync. */
+    const rid=(t?t.id:pl.id);if(rid!=null)deletedIds=deletedIds.filter(x=>x!==rid);
   });
   if(d.scripts){Object.assign(CLIENT_SCRIPTS,d.scripts);Object.keys(d.scripts).forEach(k=>done.push('script for '+k));}
   if(d.hooks)Object.assign(CLIENT_HOOKS,d.hooks);
@@ -1635,7 +1651,7 @@ function applyPatch(){
 }
 
 /* ============ EXPORT / IMPORT ============ */
-function exportData(){const payload={v:DATA_VERSION,savedAt:new Date().toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS,appliedPatches};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pcs-protection-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Exported');}
+function exportData(){const payload={v:DATA_VERSION,savedAt:new Date().toISOString(),leads,checks,suit,qualAnswers,scripts:CLIENT_SCRIPTS,hooks:CLIENT_HOOKS,appliedPatches,deletedIds};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pcs-protection-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Exported');}
 function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(Array.isArray(d)){leads=d;}else{if(d.leads)leads=d.leads;if(d.checks)checks=d.checks;if(d.suit)suit=d.suit;if(d.qualAnswers)qualAnswers=d.qualAnswers;if(d.scripts)CLIENT_SCRIPTS=d.scripts;if(d.hooks)CLIENT_HOOKS=d.hooks;if(d.appliedPatches)appliedPatches=d.appliedPatches;}persist();render();toast('Imported');}catch(err){alert('Could not read that file.');}};r.readAsText(f);}
 document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeLead();});
 
