@@ -145,6 +145,7 @@ a{color:inherit}
 .src-colleague{background:var(--blue-t);color:var(--blue)}
 .src-introducer{background:var(--gold-t);color:#9a6f0f}
 .src-social{background:#F0E7FB;color:#7A3FC0}.src-event{background:#FBE7F0;color:#B03F72}
+.src-website{background:#E3F2F1;color:#0F6E68}
 
 /* PIPELINE BOARD */
 .filters{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
@@ -524,8 +525,8 @@ const STAGES=[
 ];
 const PARKED=[{key:'hold',label:'Hold'},{key:'cold',label:'Cold'},{key:'skip',label:'Skip'},{key:'lost',label:'Lost'}];
 const ALLSTAGES=[...STAGES,...PARKED];
-const SOURCES=['Client referral','Colleague / mortgage','Introducer','Social media','Event'];
-const SRCCLASS={'Client referral':'src-client','Colleague / mortgage':'src-colleague','Introducer':'src-introducer','Social media':'src-social','Event':'src-event'};
+const SOURCES=['Client referral','Colleague / mortgage','Introducer','Social media','Event','Website'];
+const SRCCLASS={'Client referral':'src-client','Colleague / mortgage':'src-colleague','Introducer':'src-introducer','Social media':'src-social','Event':'src-event','Website':'src-website'};
 const ACTIVE=['new','qualify','m1','research','m2','application','postsale','review'];
 
 /* ---- COMMISSION SPLIT (confirmed 24/07/2026) ----
