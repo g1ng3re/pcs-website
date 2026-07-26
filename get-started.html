@@ -309,6 +309,7 @@ function DetailsStep({
     }
   }, /*#__PURE__*/React.createElement(Checkbox, {
     name: "consent",
+    value: "Agreed",
     required: true,
     label: /*#__PURE__*/React.createElement("span", null, "I agree to be contacted about my enquiry and accept the ", /*#__PURE__*/React.createElement("a", {
       href: "privacy",
@@ -320,11 +321,11 @@ function DetailsStep({
     className: "pcs-honeypot",
     "aria-hidden": "true"
   }, /*#__PURE__*/React.createElement("label", {
-    htmlFor: "company"
-  }, "Company"), /*#__PURE__*/React.createElement("input", {
+    htmlFor: "botcheck"
+  }, "Leave this field empty"), /*#__PURE__*/React.createElement("input", {
     ref: honeyRef,
-    id: "company",
-    name: "company",
+    id: "botcheck",
+    name: "botcheck",
     type: "text",
     tabIndex: "-1",
     autoComplete: "off"
@@ -382,14 +383,17 @@ function Funnel() {
     setSubmitting(true);
     setError("");
     try {
-      const fd = new FormData(e.target);
-      // Bundle the funnel answers alongside the contact fields
-      fd.append("Enquiry type", answers.help || "");
+      const src = new FormData(e.target);
+      const lead = answers.help || "Not specified";
+      // Funnel answers first so the email leads with the enquiry type
+      const fd = new FormData();
+      fd.append("Enquiry type", lead);
       fd.append("Applicants", answers.applicants || "");
       fd.append("Employment", answers.employment || "");
       fd.append("Credit issues", answers.credit || "");
+      for (const [k, v] of src.entries()) fd.append(k, v);
       fd.append("access_key", "57947494-94ce-4eb8-97d9-781ae263bc37");
-      fd.append("subject", "New enquiry from the PCS get-started form");
+      fd.append("subject", "New website enquiry: " + lead);
       fd.append("from_name", "Property Clinic Solutions website");
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
