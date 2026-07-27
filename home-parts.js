@@ -1583,7 +1583,7 @@
       h: "Tools",
       links: [["Mortgage Calculator", "calculator"], ["Blog", "blog"]]
     }];
-    const socials = [["facebook", "Facebook", "https://www.facebook.com/profile.php?id=61588038074490"], ["instagram", "Instagram", "https://www.instagram.com/propertyclinicsolutions/"], ["linkedin", "LinkedIn", "https://www.linkedin.com/company/property-clinic-solutions/"], ["tiktok", "TikTok", "https://www.tiktok.com/@propertyclinicsolutions"]];
+    const socials = [["facebook", "Facebook", "https://www.facebook.com/profile.php?id=61588038074490"], ["instagram", "Instagram", "https://www.instagram.com/withpcs/"], ["linkedin", "LinkedIn", "https://www.linkedin.com/company/property-clinic-solutions/"], ["tiktok", "TikTok", "https://www.tiktok.com/@propertyclinicsolutions"]];
     return /*#__PURE__*/React.createElement("footer", {
       style: {
         background: "var(--pcs-ink)",

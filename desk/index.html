@@ -137,6 +137,8 @@ a{color:inherit}
 .cc-due.over{background:var(--red-t);color:var(--red)}.cc-due.soon{background:var(--gold-t);color:#9a6f0f}
 .cc-phone{display:inline-block;margin-top:10px;font-size:14.5px;font-weight:800;color:var(--blue);text-decoration:none}
 .cc-phone:hover{text-decoration:underline}
+.cc-email{display:block;margin-top:3px;font-size:12.5px;font-weight:700;color:var(--n500);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+a.cc-email:hover{color:var(--blue);text-decoration:underline}
 .cc-actions{display:flex;gap:6px;margin-top:11px}
 .cc-mini{font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;background:var(--sunken);border:1px solid var(--n200);cursor:pointer;color:var(--n700)}
 .cc-mini:hover{background:var(--blue-t);border-color:var(--blue);color:var(--blue)}
@@ -498,6 +500,7 @@ body.locked{overflow:hidden}
     <input type="hidden" id="f-id">
     <div class="frow"><div class="fld" style="flex:2"><label>Name</label><input id="f-name"></div><div class="fld"><label>Age</label><input id="f-age"></div></div>
     <div class="frow"><div class="fld"><label>Phone</label><input id="f-phone"></div><div class="fld"><label>Source</label><select id="f-source"></select></div></div>
+    <div class="fld"><label>Email</label><input id="f-email" type="email" inputmode="email" autocapitalize="off" spellcheck="false" placeholder="name@example.com"></div>
     <div class="frow"><div class="fld"><label>Stage</label><select id="f-stage" onchange="onStageChange()"></select></div><div class="fld"><label>Next check</label><input type="date" id="f-next"></div></div>
     <div class="comm-block show" style="background:var(--emerald-t)"><div class="ch">Booked meeting</div>
       <div class="fld"><label>Contact attempts (max 3, then reassess)</label><input type="number" id="f-tries" min="0" max="9"></div>
@@ -1197,6 +1200,7 @@ function callCard(l){
     <div class="cc-top" onclick="openLead(${l.id})" style="cursor:pointer"><div><div class="cc-name">${esc(l.name)}${l.age?` <span class="lc-age">${esc(String(l.age))}</span>`:''}</div><div class="cc-stage">${stageLabel(l.stage)}</div></div><div class="cc-due ${cls}">${tag}</div></div>
     ${triesChip(l)}${apptChip(l)}
     <a class="cc-phone" href="tel:${esc(l.phone)}">${esc(l.phone||'no number')}</a>
+    ${l.email?`<a class="cc-email" href="mailto:${esc(l.email)}">${esc(l.email)}</a>`:'<span class="cc-email">no email</span>'}
     <div>${srcChip(l.source)}</div>
     <div class="cc-actions"><button class="cc-mini" onclick="prepClient(${l.id})"> Prep meeting</button><button class="cc-mini" onclick="openLead(${l.id})">Edit</button></div>
     ${noteBlock(l)}
@@ -1375,14 +1379,19 @@ function toggleCheck(id){checks[ckey(id)]=!checks[ckey(id)];persist();render();}
 function togglePost(id){checks['post:'+id]=!checks['post:'+id];persist();render();}
 
 /* ============ EMAILS ============ */
+/* u1 is a reply inside an existing thread, cal is invite text to paste. Neither should
+   open a new message, so they stay copy-only. */
+const NO_SEND=['u1','cal'];
 function viewEmails(){
   const c=curClient();
-  const banner=`<div class="callout blue"><span></span><span>${c?`Filling <b>[Name]</b> as ${esc(c.name)}. `:''}Copy, paste into your email, fill the remaining [brackets], send. ${c?'':'Select a client in the header to auto-fill their name.'}</span></div>`;
+  const to=c&&c.email?c.email:'';
+  const banner=`<div class="callout blue"><span></span><span>${c?`Filling <b>[Name]</b> as ${esc(c.name)}. `:''}Copy, paste into your email, fill the remaining [brackets], send. ${c?(to?`Send opens your mail app addressed to <b>${esc(to)}</b>.`:'No email address on this lead yet. Add one in the lead editor to enable Send.'):'Select a client in the header to auto-fill their name.'}</span></div>`;
   const cards=EMAILS.map(e=>{
     let body=e.body, subject=e.subject;
     if(c){body=body.replace(/\[Name\]/g,c.name);subject=subject.replace(/\[Name\]/g,c.name);if(c.phone)body=body.replace(/\[Phone\]/g,c.phone);}
+    const send=NO_SEND.indexOf(e.id)===-1?`<button class="btn btn-ghost" onclick="sendEmail('${e.id}')"${to?'':' disabled style="opacity:.45;cursor:not-allowed"'}>Send</button>`:'';
     return `<div class="email-card">
-      <div class="email-head"><div><div class="en">${esc(e.label)}</div><div class="es">${esc(e.when)}</div></div><button class="btn btn-ghost" onclick="copyEmail('${e.id}')">Copy</button></div>
+      <div class="email-head"><div><div class="en">${esc(e.label)}</div><div class="es">${esc(e.when)}</div></div>${send}<button class="btn btn-ghost" onclick="copyEmail('${e.id}')">Copy</button></div>
       <div class="email-sub">Subject: ${esc(subject)}</div>
       <div class="email-body" id="email-${e.id}">${esc(body)}</div>
     </div>`;
@@ -1393,6 +1402,21 @@ function copyEmail(id){
   const el=document.getElementById('email-'+id);const sub=el.parentElement.querySelector('.email-sub').textContent;
   const txt=sub+'\n\n'+el.textContent;
   navigator.clipboard.writeText(txt).then(()=>toast('Email copied ')).catch(()=>toast('Copy failed'));
+}
+function mailtoFor(id){
+  const c=curClient();
+  if(!c){toast('Select a client in the header first');return null;}
+  if(!c.email){toast('No email address on this lead');openLead(c.id);return null;}
+  const el=document.getElementById('email-'+id);
+  if(!el)return null;
+  const subject=el.parentElement.querySelector('.email-sub').textContent.replace(/^Subject:\s*/,'');
+  return 'mailto:'+encodeURIComponent(c.email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(el.textContent);
+}
+function sendEmail(id){
+  const href=mailtoFor(id);
+  if(!href)return;
+  if(id==='e1')toast('Attach the IDD before you send');
+  window.location.href=href;
 }
 
 /* ============ SUITABILITY ============ */
@@ -1541,15 +1565,15 @@ function viewLeads(){
   }).join('');
 
   const q=(leadQ||'').toLowerCase().trim();
-  const hits=q?leads.filter(l=>((l.name||'')+' '+(l.phone||'')+' '+(l.notes||'')+' '+(l.wait||'')).toLowerCase().includes(q)):[];
+  const hits=q?leads.filter(l=>((l.name||'')+' '+(l.phone||'')+' '+(l.email||'')+' '+(l.notes||'')+' '+(l.wait||'')).toLowerCase().includes(q)):[];
   const search=`<h3 class="h3" style="margin-top:26px">Find a lead</h3>
-    <input class="lsearch" id="leadQ" value="${esc(leadQ||'')}" oninput="setLeadQ(this.value)" placeholder="Search name, number or anything in the notes">
+    <input class="lsearch" id="leadQ" value="${esc(leadQ||'')}" oninput="setLeadQ(this.value)" placeholder="Search name, number, email or anything in the notes">
     ${q?(hits.length?`<div class="wait-list" style="margin-top:10px">${hits.map(l=>`<div class="wrow" onclick="openLead(${l.id})">
         <div class="wn"><b>${esc(l.name)}</b>${srcChip(l.source)}<span class="pill" style="background:var(--sunken);color:var(--n600)">${esc(stageLabel(l.stage))}</span></div>
         <div class="wt">${esc(noteLead(l.notes)||l.wait||'')}</div>
-        <div class="wd">${esc(l.phone||'')}</div></div>`).join('')}</div>`
+        <div class="wd">${esc([l.phone,l.email].filter(Boolean).join(' · '))}</div></div>`).join('')}</div>`
       :'<div class="empty" style="margin-top:10px">Nothing matches that.</div>')
-    :'<div class="lsearch-hint">Searches names, phone numbers and the full text of every note.</div>'}`;
+    :'<div class="lsearch-hint">Searches names, phone numbers, email addresses and the full text of every note.</div>'}`;
 
   return callout+funnel+`<table class="tbl"><thead><tr><th>Channel</th><th>Total</th><th>Open</th><th>Hold/Cold</th><th>Placed</th><th>Dead</th><th>Rate</th><th>Your income</th></tr></thead><tbody>${rows}</tbody></table>`+search;
 }
@@ -1563,6 +1587,7 @@ function openLead(id){
   document.getElementById('f-id').value=l?l.id:'';
   document.getElementById('f-name').value=l?l.name:'';document.getElementById('f-age').value=l&&l.age?l.age:'';
   document.getElementById('f-phone').value=l?l.phone||'':'';document.getElementById('f-source').value=l?l.source:'Client referral';
+  document.getElementById('f-email').value=l?l.email||'':'';
   document.getElementById('f-stage').value=l?l.stage:'new';document.getElementById('f-next').value=l?l.next||'':'';
   document.getElementById('f-tries').value=l&&l.tries?l.tries:0;
   document.getElementById('f-appt').value=l&&l.appt?l.appt:'';document.getElementById('f-apptT').value=l&&l.apptT?l.apptT:'';
@@ -1584,7 +1609,7 @@ function closeLead(){document.getElementById('overlay').classList.remove('show')
 function saveLead(){
   const id=document.getElementById('f-id').value;const name=document.getElementById('f-name').value.trim();
   if(!name){alert('Name is required.');return;}
-  const obj={name,age:document.getElementById('f-age').value.trim(),phone:document.getElementById('f-phone').value.trim(),source:document.getElementById('f-source').value,stage:document.getElementById('f-stage').value,next:document.getElementById('f-next').value,wait:document.getElementById('f-wait').value.trim(),tries:parseInt(document.getElementById('f-tries').value)||0,appt:document.getElementById('f-appt').value,apptT:document.getElementById('f-apptT').value,apptOK:document.getElementById('f-apptOK').checked,notes:document.getElementById('f-notes').value.trim(),premium:document.getElementById('f-premium').value.trim(),comm:document.getElementById('f-comm').value.trim(),basis:document.getElementById('f-basis').value,clawback:document.getElementById('f-clawback').value};
+  const obj={name,age:document.getElementById('f-age').value.trim(),phone:document.getElementById('f-phone').value.trim(),email:document.getElementById('f-email').value.trim(),source:document.getElementById('f-source').value,stage:document.getElementById('f-stage').value,next:document.getElementById('f-next').value,wait:document.getElementById('f-wait').value.trim(),tries:parseInt(document.getElementById('f-tries').value)||0,appt:document.getElementById('f-appt').value,apptT:document.getElementById('f-apptT').value,apptOK:document.getElementById('f-apptOK').checked,notes:document.getElementById('f-notes').value.trim(),premium:document.getElementById('f-premium').value.trim(),comm:document.getElementById('f-comm').value.trim(),basis:document.getElementById('f-basis').value,clawback:document.getElementById('f-clawback').value};
   if(id){Object.assign(leads.find(x=>x.id===parseInt(id)),obj);}else{obj.id=(leads.reduce((m,l)=>Math.max(m,l.id),0)||0)+1;leads.push(obj);}
   persist();closeLead();render();toast('Saved ');
 }
