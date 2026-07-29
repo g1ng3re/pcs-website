@@ -135,6 +135,14 @@ a{color:inherit}
 .cc-stage{font-size:11px;font-weight:700;color:var(--n500);margin-top:2px}
 .cc-due{margin-left:auto;font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;white-space:nowrap;background:var(--sunken);color:var(--n500)}
 .cc-due.over{background:var(--red-t);color:var(--red)}.cc-due.soon{background:var(--gold-t);color:#9a6f0f}
+.cc-action{margin-top:9px;padding:8px 10px;background:var(--sunken);border-radius:9px;font-size:12.5px;font-weight:600;line-height:1.45}
+.conf-at{margin-left:auto;font-size:10.5px;font-weight:800;color:var(--n500);letter-spacing:.02em;white-space:nowrap;padding-left:10px}
+.ref-list{display:flex;flex-direction:column;gap:8px}
+.ref-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;background:var(--card);border:1px solid var(--line);border-radius:11px}
+.ref-n{font-size:14px;font-weight:800}
+.ref-m{font-size:11.5px;font-weight:600;color:var(--n500);margin-top:2px}
+.ref-ok{color:var(--emerald)}.ref-no{color:var(--warn)}
+.ref-in{font-size:11px;font-weight:800;color:var(--n500)}
 .cc-phone{display:inline-block;margin-top:10px;font-size:14.5px;font-weight:800;color:var(--blue);text-decoration:none}
 .cc-phone:hover{text-decoration:underline}
 .cc-email{display:block;margin-top:3px;font-size:12.5px;font-weight:700;color:var(--n500);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -507,7 +515,12 @@ body.locked{overflow:hidden}
       <div class="frow"><div class="fld"><label>Meeting date</label><input type="date" id="f-appt"></div><div class="fld"><label>Time</label><input type="time" id="f-apptT"><div style="font-size:10.5px;font-weight:600;color:var(--n500);margin-top:4px">Shows as 12h everywhere else</div></div></div>
       <div class="fld"><label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:13px"><input type="checkbox" id="f-apptOK" style="width:auto;margin:0"> Confirmed with the client</label></div>
     </div>
+    <div class="fld"><label>Next action (what, not when)</label><input id="f-action" placeholder="e.g. Chase the sick pay reply, then source at 52 weeks"></div>
     <div class="fld" id="waitFld" style="display:none"><label>Waiting on (what has to happen first)</label><input id="f-wait" placeholder="e.g. Mortgage completion. Emmanuel to give the go-ahead."></div>
+    <div class="comm-block show" style="background:var(--sunken)"><div class="ch">Referrals given</div>
+      <div class="fld"><label>Names, one per line</label><textarea id="f-refs" style="min-height:84px" placeholder="Jane Smith, 07700 900123, consent&#10;Mark Owusu, 07700 900456"></textarea>
+      <div style="font-size:10.5px;font-weight:600;color:var(--n500);margin-top:5px;line-height:1.5">Name, phone, then the word <b>consent</b> if they have agreed you can make contact. <b>Never contact a name without it.</b> Add them to the pipeline from the Post tab.</div></div>
+    </div>
     <div class="fld"><label>Notes</label><textarea id="f-notes" style="min-height:200px"></textarea>
       <div style="font-size:10.5px;font-weight:600;color:var(--n500);margin-top:5px;line-height:1.5">First line is the headline. Start a block with <b>## Case</b>, <b>## Priority</b>, <b>## Do next</b>, <b>## Confirm at M1</b>, <b>## Log</b>, <b>## Files</b>. Use <b>- </b> for bullets. In Log, write <b>24/07/2026: what happened</b>.</div>
     </div>
@@ -618,31 +631,13 @@ const QUALIFY=[
 ];
 
 /* ---- QUALIFY GATES (interactive branching) ---- */
-const QUAL_GATES=[
-  {id:'g_reach',q:'Did you reach them and get a couple of minutes?',opts:[
-    {k:'yes',label:'Yes, talking now',v:'go'},
-    {k:'no',label:'No answer / not a good time',v:'stop',note:'Do not push. Leave it, log as left message, set a follow-up date.'},
-  ]},
-  {id:'g_decision',q:'Are they a decision-maker on the cover (their income, their name on the mortgage)?',opts:[
-    {k:'yes',label:'Yes, it is their call',v:'go'},
-    {k:'third',label:'No, but the real decision-maker can join',v:'amber',note:'Rebook with the decision-maker present. Never run Meeting 1 with the wrong person.'},
-    {k:'no',label:'No, and they cannot influence it',v:'red',note:'Do not book. The decision was never theirs to make.'},
-  ]},
-  {id:'g_third',q:'Is there a third party whose agreement is needed (parent, partner, business)?',opts:[
-    {k:'none',label:'No third party',v:'go'},
-    {k:'inc',label:'Yes, but they can be brought in',v:'amber',note:'Get them on the call or into the decision. Note who they are and their likely concern.'},
-    {k:'block',label:'Yes, and they are blocking it',v:'hold',note:'Hold. Nothing to advise until the blocker is resolved. Set a follow-up.'},
-  ]},
-  {id:'g_need',q:'Is there a real income or mortgage to protect?',opts:[
-    {k:'yes',label:'Yes, clear need',v:'go'},
-    {k:'unfelt',label:'There is, but they do not feel it yet',v:'amber',note:'A real need they are not feeling. Bookable if willing, but lead hard on the sick-pay gap in Meeting 1.'},
-    {k:'none',label:'Genuinely nothing to protect',v:'red',note:'No need to advise on. Mark Skip with the reason.'},
-  ]},
-  {id:'g_intent',q:'Do they actually want to act on this?',opts:[
-    {k:'yes',label:'Yes, they want it sorted',v:'go'},
-    {k:'curious',label:'No, just curious / not now',v:'hold',note:'Not ready. No booking. Set a follow-up date and move on.'},
-  ]},
-];
+/* QUAL_GATES and the Qualify runner were cut 29/07/2026 at Ginger's instruction.
+   Qualification happens at the desk from the fact-find, so it was a script for a
+   call he does not make. Per-client triage scripts (CLIENT_SCRIPTS[key].qualify)
+   survive and now render at the top of Booking, so cold web enquiries like Dee
+   keep their bespoke opener. qualAnswers is left in the persistence layer so old
+   saved state still loads. */
+
 
 /* ---- MEETING 1 / 2 / POST (from the Meeting Guide) ---- */
 const M1=[
@@ -869,7 +864,7 @@ let appliedPatches=[];
    undone by the merge in saveState, because the other device still has the lead
    and there is no way to tell "not seen yet" from "removed on purpose". */
 let deletedIds=[];
-let tab='home', filterSrc='all', selectedClient=null, mView='qualify', mIdx=0, checks={}, qualAnswers={}, showParked=false;
+let tab='home', filterSrc='all', selectedClient=null, mView='booking', mIdx=0, checks={}, qualAnswers={}, showParked=false;
 /* ---- SAVING ----
    Local first: every change writes to this browser's storage straight away.
    DATA_VERSION is stamped by Claude whenever the SEED in this file is edited.
@@ -1126,6 +1121,8 @@ function renderClientSel(){
 function setClient(id){
   selectedClient=id?parseInt(id):null;
   const c=curClient();
+  if(c)mView=stageMView(c.stage);
+  mIdx=0;
   render();
   if(c&&tab!=='meeting')toast(c.name+' selected. Open the Meeting tab to run their call.');
 }
@@ -1223,11 +1220,12 @@ function callCard(l){
     <a class="cc-phone" href="tel:${esc(l.phone)}">${esc(l.phone||'no number')}</a>
     ${l.email?`<a class="cc-email" href="mailto:${esc(l.email)}">${esc(l.email)}</a>`:'<span class="cc-email">no email</span>'}
     <div>${srcChip(l.source)}</div>
+    ${l.action?`<div class="cc-action"><b>Next:</b> ${esc(l.action)}</div>`:''}
     <div class="cc-actions"><button class="cc-mini" onclick="prepClient(${l.id})"> Prep meeting</button><button class="cc-mini" onclick="openLead(${l.id})">Edit</button></div>
     ${noteBlock(l)}
   </div>`;
 }
-function prepClient(id){selectedClient=id;mView='qualify';mIdx=0;setTab('meeting');}
+function prepClient(id){selectedClient=id;const c=curClient();mView=c?stageMView(c.stage):'booking';mIdx=0;setTab('meeting');}
 
 /* ============ PIPELINE ============ */
 function viewPipeline(){
@@ -1253,42 +1251,21 @@ function leadCard(l,compact){
 /* ============ MEETING RUNNER ============ */
 function viewMeeting(){
   const c=curClient();
-  const hasScript=!!(c&&CLIENT_SCRIPTS[c.name]);
-  const banner=`<div class="callout blue"><span></span><span>${c?`Running with <b>${esc(c.name)}</b>. ${hasScript?(mView==='m1'?'Their ABCDEF is built from their own numbers. The other steps use [placeholders], read those in as you go.':(CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].m2?'Their own wording is on the steps I have written for them. The rest use [placeholders], read those in as you go.':'These steps use [placeholders], read them in with their numbers as you go.')):'Scripts use [placeholders], read them in their numbers as you go.'}`:'No client selected. Pick one in the header to run their meeting, or just use the scripts as a reference.'}</span></div>`;
+  const hasScript=!!cScript(c);
+  const banner=`<div class="callout blue"><span></span><span>${c?`Running with <b>${esc(c.name)}</b>. ${hasScript?(mView==='m1'?'Their ABCDEF is built from their own numbers. The other steps use [placeholders], read those in as you go.':((cScript(c)||{}).m2?'Their own wording is on the steps I have written for them. The rest use [placeholders], read those in as you go.':'These steps use [placeholders], read them in with their numbers as you go.')):'Scripts use [placeholders], read them in their numbers as you go.'}`:'No client selected. Pick one in the header to run their meeting, or just use the scripts as a reference.'}</span></div>`;
   const sub=`<div class="subtabs">
-    <button class="st ${mView==='qualify'?'on':''}" onclick="setMView('qualify')">Qualify</button>
     <button class="st ${mView==='booking'?'on':''}" onclick="setMView('booking')">Booking</button>
     <button class="st ${mView==='m1'?'on':''}" onclick="setMView('m1')">Meeting 1</button>
     <button class="st ${mView==='m2'?'on':''}" onclick="setMView('m2')">Meeting 2</button>
     <button class="st ${mView==='post'?'on':''}" onclick="setMView('post')">Post</button>
   </div>`;
-  if(mView==='qualify')return banner+sub+qualifierView();
   if(mView==='booking')return banner+sub+bookingView();
   if(mView==='post')return banner+sub+postView();
   const data=mData();
   if(mIdx>data.length-1)mIdx=0;
   const sec=data[mIdx];
-  const nav=`<div class="snav">${data.map((s,i)=>{const done=s.items.every(x=>checks[ckey(x.id)]);return `<div class="sn ${i===mIdx?'cur':done?'done':''}" onclick="setMIdx(${i})"><div class="sn-dot">${i+1}</div><div class="sn-lbl">${s.title}</div></div>`;}).join('')}</div>`;
+  const nav=`<div class="snav">${data.map((s,i)=>{const done=s.items.every(x=>chkOn(ckey(x.id)));return `<div class="sn ${i===mIdx?'cur':done?'done':''}" onclick="setMIdx(${i})"><div class="sn-dot">${i+1}</div><div class="sn-lbl">${s.title}</div></div>`;}).join('')}</div>`;
   return banner+sub+nav+secCard(sec)+mnav(data);
-}
-function qualifierView(){
-  const c=curClient();
-  const first=c?esc(c.name.split(' & ')[0].split(' ')[0]):'[Name]';
-  /* A client can carry their own qualify script (CLIENT_SCRIPTS[name].qualify).
-     Used for leads that did not come through a mortgage colleague, where the
-     generic Emmanuel opener and the mortgage questions do not apply. */
-  const own=c&&CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].qualify;
-  const opener=(Array.isArray(own)&&own.length)
-    ? own.map(s=>{const q=s.text.trim().startsWith('"');return `<div class="script-card q-opener ${q?'':'note-style'}"><div class="s-lbl">${esc(s.label||'Ask')}</div><div class="s-txt ${q?'quote':''}">${esc(s.text).replace(/\n/g,'<br>')}</div>${s.note?`<div class="gopt-note">${esc(s.note)}</div>`:''}</div>`;}).join('')
-    : `<div class="script-card q-opener"><div class="s-lbl">Opener</div><div class="s-txt quote">"Hi ${first}, it’s Ginger from Property Clinic Solutions. Emmanuel Olukotun mentioned you’ve just bought or remortgaged - congratulations. Have you got two minutes? I just want to make sure it’s worth booking you a proper appointment rather than waste your time."</div></div>`;
-  const gates=QUAL_GATES.map(g=>{
-    const sel=qualAnswers[g.id];
-    const opts=g.opts.map(o=>`<button class="gopt ${sel===o.k?'sel '+o.v:''}" onclick="setQual('${g.id}','${o.k}')"><span class="dot"></span><span>${esc(o.label)}</span></button>`).join('');
-    const so=g.opts.find(o=>o.k===sel);
-    const note=so&&so.note?`<div class="gopt-note">${esc(so.note)}</div>`:'';
-    return `<div class="gate"><div class="gate-q">${esc(g.q)}</div><div class="gate-opts">${opts}</div>${note}</div>`;
-  }).join('');
-  return opener+gates+outcomePanel()+`<button class="btn btn-ghost q-reset" onclick="resetQual()">Reset qualifier</button>`;
 }
 function bookingView(){
   const c=curClient();
@@ -1300,44 +1277,19 @@ function bookingView(){
   const hooks=(typeof CLIENT_HOOKS!=='undefined')?CLIENT_HOOKS:{};
 ;
   const hook=(c&&hooks[c.name])?hooks[c.name]:'it is worth making sure you are properly protected if anything happened to your income';
+  const own=c&&(cScript(c)||{}).qualify;
+  const triage=(Array.isArray(own)&&own.length)
+    ? `<div class="callout blue"><span></span><span><b>${esc(c.name.split(' ')[0])} has a triage script.</b> This lead did not come through a mortgage fact-find, so there is nothing to qualify from. Run these first, and mark them Hold rather than booking if they do not qualify.</span></div>`
+      + own.map(x=>{const q=x.text.trim().startsWith('"');return `<div class="script-card ${q?'':'note-style'}"><div class="s-lbl">${esc(x.label||'Ask')}</div><div class="s-txt ${q?'quote':''}">${esc(x.text).replace(/\n/g,'<br>')}</div>${x.note?`<div class="gopt-note">${esc(x.note)}</div>`:''}</div>`;}).join('')
+    : '';
   const note=`<div class="callout"><span></span><span>Booking call. The client is already qualified at the desk from their fact-find, so this is not a qualification call. The job here is one thing: agree a time for Meeting 1. Keep it to a few minutes.</span></div>`;
   const opener=`<div class="script-card"><div class="s-lbl">Booking call (3-5 min)</div><div class="s-txt quote">"Hi ${nm}, it’s Ginger from Property Clinic Solutions. I work alongside Emmanuel Olukotun, who looked after your mortgage, and I handle the protection side. Congratulations on the new place.<br><br>I’d like to book a short meeting, about half an hour, to walk through what happens if things go wrong and make sure you’re properly protected, because ${esc(hook)}. There’s nothing to prepare and nothing to buy on the call, it’s just a conversation, then I go away and research options for you.${cpl}<br><br>What does your week look like? Are mornings or evenings easier for you?"</div></div>`;
   const confirm=`<div class="script-card"><div class="s-lbl">Once a time is agreed</div><div class="s-txt quote">"Great, I’ll send a calendar invite for [day and time] on Google Meet, with a short document explaining who we are and how we’re paid. If anything changes, just let me know."</div></div>`;
   const actions=`<div class="script-card note-style"><div class="s-lbl">After the call</div><div class="s-txt">Move the client from Qualify to Meeting 1.<br>Send confirmation email (template 1) with the IDD attached.<br>No answer: leave a voicemail and WhatsApp, then retry in 2 to 3 days at a different time of day (if you called mid-afternoon, try early evening), then about a week later. Max 3 attempts, then reassess.</div></div>`;
   const light=`<div class="script-card"><div class="s-lbl">Light-touch variant (weak or hold cases)</div><div class="s-txt quote">"Hi ${nm}, it’s Ginger from Property Clinic Solutions. I work alongside Emmanuel Olukotun, who looked after your mortgage, and I handle the protection side. I had a look and, honestly, you look well covered already, so I won’t take up much of your time. There are just one or two things worth a quick word, and I wanted to check you’re happy. Have you got five minutes now, or shall I drop you a short note?"</div></div>`;
   const whatsapp=`<div class="script-card"><div class="s-lbl">No answer: WhatsApp / text to send</div><div class="s-txt quote">"Hi ${nm}, it’s Ginger from Property Clinic Solutions. I work alongside Emmanuel Olukotun, who looked after your mortgage. I tried to call you just now about the protection side. Nothing urgent and nothing to buy, I’d just like to book a short call, about half an hour, to make sure you’re properly covered. When’s a good time to catch you this week? Happy to work around you."</div></div>`;
-  return note+opener+confirm+actions+whatsapp+light;
+  return triage+note+opener+confirm+actions+whatsapp+light;
 }
-function computeQual(){
-  const chosen=QUAL_GATES.map(g=>{const k=qualAnswers[g.id];return k?g.opts.find(o=>o.k===k):null;});
-  const answered=chosen.filter(Boolean);
-  if(!answered.length)return {v:'wait',notes:[]};
-  const vs=answered.map(o=>o.v);
-  const notes=answered.filter(o=>o.note).map(o=>o.note);
-  if(vs.includes('red'))return {v:'red',notes};
-  if(vs.includes('stop'))return {v:'stop',notes};
-  if(vs.includes('hold'))return {v:'hold',notes};
-  if(!chosen.every(Boolean))return {v:'wait',notes};
-  if(vs.includes('amber'))return {v:'amber',notes};
-  return {v:'go',notes};
-}
-function outcomePanel(){
-  const r=computeQual();
-  const M={
-    wait:{cls:'wait',v:'Outcome pending',a:'Answer the gates above and the verdict appears here.',sl:null,s:null},
-    go:{cls:'green',v:'Book Meeting 1',a:'All gates clear. Book M1 now and send the confirmation email with the IDD.',sl:'Green, book it',s:'"Great, let’s get you booked. I’ll send a calendar invite and a short document explaining who we are and how we’re paid. Nothing to prepare, it’s just a conversation."'},
-    amber:{cls:'amber',v:'Book, with conditions',a:'There is a real case, but fix the flagged point first so you are not advising into a gap.',sl:'Amber, include the right people',s:'"Brilliant. It’s worth us having [the decision-maker / your partner] on the call too, so nobody has to relay it second-hand. When works for you both?"'},
-    hold:{cls:'amber',v:'Hold, do not book yet',a:'Not ready. Do not book M1. Set a follow-up date on the lead and move on.',sl:'Hold, set a follow-up',s:'"Sounds like now isn’t quite the right time. I’ll make a note and check back in [timeframe], does that work?"'},
-    stop:{cls:'red',v:'Couldn’t reach, park it',a:'Log as left message, set a follow-up date, try again. Max three attempts, then reassess.',sl:'Voicemail',s:'"Hi [Name], Ginger from Property Clinic Solutions. I’ll try you again shortly, or drop me a text with a good time and I’ll work around you."'},
-    red:{cls:'red',v:'Skip, do not book',a:'No qualified case here. Mark the lead Skip with the reason. This is the gate doing its job.',sl:'Close politely',s:'"That’s completely fine. If anything changes down the line, you’ve got my number. Take care."'},
-  };
-  const o=M[r.v];
-  const notes=(r.notes&&r.notes.length)?`<ul class="oc-list">${r.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:'';
-  const script=o.s?`<div class="oc-script"><span class="sl">${esc(o.sl)}</span>${esc(o.s)}</div>`:'';
-  return `<div class="outcome ${o.cls}"><div class="oc-verdict ${o.cls}">${esc(o.v)}</div><div class="oc-action">${esc(o.a)}</div>${notes}${script}</div>`;
-}
-function setQual(g,k){qualAnswers[g]=k;persist();render();}
-function resetQual(){qualAnswers={};persist();render();}
 function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,16);}
 function abTitle(l){
   if(/^A/.test(l))return 'A · Income';
@@ -1349,13 +1301,13 @@ function abTitle(l){
   return l;
 }
 function mData(){
-  if(mView==='m1'){const c=curClient();const ab=c&&CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].abcdef;
+  if(mView==='m1'){const c=curClient();const ab=c&&(cScript(c)||{}).abcdef;
     if(ab){const sl=slug(c.name);
       const steps=ab.map((s,i)=>{const push=/push back|death first/i.test(s.label);
         return {id:sl+'-ab'+i,title:abTitle(s.label),note:push?'Only use this if they put death first.':(i===0?'One step at a time. Ask, pause, let them do the maths out loud, then move on.':''),scripts:[{label:push?'Only if they lead with death':'Ask',text:s.text}],items:[{id:sl+'-abc'+i,text:push?'Reframed, order revisited':'Covered'}]};});
       const out=[];M1.forEach(sec=>{if(sec.id==='factfind')return;if(sec.id==='abcdef'){steps.forEach(st=>out.push(st));}else out.push(sec);});
       return out;}}
-  if(mView==='m2'){const c=curClient();const m2=c&&CLIENT_SCRIPTS[c.name]&&CLIENT_SCRIPTS[c.name].m2;
+  if(mView==='m2'){const c=curClient();const m2=c&&(cScript(c)||{}).m2;
     if(Array.isArray(m2)&&m2.length){
       const byStep={};
       m2.forEach(x=>{const k=x.at||'rec';(byStep[k]=byStep[k]||[]).push(x);});
@@ -1383,14 +1335,29 @@ function mData(){
    ticks recorded against meetings run before this change do not show. That is
    deliberate: there is no way to tell which client an unscoped key belonged to,
    so guessing would be worse than clearing. */
+function cScript(c){if(!c)return null;return CLIENT_SCRIPTS['#'+c.id]||CLIENT_SCRIPTS[c.name]||null;}
+/* Scripts used to be keyed only on the exact name string, so correcting a typo
+   in a client's name silently detached their whole personalised script and you
+   would find out mid-meeting. Lookup now prefers '#<leadId>' and falls back to
+   the name, so existing name-keyed scripts and patches keep working. */
+function stageMView(st){
+  if(st==='m1')return 'm1';
+  if(st==='research'||st==='m2')return 'm2';
+  if(st==='application'||st==='postsale'||st==='placed')return 'post';
+  if(st==='new'||st==='qualify')return 'booking';
+  return 'booking';
+}
+/* The Meeting tab always opened on Qualify, so every time Ginger went there to
+   run a Meeting 1 or 2 he landed on a script for a call his own process says he
+   does not make. It now opens on the sub-view matching the client's stage. */
 function ckey(id){const c=curClient();return mView+':'+(c?'c'+c.id:'none')+':'+id;}
 function setMView(v){mView=v;mIdx=0;render();}
 function setMIdx(i){const n=mData().length;if(i<0||i>=n)return;mIdx=i;render();window.scrollTo({top:120,behavior:'smooth'});}
 function secCard(sec){
-  const ids=sec.items.map(i=>i.id);const done=ids.filter(id=>checks[ckey(id)]).length;const pct=Math.round(done/ids.length*100);
+  const ids=sec.items.map(i=>i.id);const done=ids.filter(id=>chkOn(ckey(id))).length;const pct=Math.round(done/ids.length*100);
   const scripts=(sec.scripts||[]).map(s=>{const q=s.text.trim().startsWith('"');return `<div class="script-card ${q?'':'note-style'}"><div class="s-lbl">${esc(s.label)}</div><div class="s-txt ${q?'quote':''}">${esc(s.text).replace(/\n/g,'<br>')}</div></div>`;}).join('');
   const solo=ids.length<=2;
-  const confirms=sec.items.map(it=>`<div class="conf-btn ${checks[ckey(it.id)]?'done':''} ${it.bold?'bold-item':''}" onclick="toggleCheck('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${esc(it.text)}</span></div></div>`).join('');
+  const confirms=sec.items.map(it=>`<div class="conf-btn ${chkOn(ckey(it.id))?'done':''} ${it.bold?'bold-item':''}" onclick="toggleCheck('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${esc(it.text)}</span>${chkStamp(ckey(it.id))?`<span class="conf-at">${chkStamp(ckey(it.id))}</span>`:''}</div></div>`).join('');
   return `<div class="sec-card"><div class="sec-accent ${sec.compliance?'compliance':''}"></div>
     <div class="sec-head"><div class="sec-title-row"><span class="sec-title">${esc(sec.title)}</span>${sec.compliance?'<span class="cbadge">Compliance</span>':''}</div>
     <div class="prog-row"><div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div><span class="prog-label">${done}/${ids.length}</span></div></div>
@@ -1494,10 +1461,56 @@ function saveWrap(){
   toast(c.name.split(' ')[0]+' moved to '+stageLabel(stage)+(appt?', next '+fmtD(appt):', no date set'));
 }
 function postView(){
-  const items=POST.map(it=>`<div class="conf-btn ${checks[ckey(it.id)]?'done':''}" style="border-radius:13px" onclick="togglePost('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${it.compliance?' ':''}${esc(it.text)}</span></div></div>`).join('');
-  return `<div class="conf-grid" style="grid-template-columns:1fr">${items}</div>`;
+  const items=POST.map(it=>`<div class="conf-btn ${chkOn(ckey(it.id))?'done':''}" style="border-radius:13px" onclick="togglePost('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${it.compliance?' ':''}${esc(it.text)}</span>${chkStamp(ckey(it.id))?`<span class="conf-at">${chkStamp(ckey(it.id))}</span>`:''}</div></div>`).join('');
+  const c=curClient();
+  let refs='';
+  if(c){
+    const rows=parseRefs(c.refs);
+    const list=rows.length?rows.map((r,i)=>{
+      const exists=leads.some(l=>l.name.toLowerCase()===r.name.toLowerCase());
+      return `<div class="ref-row">
+        <div><div class="ref-n">${esc(r.name)}</div><div class="ref-m">${esc(r.phone||'no number')} \u00b7 ${r.consent?'<b class="ref-ok">consent given</b>':'<b class="ref-no">no consent yet</b>'}</div></div>
+        ${exists?'<span class="ref-in">in pipeline</span>':`<button class="cc-mini" onclick="addRefLead(${c.id},${i})"${r.consent?'':' disabled style="opacity:.4;cursor:not-allowed" title="Get consent first"'}>Add to pipeline</button>`}
+      </div>`;}).join(''):'<div class="empty" style="margin:0">No names captured yet. The Meeting 2 close asks for five.</div>';
+    refs=`<h3 class="h3" style="margin-top:24px">Referrals from ${esc(c.name.split(' & ')[0].split(' ')[0])}</h3>
+      <div class="callout"><span></span><span>Never contact a name without consent, and never make advice conditional on referrals. Add names in the lead editor.</span></div>
+      <div class="ref-list">${list}</div>`;
+  }
+  return `<div class="conf-grid" style="grid-template-columns:1fr">${items}</div>`+refs;
 }
-function toggleCheck(id){checks[ckey(id)]=!checks[ckey(id)];persist();render();}
+/* Referral capture (29/07/2026). The operating process asks for five names at the
+   Meeting 2 close and there was nowhere to write them down, which is why the
+   referral channel has zero live leads. Format is one per line:
+   "Name, phone, consent". Consent is required before Add to pipeline unlocks. */
+function parseRefs(txt){
+  if(!txt)return [];
+  return String(txt).split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
+    const parts=l.split(',').map(x=>x.trim());
+    const consent=parts.some(x=>/^consent$/i.test(x));
+    const rest=parts.filter(x=>!/^consent$/i.test(x));
+    return {name:rest[0]||'',phone:rest[1]||'',consent};
+  }).filter(r=>r.name);
+}
+function addRefLead(fromId,idx){
+  const from=leads.find(l=>l.id===fromId);if(!from)return;
+  const r=parseRefs(from.refs)[idx];if(!r||!r.consent)return;
+  if(leads.some(l=>l.name.toLowerCase()===r.name.toLowerCase())){toast('Already in the pipeline');return;}
+  const id=(leads.reduce((m,l)=>Math.max(m,l.id),0)||0)+1;
+  leads.push({id,name:r.name,phone:r.phone||'',email:'',source:'Client referral',stage:'new',next:isoToday(),tries:0,
+    action:'Triage call. Introduced by '+from.name+'.',
+    notes:'Referred by '+from.name+' on '+fmtD(isoToday())+'. Consent to contact recorded.\n\n## Do next\n- Triage call: income, dependants, whether the home is secure, employer safety net, then priority and budget.\n- No fact-find exists, so this is the qualification gate. Mark Hold if they do not qualify rather than booking.'});
+  const t=deletedIds.indexOf(id);if(t>-1)deletedIds.splice(t,1);
+  persist();render();toast(r.name+' added to the pipeline');
+}
+/* Compliance evidence trail (29/07/2026). A tick used to be a bare boolean, so
+   the desk could show that the IDD was sent but never when, and could not
+   evidence that it went out before advice. Ticks now store an ISO timestamp.
+   Legacy boolean true still reads as done, it just has no time against it. */
+function chkOn(k){return !!checks[k];}
+function chkAt(k){const v=checks[k];return (typeof v==='string')?v:null;}
+function chkStamp(k){const a=chkAt(k);if(!a)return '';const d=new Date(a);if(isNaN(d))return '';
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
+function toggleCheck(id){const k=ckey(id);checks[k]=checks[k]?false:new Date().toISOString();persist();render();}
 function togglePost(id){toggleCheck(id);}
 
 /* ============ EMAILS ============ */
@@ -1628,10 +1641,33 @@ function suitDraft(){
 }
 
 /* ============ MONEY ============ */
+/* Pipeline value (29/07/2026). Desk Audit item 3: you could see what you had
+   earned but not what was in front of you. Each open lead is valued at the
+   average gross commission per placed case, weighted by stage. Deliberately
+   crude and labelled as such, because with a single placed case the average is
+   built on one number. */
+const STAGE_ODDS={new:.05,qualify:.10,m1:.25,research:.35,m2:.50,application:.80,postsale:.95};
+function forecast(){
+  const placed=leads.filter(l=>l.stage==='placed');
+  const avg=placed.length?placed.reduce((s,l)=>s+(parseFloat(l.comm)||0),0)/placed.length:0;
+  const open=leads.filter(l=>STAGE_ODDS[l.stage]!==undefined);
+  const gross=open.reduce((s,l)=>s+avg*STAGE_ODDS[l.stage],0);
+  const mine=open.reduce((s,l)=>s+myShare(avg*STAGE_ODDS[l.stage],l),0);
+  return {n:open.length,stages:new Set(open.map(l=>l.stage)).size,avg,gross,mine,placedN:placed.length};
+}
 function viewMoney(){
   const t=today();const placed=leads.filter(l=>l.stage==='placed');
   const callout=`<div class="callout"><span></span><span><b>Split, updated 26/07/2026.</b> BSL passes <b>${pct(SPLIT.bsl)}</b> of gross to PCS. PCS retains <b>${pct(SPLIT.reserve)}</b> of gross as a clawback reserve. The remaining <b>${pct(SPLIT.net)}</b> is the splittable pot. <b>Your own leads split 70/30 in your favour (${pct(SPLIT.own)} of gross); Emmanuel's leads stay 50/50 (${pct(SPLIT.adviser)} of gross).</b> Anything not sourced "${EMM_SOURCE}" counts as yours. <b>Open:</b> confirm whether the ${pct(SPLIT.reserve)} reserve is released once clawback expires.</span></div>`;
-  if(!placed.length)return callout+'<div class="empty">No placed policies yet.</div>';
+  const fc=forecast();
+  const fcBlock=`<h3 class="h3">What is in front of you</h3>
+    <div class="callout"><span></span><span>A rough forecast, not a promise. Each open lead is valued at your average commission per placed case, weighted by how far through the pipeline it is. With only ${fc.placedN} case${fc.placedN===1?'':'s'} placed, the average is thin, so treat this as an order of magnitude.</span></div>
+    <div class="stats" style="margin-bottom:22px">
+      <div class="stat"><div class="l">Open leads</div><div class="v">${fc.n}</div><div class="s">across ${fc.stages} stages</div></div>
+      <div class="stat"><div class="l">Weighted gross</div><div class="v">${gbp0(fc.gross)}</div><div class="s">if the book converts as weighted</div></div>
+      <div class="stat"><div class="l">Weighted to you</div><div class="v gold">${gbp0(fc.mine)}</div><div class="s">at your blended rate</div></div>
+      <div class="stat"><div class="l">Avg per placed case</div><div class="v">${gbp0(fc.avg)}</div><div class="s">gross, the basis above</div></div>
+    </div>`;
+  if(!placed.length)return callout+'<div class="empty">No placed policies yet, so there is nothing to forecast from.</div>';
   const commGen=placed.reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
   const riskComm=placed.filter(l=>{const d=parseD(l.clawback);return d&&d>t;}).reduce((s,l)=>s+(parseFloat(l.comm)||0),0);
   const myTotal=placed.reduce((s2,l)=>s2+myShare(l.comm,l),0);
@@ -1651,7 +1687,7 @@ function viewMoney(){
     <div class="wf-row tot"><div class="wl">Your share<small>${pct(blended)} of gross blended</small></div><div class="wv">${gbp(myTotal)}</div></div>
   </div>`;
   const rows=placed.map(l=>{const cb=parseD(l.clawback);const risk=cb&&cb>t;const dl=cb?daysB(cb,t):null;return `<tr onclick="openLead(${l.id})" style="cursor:pointer"><td><b>${esc(l.name)}</b></td><td class="money">${gbp(l.premium)}</td><td class="money">${gbp(l.comm)}</td><td class="money"><b>${gbp(myShare(l.comm,l))}</b></td><td>${isOwnLead(l)?'<span class="pill pill-safe">yours 70/30</span>':'<span class="pill">Emmanuel 50/50</span>'}</td><td>${esc(l.basis||'')}</td><td>${l.clawback?fmtD(l.clawback):'-'}</td><td>${risk?`<span class="pill pill-risk">at risk · ${dl}d</span>`:cb?'<span class="pill pill-safe">safe</span>':'-'}</td></tr>`;}).join('');
-  return callout+`<div class="mini-grid"><div class="mcard"><div class="lbl">Gross commission</div><div class="big gold">${gbp0(commGen)}</div><div class="sub">${placed.length} placed</div></div><div class="mcard"><div class="lbl">Your share</div><div class="big" style="color:var(--emerald-h)">${gbp0(myTotal)}</div><div class="sub">${pct(blended)} of gross blended</div></div><div class="mcard"><div class="lbl">Your money at clawback risk</div><div class="big">${gbp0(myRisk)}</div><div class="sub">of ${gbp0(riskComm)} gross reclaimable</div></div></div>
+  return callout+fcBlock+`<div class="mini-grid"><div class="mcard"><div class="lbl">Gross commission</div><div class="big gold">${gbp0(commGen)}</div><div class="sub">${placed.length} placed</div></div><div class="mcard"><div class="lbl">Your share</div><div class="big" style="color:var(--emerald-h)">${gbp0(myTotal)}</div><div class="sub">${pct(blended)} of gross blended</div></div><div class="mcard"><div class="lbl">Your money at clawback risk</div><div class="big">${gbp0(myRisk)}</div><div class="sub">of ${gbp0(riskComm)} gross reclaimable</div></div></div>
     ${wf}
     <table class="tbl"><thead><tr><th>Client</th><th>Premium/mo</th><th>Gross commission</th><th>Your share</th><th>Split</th><th>Basis</th><th>Clawback ends</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
@@ -1715,6 +1751,8 @@ function openLead(id){
   document.getElementById('f-appt').value=l&&l.appt?l.appt:'';document.getElementById('f-apptT').value=l&&l.apptT?l.apptT:'';
   document.getElementById('f-apptOK').checked=!!(l&&l.apptOK);
   document.getElementById('f-wait').value=l&&l.wait?l.wait:'';
+  document.getElementById('f-action').value=l&&l.action?l.action:'';
+  document.getElementById('f-refs').value=l&&l.refs?l.refs:'';
   document.getElementById('f-notes').value=l?l.notes||'':'';
   document.getElementById('f-premium').value=l&&l.premium?l.premium:'';document.getElementById('f-comm').value=l&&l.comm?l.comm:'';
   document.getElementById('f-share').value=l&&l.comm?gbp(myShare(l.comm,l)):'';document.getElementById('f-basis').value=l&&l.basis?l.basis:'Indemnity';
@@ -1731,7 +1769,7 @@ function closeLead(){document.getElementById('overlay').classList.remove('show')
 function saveLead(){
   const id=document.getElementById('f-id').value;const name=document.getElementById('f-name').value.trim();
   if(!name){alert('Name is required.');return;}
-  const obj={name,age:document.getElementById('f-age').value.trim(),phone:document.getElementById('f-phone').value.trim(),email:document.getElementById('f-email').value.trim(),source:document.getElementById('f-source').value,stage:document.getElementById('f-stage').value,next:document.getElementById('f-next').value,wait:document.getElementById('f-wait').value.trim(),tries:parseInt(document.getElementById('f-tries').value)||0,appt:document.getElementById('f-appt').value,apptT:document.getElementById('f-apptT').value,apptOK:document.getElementById('f-apptOK').checked,notes:document.getElementById('f-notes').value.trim(),premium:document.getElementById('f-premium').value.trim(),comm:document.getElementById('f-comm').value.trim(),basis:document.getElementById('f-basis').value,clawback:document.getElementById('f-clawback').value};
+  const obj={name,age:document.getElementById('f-age').value.trim(),phone:document.getElementById('f-phone').value.trim(),email:document.getElementById('f-email').value.trim(),source:document.getElementById('f-source').value,stage:document.getElementById('f-stage').value,next:document.getElementById('f-next').value,wait:document.getElementById('f-wait').value.trim(),action:document.getElementById('f-action').value.trim(),refs:document.getElementById('f-refs').value.trim(),tries:parseInt(document.getElementById('f-tries').value)||0,appt:document.getElementById('f-appt').value,apptT:document.getElementById('f-apptT').value,apptOK:document.getElementById('f-apptOK').checked,notes:document.getElementById('f-notes').value.trim(),premium:document.getElementById('f-premium').value.trim(),comm:document.getElementById('f-comm').value.trim(),basis:document.getElementById('f-basis').value,clawback:document.getElementById('f-clawback').value};
   if(id){Object.assign(leads.find(x=>x.id===parseInt(id)),obj);}else{obj.id=(leads.reduce((m,l)=>Math.max(m,l.id),0)||0)+1;leads.push(obj);}
   persist();closeLead();render();toast('Saved ');
 }
