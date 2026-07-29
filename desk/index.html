@@ -520,6 +520,27 @@ body.locked{overflow:hidden}
   <div class="modal-foot"><button class="btn btn-del" id="delBtn" onclick="deleteLead()">Delete</button><button class="btn btn-blue" onclick="saveLead()">Save</button></div>
 </div></div>
 
+<!-- Meeting wrap-up. Opens from the Done button at the end of Meeting 1 or Meeting 2.
+     Before 28/07/2026 a meeting simply ended and the lead sat there unchanged. -->
+<div class="overlay" id="wrapOverlay"><div class="modal">
+  <div class="modal-head"><span class="mt" id="wrapTitle">Meeting finished</span><button class="mx" onclick="closeWrap()">&times;</button></div>
+  <div class="modal-body">
+    <div class="note-bar" id="wrapWho" style="margin-bottom:14px"></div>
+    <div class="fld"><label>Where does this leave them?</label><select id="w-stage"></select></div>
+    <div class="comm-block show" style="background:var(--emerald-t)"><div class="ch">Next meeting</div>
+      <div class="frow"><div class="fld"><label>Date</label><input type="date" id="w-appt"></div><div class="fld"><label>Time</label><input type="time" id="w-apptT"></div></div>
+      <div class="fld"><label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:13px"><input type="checkbox" id="w-apptOK" style="width:auto;margin:0"> Confirmed with the client</label></div>
+      <div style="font-size:10.5px;font-weight:600;color:var(--n500);line-height:1.5">Leave the date blank if nothing is booked. Whatever you put here also becomes the next check on the Home screen.</div>
+    </div>
+    <div class="fld"><label>What happened, in a line or two</label><textarea id="w-log" style="min-height:110px" placeholder="Priority agreed, budget discussed, nothing quoted."></textarea>
+      <div style="font-size:10.5px;font-weight:600;color:var(--n500);margin-top:5px;line-height:1.5">Goes into the <b>## Log</b> block on their record, dated today. Nothing already on the record is touched.</div>
+    </div>
+    <div class="fld"><label>Do next (replaces the ## Do next block)</label><textarea id="w-next" style="min-height:90px" placeholder="One line per job. Leave blank to keep what is already there."></textarea></div>
+    <div class="cn-bar"><span></span><span>Recap email within 24 hours. Smartr365 fact-find updated. Both are on the Post checklist.</span></div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-ghost" onclick="closeWrap()">Not now</button><button class="btn btn-blue" onclick="saveWrap()">Save and go to Post</button></div>
+</div></div>
+
 <script>
 /* ============ DATA ============ */
 const STAGES=[
@@ -1351,7 +1372,18 @@ function mData(){
     }}
   return mView==='m1'?M1:M2;
 }
-function ckey(id){return (mView)+':'+id;}
+/* Check state is scoped to the client, not just the meeting view.
+   Before 28/07/2026 the key was mView+':'+id, so the generic Meeting 1 steps
+   (Before, Transcript, Welcome, IDD, Agenda, Budget, Close) used the same key
+   for every client. Finishing one client's Meeting 1 left the next client's
+   steps already ticked green, and pressing one un-ticked it instead of ticking
+   it. Only the per-client ABCDEF steps escaped, because their ids carry the
+   client's name slug. Keys are now mView:c<leadId>:id.
+   Legacy unscoped keys are left in storage. They no longer match anything, so
+   ticks recorded against meetings run before this change do not show. That is
+   deliberate: there is no way to tell which client an unscoped key belonged to,
+   so guessing would be worse than clearing. */
+function ckey(id){const c=curClient();return mView+':'+(c?'c'+c.id:'none')+':'+id;}
 function setMView(v){mView=v;mIdx=0;render();}
 function setMIdx(i){const n=mData().length;if(i<0||i>=n)return;mIdx=i;render();window.scrollTo({top:120,behavior:'smooth'});}
 function secCard(sec){
@@ -1369,14 +1401,104 @@ function secCard(sec){
 }
 function mnav(data){
   const prev=data[mIdx-1],next=data[mIdx+1];
-  return `<div class="mnav"><button class="btn btn-ghost" onclick="setMIdx(${mIdx-1})" ${!prev?'disabled':''} style="${!prev?'opacity:.4':''}">← ${prev?esc(prev.title):''}</button><button class="btn btn-blue" onclick="setMIdx(${mIdx+1})" ${!next?'disabled':''} style="${!next?'opacity:.4':''}">${next?esc(next.title):'Done'} →</button></div>`;
+  /* The forward button on the last step used to render labelled "Done" and
+     disabled, because there is no next section. A button that says Done and
+     cannot be pressed. It now finishes the meeting and moves to the Post tab,
+     which is where the post-meeting checklist lives. */
+  const fwd = next
+    ? `<button class="btn btn-blue" onclick="setMIdx(${mIdx+1})">${esc(next.title)} →</button>`
+    : `<button class="btn btn-blue" onclick="finishMeeting()">Done → wrap up</button>`;
+  return `<div class="mnav"><button class="btn btn-ghost" onclick="setMIdx(${mIdx-1})" ${!prev?'disabled':''} style="${!prev?'opacity:.4':''}">← ${prev?esc(prev.title):''}</button>${fwd}</div>`;
+}
+function finishMeeting(){
+  const c=curClient();
+  if(!c){setMView('post');window.scrollTo({top:120,behavior:'smooth'});toast('No client selected. Post-meeting checklist below.');return;}
+  openWrap(c);
+}
+/* ---- MEETING WRAP-UP ----
+   The Done button used to be a dead end: it was rendered disabled and a finished
+   meeting left the lead exactly as it was, with no stage move and no next date.
+   This asks the three questions that actually need answering while they are still
+   fresh, writes them onto the lead, then hands over to the Post checklist. */
+function isoToday(o){const d=new Date();if(o)d.setDate(d.getDate()+o);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function wrapDefaults(){
+  /* After M1 the job is research, then Meeting 2. After M2 it is the application. */
+  return mView==='m2'?'application':'research';
+}
+function openWrap(c){
+  fillSel('w-stage',ALLSTAGES,true);
+  document.getElementById('wrapTitle').textContent=(mView==='m2'?'Meeting 2':'Meeting 1')+' finished';
+  document.getElementById('wrapWho').textContent=c.name+' · '+stageLabel(c.stage)+' right now. Change anything you need, or press Not now and nothing is written.';
+  document.getElementById('w-stage').value=wrapDefaults();
+  document.getElementById('w-appt').value=isoToday(7);
+  document.getElementById('w-apptT').value=c.apptT||'18:00';
+  document.getElementById('w-apptOK').checked=false;
+  document.getElementById('w-log').value='';
+  document.getElementById('w-next').value='';
+  document.getElementById('wrapOverlay').classList.add('show');
+}
+function closeWrap(){document.getElementById('wrapOverlay').classList.remove('show');}
+/* Inserts a dated line at the end of the ## Log block, leaving every other block
+   alone. Creates the block if the record does not have one yet. */
+function appendLog(notes,line){
+  const stamp=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const entry='- '+stamp+': '+line;
+  const text=notes||'';
+  const lines=text.split('\n');
+  const at=lines.findIndex(l=>l.trim().toLowerCase()==='## log');
+  if(at===-1)return (text?text.replace(/\s+$/,'')+'\n\n':'')+'## Log\n'+entry;
+  let end=at+1;
+  while(end<lines.length&&!/^##\s/.test(lines[end]))end++;
+  let ins=end;
+  while(ins>at+1&&!lines[ins-1].trim())ins--;
+  lines.splice(ins,0,entry);
+  return lines.join('\n');
+}
+/* Replaces the ## Do next block wholesale, the same way notes are replaced by a
+   patch. Anything else on the record is untouched. */
+function replaceDoNext(notes,body){
+  const items=body.split('\n').map(s=>s.trim()).filter(Boolean).map(s=>s.replace(/^[-*]\s*/,'')).map(s=>'- '+s);
+  const text=notes||'';
+  const lines=text.split('\n');
+  const at=lines.findIndex(l=>l.trim().toLowerCase()==='## do next');
+  if(at===-1){
+    const logAt=lines.findIndex(l=>l.trim().toLowerCase()==='## log');
+    const block=['## Do next'].concat(items,['']);
+    if(logAt===-1)return (text?text.replace(/\s+$/,'')+'\n\n':'')+block.join('\n').replace(/\s+$/,'');
+    lines.splice(logAt,0,...block);
+    return lines.join('\n');
+  }
+  let end=at+1;
+  while(end<lines.length&&!/^##\s/.test(lines[end]))end++;
+  lines.splice(at+1,end-(at+1),...items,'');
+  return lines.join('\n');
+}
+function saveWrap(){
+  const c=curClient();
+  if(!c){closeWrap();return;}
+  const stage=document.getElementById('w-stage').value;
+  const appt=document.getElementById('w-appt').value;
+  const apptT=document.getElementById('w-apptT').value;
+  const ok=document.getElementById('w-apptOK').checked;
+  const log=document.getElementById('w-log').value.trim();
+  const nxt=document.getElementById('w-next').value.trim();
+  c.stage=stage;
+  if(appt){c.appt=appt;c.apptT=apptT||'';c.apptOK=ok;c.next=appt;}
+  if(log)c.notes=appendLog(c.notes,log);
+  if(nxt)c.notes=replaceDoNext(c.notes,nxt);
+  persist();
+  closeWrap();
+  setMView('post');
+  window.scrollTo({top:120,behavior:'smooth'});
+  toast(c.name.split(' ')[0]+' moved to '+stageLabel(stage)+(appt?', next '+fmtD(appt):', no date set'));
 }
 function postView(){
-  const items=POST.map(it=>`<div class="conf-btn ${checks['post:'+it.id]?'done':''}" style="border-radius:13px" onclick="togglePost('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${it.compliance?' ':''}${esc(it.text)}</span></div></div>`).join('');
+  const items=POST.map(it=>`<div class="conf-btn ${checks[ckey(it.id)]?'done':''}" style="border-radius:13px" onclick="togglePost('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${it.compliance?' ':''}${esc(it.text)}</span></div></div>`).join('');
   return `<div class="conf-grid" style="grid-template-columns:1fr">${items}</div>`;
 }
 function toggleCheck(id){checks[ckey(id)]=!checks[ckey(id)];persist();render();}
-function togglePost(id){checks['post:'+id]=!checks['post:'+id];persist();render();}
+function togglePost(id){toggleCheck(id);}
 
 /* ============ EMAILS ============ */
 /* u1 is a reply inside an existing thread, cal is invite text to paste. Neither should
