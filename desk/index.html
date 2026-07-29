@@ -1305,7 +1305,24 @@ function mData(){
     if(ab){const sl=slug(c.name);
       const steps=ab.map((s,i)=>{const push=/push back|death first/i.test(s.label);
         return {id:sl+'-ab'+i,title:abTitle(s.label),note:push?'Only use this if they put death first.':(i===0?'One step at a time. Ask, pause, let them do the maths out loud, then move on.':''),scripts:[{label:push?'Only if they lead with death':'Ask',text:s.text}],items:[{id:sl+'-abc'+i,text:push?'Reframed, order revisited':'Covered'}]};});
-      const out=[];M1.forEach(sec=>{if(sec.id==='factfind')return;if(sec.id==='abcdef'){steps.forEach(st=>out.push(st));}else out.push(sec);});
+      /* A client can also carry their own Budget wording (CLIENT_SCRIPTS[key].budget).
+         Before 29/07/2026 only the abcdef section could be personalised, so the
+         Budget step always showed the generic "[£X] disposable a month" and the
+         "[£A-£B] range" placeholders even for a client whose real figures were
+         known. That is a guess dressed as advice, so the section is now
+         replaceable the same way the ABCDEF is. */
+      const bud=(cScript(c)||{}).budget;
+      const out=[];M1.forEach(sec=>{
+        if(sec.id==='factfind')return;
+        if(sec.id==='abcdef'){steps.forEach(st=>out.push(st));return;}
+        if(sec.id==='budget'&&Array.isArray(bud)&&bud.length){
+          const notes=bud.map(b=>b.note).filter(Boolean).join(' ');
+          out.push(Object.assign({},sec,{
+            scripts:bud.map(b=>({label:b.label||'Ask',text:b.text})),
+            note:notes||sec.note}));
+          return;
+        }
+        out.push(sec);});
       return out;}}
   if(mView==='m2'){const c=curClient();const m2=c&&(cScript(c)||{}).m2;
     if(Array.isArray(m2)&&m2.length){
@@ -1792,7 +1809,13 @@ function mergeInto(d){
        straight back out on the next sync. */
     const rid=(t?t.id:pl.id);if(rid!=null)deletedIds=deletedIds.filter(x=>x!==rid);
   });
-  if(d.scripts){Object.assign(CLIENT_SCRIPTS,d.scripts);Object.keys(d.scripts).forEach(k=>done.push('script for '+k));}
+  /* Merge scripts one level deeper (29/07/2026). Object.assign at the client
+     level replaced the whole script object, so a patch supplying only `budget`
+     silently destroyed that client's `abcdef` and `m2`. Now each named part is
+     replaced and the parts a patch does not mention survive. */
+  if(d.scripts){Object.keys(d.scripts).forEach(k=>{
+    CLIENT_SCRIPTS[k]=Object.assign({},CLIENT_SCRIPTS[k]||{},d.scripts[k]);
+    done.push('script for '+k);});}
   if(d.hooks)Object.assign(CLIENT_HOOKS,d.hooks);
   if(d.suit)Object.assign(suit,d.suit);
   return done;
