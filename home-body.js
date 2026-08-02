@@ -501,7 +501,7 @@
         fontSize: 18,
         marginTop: 14
       }
-    }, "Property finance is full of decisions that cost people money for years because no one explained the trade-offs at the start. Empowerment Through Property is our answer to that: a full day, in person, twice a year, so our clients and our community can make informed decisions rather than lucky ones."), /*#__PURE__*/React.createElement("div", {
+    }, "Property finance is full of decisions that cost people money for years because no one explained the trade-offs at the start. Empowerment Through Property is our answer to that: a full day, in person, so our clients and our community can make informed decisions rather than lucky ones."), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -578,18 +578,24 @@
         margin: 0
       }
     }, "Empowerment Through Property"), /*#__PURE__*/React.createElement("p", {
+      style: {
+        font: "600 15px var(--font-sans)",
+        color: "var(--pcs-blue)",
+        margin: "6px 0 0"
+      }
+    }, "Build Wealth, Sustain Health"), /*#__PURE__*/React.createElement("p", {
       className: "pcs-body",
       style: {
         fontSize: 15.5,
         margin: "12px 0 0"
       }
-    }, "Three editions so far, mainly London, with one in Manchester. Each sets its own theme, so no two have run the same way."), /*#__PURE__*/React.createElement("p", {
+    }, "Three editions ran across 2026, in Croydon, Manchester and Hammersmith. From here we run two a year."), /*#__PURE__*/React.createElement("p", {
       className: "pcs-body",
       style: {
         fontSize: 15.5,
         margin: "12px 0 0"
       }
-    }, "The next two are planned for 2027, one around April and one around September."), /*#__PURE__*/React.createElement("div", {
+    }, "The next two are planned for 2027, one in spring and one in autumn."), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         gap: 12,
