@@ -408,7 +408,7 @@
     const {
       Icon
     } = window.PCSIcons;
-    const KEY = "pcs-announce-etp-evergreen";
+    const KEY = "pcs-announce-free-consultation";
     const [show, setShow] = React.useState(true);
     React.useEffect(() => {
       try {
@@ -447,9 +447,9 @@
         color: "var(--pcs-gold)"
       }
     }, /*#__PURE__*/React.createElement(Icon, {
-      name: "calendar",
+      name: "phone",
       size: 13
-    }), " Our flagship event"), /*#__PURE__*/React.createElement("span", null, "Empowerment Through Property · The Landlord and Investment Expo · Next edition being planned"), /*#__PURE__*/React.createElement("span", {
+    }), " Free consultation"), /*#__PURE__*/React.createElement("span", null, "Talk to an adviser for 15 minutes, no cost and no pressure · We will tell you honestly whether we can help"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -457,7 +457,7 @@
         fontWeight: 700,
         color: "#fff"
       }
-    }, "See previous editions ", /*#__PURE__*/React.createElement(Icon, {
+    }, "Get started ", /*#__PURE__*/React.createElement(Icon, {
       name: "arrowRight",
       size: 13
     })), /*#__PURE__*/React.createElement("span", {
@@ -475,8 +475,8 @@
         overflow: "hidden"
       }
     }, /*#__PURE__*/React.createElement("a", {
-      href: "empowerment-through-property",
-      "aria-label": "Read about Empowerment Through Property, our flagship event",
+      href: "get-started",
+      "aria-label": "Book a free 15-minute consultation with a Property Clinic Solutions adviser",
       style: {
         display: "block",
         textDecoration: "none"

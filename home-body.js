@@ -469,7 +469,7 @@
       Icon
     } = window.PCSIcons;
     const W2 = window.PCSHome;
-    const list = ["Free first-time buyer evenings", "Landlord and portfolio workshops", "Credit, affordability, and protection masterclasses", "Online sessions for clients who cannot travel"];
+    const list = ["Two in-person editions a year", "Free and ticketed sessions", "Taught by working property and finance professionals", "Online sessions for people who cannot travel"];
     return /*#__PURE__*/React.createElement("section", {
       id: "events",
       className: "reveal",
@@ -501,7 +501,7 @@
         fontSize: 18,
         marginTop: 14
       }
-    }, "Property finance is full of decisions that cost people money for years because no one explained the trade-offs at the start. We run free community events, paid deep-dive workshops, and online sessions so our clients and our community can make informed decisions, not lucky ones."), /*#__PURE__*/React.createElement("div", {
+    }, "Property finance is full of decisions that cost people money for years because no one explained the trade-offs at the start. Empowerment Through Property is our answer to that: a full day, in person, twice a year, so our clients and our community can make informed decisions rather than lucky ones."), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -545,19 +545,16 @@
         justifyContent: "center"
       }
     }, /*#__PURE__*/React.createElement("img", {
-      src: "assets/photos/event-flyer-2026.png",
-      alt: "Empowerment Through Property: Landlord and Investment Expo flyer",
+      src: "assets/photos/etp-london.jpg",
+      alt: "A full room at Empowerment Through Property in London",
       onError: e => {
         e.currentTarget.onerror = null;
-        e.currentTarget.src = "assets/photos/1511578314322-379afb476865.jpg";
-        e.currentTarget.style.objectFit = "cover";
-        e.currentTarget.style.height = "100%";
-        e.currentTarget.style.maxWidth = "100%";
+        e.currentTarget.src = "assets/photos/etp-manchester.jpg";
       },
       style: {
-        maxHeight: "100%",
-        maxWidth: "100%",
-        objectFit: "contain",
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
         display: "block"
       }
     }), /*#__PURE__*/React.createElement("span", {
@@ -569,7 +566,7 @@
     }, /*#__PURE__*/React.createElement(Badge, {
       tone: "gold",
       variant: "solid"
-    }, "Featured event"))), /*#__PURE__*/React.createElement("div", {
+    }, "Our flagship event"))), /*#__PURE__*/React.createElement("div", {
       style: {
         padding: 26
       }
@@ -580,44 +577,19 @@
         letterSpacing: "-.01em",
         margin: 0
       }
-    }, "Empowerment Through Property: Wealth meets Health"), /*#__PURE__*/React.createElement("div", {
+    }, "Empowerment Through Property"), /*#__PURE__*/React.createElement("p", {
+      className: "pcs-body",
       style: {
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        margin: "18px 0 0"
+        fontSize: 15.5,
+        margin: "12px 0 0"
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, "Three editions so far, mainly London, with one in Manchester. Each sets its own theme, so no two have run the same way."), /*#__PURE__*/React.createElement("p", {
+      className: "pcs-body",
       style: {
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        font: "600 15px var(--font-sans)",
-        color: "var(--text-body)"
+        fontSize: 15.5,
+        margin: "12px 0 0"
       }
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "calendar",
-      size: 18,
-      style: {
-        color: "var(--pcs-blue)"
-      }
-    }), " Saturday 1 August 2026, 12 PM – 6 PM"), /*#__PURE__*/React.createElement("span", {
-      style: {
-        display: "flex",
-        alignItems: "flex-start",
-        gap: 10,
-        font: "500 15px/1.4 var(--font-sans)",
-        color: "var(--text-body)"
-      }
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "mapPin",
-      size: 18,
-      style: {
-        color: "var(--pcs-blue)",
-        flex: "none",
-        marginTop: 1
-      }
-    }), " Grove House, 27 Hammersmith Grove, London, W6 0NE")), /*#__PURE__*/React.createElement("div", {
+    }, "The next two are planned for 2027, one around April and one around September."), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         gap: 12,
@@ -625,13 +597,11 @@
         flexWrap: "wrap"
       }
     }, /*#__PURE__*/React.createElement(Button, {
-      href: EVENTBRITE,
-      target: "_blank",
-      rel: "noopener"
-    }, "Reserve Your Place"), /*#__PURE__*/React.createElement(Button, {
+      href: "empowerment-through-property"
+    }, "See Previous Editions"), /*#__PURE__*/React.createElement(Button, {
       variant: "outline",
-      href: "events"
-    }, "See All Upcoming Events"))))));
+      href: "empowerment-through-property#register"
+    }, "Join The List"))))));
   }
   W.Education = Education;
 
@@ -700,6 +670,7 @@
       strokeLinejoin: "round"
     }));
   }
+
   /* Relative "time ago" from a YYYY-MM-DD date, computed at render so review
      ages stay correct on their own as weeks pass (Google-style wording). */
   function revAge(date) {
@@ -808,8 +779,11 @@
     }, open ? "Show less" : "Read more"));
   }
 
-  /* 6 — Google reviews (scrolling). Replace the reviews array with your real
-     ones and set GOOGLE_REVIEWS_URL to your Google profile link. */
+  /* 6 — Google reviews (scrolling). Each review carries a real "date"
+     (YYYY-MM-DD); the "X ago" label is computed at render by revAge() so it
+     stays correct as time passes. To add a new review, copy a line, set its
+     date to when it was posted, and put it at the top. Set GOOGLE_REVIEWS_URL
+     to your Google profile link. */
   function ClientStories() {
     const {
       Icon
