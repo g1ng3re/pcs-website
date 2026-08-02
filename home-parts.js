@@ -408,7 +408,7 @@
     const {
       Icon
     } = window.PCSIcons;
-    const KEY = "pcs-announce-event-2026-08";
+    const KEY = "pcs-announce-etp-evergreen";
     const [show, setShow] = React.useState(true);
     React.useEffect(() => {
       try {
@@ -449,7 +449,7 @@
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "calendar",
       size: 13
-    }), " Upcoming event"), /*#__PURE__*/React.createElement("span", null, "Empowerment Through Property: Wealth meets Health · Sat 1 August 2026, London"), /*#__PURE__*/React.createElement("span", {
+    }), " Our flagship event"), /*#__PURE__*/React.createElement("span", null, "Empowerment Through Property · The Landlord and Investment Expo · Next edition being planned"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -457,7 +457,7 @@
         fontWeight: 700,
         color: "#fff"
       }
-    }, "Reserve your place ", /*#__PURE__*/React.createElement(Icon, {
+    }, "See previous editions ", /*#__PURE__*/React.createElement(Icon, {
       name: "arrowRight",
       size: 13
     })), /*#__PURE__*/React.createElement("span", {
@@ -475,10 +475,8 @@
         overflow: "hidden"
       }
     }, /*#__PURE__*/React.createElement("a", {
-      href: EVENTBRITE,
-      target: "_blank",
-      rel: "noopener",
-      "aria-label": "Reserve your place at Empowerment Through Property, Saturday 1 August 2026, London",
+      href: "empowerment-through-property",
+      "aria-label": "Read about Empowerment Through Property, our flagship event",
       style: {
         display: "block",
         textDecoration: "none"
