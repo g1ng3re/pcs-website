@@ -1292,15 +1292,37 @@
   K.initHashScroll = function () {
     const id = (window.location.hash || "").slice(1);
     if (!id) return;
+    /* One jump is not enough. React commits asynchronously and the hero image
+       loads after that, so an early scroll gets undone by the reflow. Re-assert
+       the position across the first second, and stop as soon as the user
+       scrolls themselves so we never fight them. */
+    let cancelled = false;
+    const stop = () => {
+      cancelled = true;
+    };
+    window.addEventListener("wheel", stop, {
+      once: true,
+      passive: true
+    });
+    window.addEventListener("touchstart", stop, {
+      once: true,
+      passive: true
+    });
+    window.addEventListener("keydown", stop, {
+      once: true
+    });
     const go = () => {
+      if (cancelled) return;
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({
         behavior: "auto",
         block: "start"
       });
     };
-    go();
-    setTimeout(go, 260);
+    [0, 150, 350, 700, 1100].forEach(ms => setTimeout(go, ms));
+    window.addEventListener("load", () => setTimeout(go, 80), {
+      once: true
+    });
   };
   K.boot = function (children) {
     ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(Page, null, children));
