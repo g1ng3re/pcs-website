@@ -19,7 +19,7 @@
     return /*#__PURE__*/React.createElement(Button, {
       size: c.size || "lg",
       variant: c.variant || "primary",
-      href: c.href || CALENDLY,
+      href: (window.PCSHome && window.PCSHome.path ? window.PCSHome.path(c.href) : c.href) || CALENDLY,
       target: ext ? "_blank" : undefined,
       rel: ext ? "noopener" : undefined,
       rightIcon: c.icon === false ? undefined : /*#__PURE__*/React.createElement(Icon, {
@@ -148,11 +148,11 @@
         width: 42,
         height: 42,
         borderRadius: 11,
-        background: "var(--pcs-emerald-tint)",
+        background: photo.badge.tint || "var(--pcs-emerald-tint)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "var(--pcs-emerald)"
+        color: photo.badge.fg || "var(--pcs-emerald)"
       }
     }, /*#__PURE__*/React.createElement(Icon, {
       name: photo.badge.icon || "checkCircle",
@@ -174,7 +174,8 @@
 
   /* ---- Trust strip ---- */
   function TrustStrip({
-    items
+    items,
+    accent = "var(--pcs-emerald)"
   }) {
     const {
       Icon
@@ -211,7 +212,7 @@
       name: "checkCircle",
       size: 18,
       style: {
-        color: "var(--pcs-emerald)"
+        color: accent
       }
     }), " ", t))));
   }
@@ -407,7 +408,8 @@
     lead,
     items,
     accent = "var(--pcs-blue)",
-    bg = "#fff"
+    bg = "#fff",
+    tick = "var(--pcs-emerald)"
   }) {
     const {
       Icon
@@ -447,7 +449,7 @@
       }
     }, items.map((it, i) => /*#__PURE__*/React.createElement("a", {
       key: i,
-      href: it.href || "#",
+      href: (window.PCSHome && window.PCSHome.path ? window.PCSHome.path(it.href) : it.href) || "#",
       className: "pcs-path-card",
       style: {
         background: bg === "#fff" ? "var(--surface-page)" : "#fff",
@@ -513,7 +515,7 @@
       name: "check",
       size: 17,
       style: {
-        color: "var(--pcs-emerald)",
+        color: tick,
         flex: "none",
         marginTop: 2
       }
@@ -543,7 +545,8 @@
     steps,
     cta: ctaObj,
     accent = "var(--pcs-blue)",
-    bg = "var(--surface-page)"
+    bg = "var(--surface-page)",
+    stepLabel = "var(--pcs-emerald)"
   }) {
     const {
       Icon
@@ -611,7 +614,7 @@
     }) : i + 1), /*#__PURE__*/React.createElement("div", {
       style: {
         font: "800 14px var(--font-display)",
-        color: "var(--pcs-emerald)",
+        color: stepLabel,
         marginTop: 18
       }
     }, "Step ", i + 1), /*#__PURE__*/React.createElement("h3", {

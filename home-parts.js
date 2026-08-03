@@ -48,6 +48,18 @@
   } catch (e) {}
   const RISK = "Your home may be repossessed if you do not keep up repayments on your mortgage.";
   W.RISK = RISK;
+
+  /* Internal links are written bare ("protection", "blog/income-protection").
+     A bare href resolves against the CURRENT directory, so from /blog/anything
+     "protection" resolved to /blog/protection and 404'd. Every internal link
+     goes through this so it always resolves from the site root. Anchors,
+     mailto:, tel: and absolute URLs are left alone. */
+  function path(href) {
+    if (!href) return href;
+    if (/^([a-z]+:|\/\/|\/|#)/i.test(href)) return href;
+    return "/" + href;
+  }
+  W.path = path;
   const reduceMotion = () => typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* Counts a stat up from zero when it scrolls into view. Parses a leading
@@ -106,8 +118,8 @@
         };
         raf = requestAnimationFrame(tick);
       };
-      // Keep the real value in the markup until the animation actually starts,
-      // so crawlers and the prerenderer bake "500+", not "0+".
+      // Keep the real value in the markup until the animation actually starts.
+      // This way crawlers, previews, and the prerenderer bake "500+", not "0+".
       if (!("IntersectionObserver" in window) || !el) {
         return;
       }
@@ -280,20 +292,20 @@
     href: "buildings-contents"
   }];
   const ABOUT_LINKS = [{
-    icon: "users",
-    title: "About Us",
-    desc: "Who we are and why we do this differently.",
-    href: "about"
-  }, {
     icon: "scale",
-    title: "How It Works",
-    desc: "Our simple three-step process, start to finish.",
-    href: "how-it-works"
+    title: "How We Work",
+    desc: "Our process, from first call to completion.",
+    href: "about#process"
   }, {
     icon: "book",
     title: "Blog",
-    desc: "Plain-English guides on mortgages and protection.",
+    desc: "Guides on mortgages, protection and property finance.",
     href: "blog"
+  }, {
+    icon: "calendar",
+    title: "Events",
+    desc: "Empowerment Through Property and our community evenings.",
+    href: "events"
   }];
   function MegaPanel({
     links,
@@ -311,7 +323,7 @@
         gap: 4
       }
     }, overview && /*#__PURE__*/React.createElement("a", {
-      href: overview.href,
+      href: path(overview.href),
       onClick: onNavigate,
       className: "pcs-mega-link pcs-link-row",
       style: {
@@ -330,7 +342,7 @@
       size: 15
     })), links.map(l => /*#__PURE__*/React.createElement("a", {
       key: l.title,
-      href: l.href,
+      href: path(l.href),
       onClick: onNavigate,
       className: "pcs-mega-link",
       style: {
@@ -475,7 +487,7 @@
         overflow: "hidden"
       }
     }, /*#__PURE__*/React.createElement("a", {
-      href: "get-started",
+      href: path("get-started"),
       "aria-label": "Book a free 15-minute consultation with a Property Clinic Solutions adviser",
       style: {
         display: "block",
@@ -607,7 +619,7 @@
       "aria-expanded": open === key,
       "aria-haspopup": "true",
       onClick: () => {
-        window.location.href = key;
+        window.location.href = path(key);
       },
       style: {
         display: "inline-flex",
@@ -630,7 +642,7 @@
       }
     })))), simpleLinks.map(([label, href]) => /*#__PURE__*/React.createElement("a", {
       key: label,
-      href: href,
+      href: path(href),
       onClick: closeAll,
       className: "pcs-nav-btn",
       style: {
@@ -664,7 +676,7 @@
       size: 16
     }), " 0333 404 0589"), /*#__PURE__*/React.createElement(Button, {
       size: "sm",
-      href: "get-started",
+      href: path("get-started"),
       className: "pcs-book-btn"
     }, "Get Started"), /*#__PURE__*/React.createElement("button", {
       className: "pcs-burger",
@@ -712,26 +724,14 @@
       }
     }, shownPanel === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: MORTGAGE_LINKS,
-      overview: {
-        label: "All mortgage services",
-        href: "mortgages"
-      },
       footnote: "Whole of market. 90+ lenders. No upfront fees.",
       onNavigate: closeAll
     }), shownPanel === "protection" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: PROTECTION_LINKS,
-      overview: {
-        label: "All protection services",
-        href: "protection"
-      },
       footnote: "Independent across the whole UK protection market. Reviewed every year.",
       onNavigate: closeAll
     }), shownPanel === "about" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: ABOUT_LINKS,
-      overview: {
-        label: "Meet the team",
-        href: "about"
-      },
       onNavigate: closeAll
     }))))), drawer && /*#__PURE__*/React.createElement(MobileDrawer, {
       onClose: () => setDrawer(false)
@@ -793,7 +793,7 @@
       }
     }, links.map(l => /*#__PURE__*/React.createElement("a", {
       key: l.title,
-      href: l.href,
+      href: path(l.href),
       onClick: close,
       style: {
         font: "600 16px var(--font-sans)",
@@ -868,9 +868,6 @@
         title: "About Us",
         href: "about"
       }, {
-        title: "How It Works",
-        href: "how-it-works"
-      }, {
         title: "Blog",
         href: "blog"
       }, {
@@ -883,7 +880,7 @@
     }), /*#__PURE__*/React.createElement(Button, {
       size: "lg",
       fullWidth: true,
-      href: "get-started",
+      href: path("get-started"),
       style: {
         marginTop: 18
       }
@@ -906,34 +903,45 @@
   }
   function Hero() {
     const {
-      Button,
-      Badge
+      Button
     } = window.PCSDesignSystem_269f6d;
     const {
       Icon
     } = window.PCSIcons;
     return /*#__PURE__*/React.createElement("section", {
       id: "top",
+      className: "pcs-hero-dark",
       style: {
-        background: "var(--surface-page)",
-        padding: "76px 28px 84px",
+        padding: "80px 28px 88px",
         position: "relative",
         overflow: "hidden"
       }
     }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-hero-dots"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "pcs-hero-blob pcs-hero-blob-1"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "pcs-hero-blob pcs-hero-blob-2"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "pcs-hero-blob pcs-hero-blob-3"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "pcs-hero-blob pcs-hero-blob-4"
+    }), /*#__PURE__*/React.createElement("div", {
       style: {
         maxWidth: 1200,
         margin: "0 auto",
         display: "grid",
         gridTemplateColumns: "1.05fr .95fr",
         gap: 60,
-        alignItems: "center"
+        alignItems: "center",
+        position: "relative",
+        zIndex: 1
       },
       className: "pcs-hero-grid"
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "pcs-label pcs-hero-anim",
       style: {
-        color: "var(--pcs-blue)",
+        color: "var(--pcs-emerald)",
         display: "inline-flex",
         alignItems: "center",
         gap: 8,
@@ -942,7 +950,7 @@
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "shield",
       size: 15
-    }), " Professional Property People"), /*#__PURE__*/React.createElement("h1", {
+    }), " Independent UK Mortgage and Protection Brokers"), /*#__PURE__*/React.createElement("h1", {
       className: "pcs-hero-title",
       style: {
         margin: "18px 0 0"
@@ -951,37 +959,39 @@
       className: "pcs-hero-anim",
       style: {
         color: "var(--pcs-blue)",
-        display: "inline-block",
+        display: "block",
         animationDelay: ".12s"
       }
-    }, "We advise."), " ", /*#__PURE__*/React.createElement("span", {
+    }, "We advise."), /*#__PURE__*/React.createElement("span", {
       className: "pcs-hero-anim",
       style: {
         color: "var(--pcs-emerald)",
-        display: "inline-block",
+        display: "block",
         animationDelay: ".22s"
       }
-    }, "We protect."), " ", /*#__PURE__*/React.createElement("span", {
+    }, "We protect."), /*#__PURE__*/React.createElement("span", {
       className: "pcs-hero-anim",
       style: {
-        color: "var(--pcs-ink)",
-        display: "inline-block",
+        color: "#fff",
+        display: "block",
         animationDelay: ".32s"
       }
     }, "We teach.")), /*#__PURE__*/React.createElement("p", {
-      className: "pcs-body pcs-hero-anim",
+      className: "pcs-hero-anim",
       style: {
-        fontSize: 18.5,
-        maxWidth: 540,
-        margin: "20px 0 0",
+        fontSize: 18,
+        maxWidth: 520,
+        margin: "22px 0 0",
+        lineHeight: 1.65,
+        color: "rgba(255,255,255,.65)",
         animationDelay: ".42s"
       }
-    }, "Independent UK mortgages and protection for first-time buyers, self-employed, landlords, and every case in between. For life, not just one transaction."), /*#__PURE__*/React.createElement("div", {
+    }, "For first-time buyers, self-employed, landlords, and complex cases. We stay with you across every mortgage, every protection review, and every stage of your property journey."), /*#__PURE__*/React.createElement("div", {
       className: "pcs-hero-anim",
       style: {
         display: "flex",
         gap: 12,
-        marginTop: 30,
+        marginTop: 32,
         flexWrap: "wrap",
         animationDelay: ".5s"
       }
@@ -994,28 +1004,32 @@
       })
     }, "Get Started"), /*#__PURE__*/React.createElement(Button, {
       size: "lg",
-      variant: "outline",
+      variant: "ghost",
       href: "#events",
       leftIcon: /*#__PURE__*/React.createElement(Icon, {
         name: "calendar",
         size: 18
-      })
+      }),
+      style: {
+        color: "#fff",
+        borderColor: "rgba(255,255,255,.3)"
+      }
     }, "See Upcoming Events")), /*#__PURE__*/React.createElement("p", {
       className: "pcs-hero-anim",
       style: {
-        margin: "22px 0 0",
-        maxWidth: 520,
-        font: "500 13.5px/1.5 var(--font-sans)",
-        color: "var(--text-muted)",
+        margin: "24px 0 0",
+        maxWidth: 500,
+        font: "500 12.5px/1.5 var(--font-sans)",
+        color: "rgba(255,255,255,.35)",
         display: "flex",
-        gap: 9,
+        gap: 8,
         animationDelay: ".58s"
       }
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "shield",
-      size: 17,
+      size: 16,
       style: {
-        color: "var(--pcs-blue)",
+        color: "rgba(255,255,255,.3)",
         flex: "none",
         marginTop: 1
       }
@@ -1023,35 +1037,40 @@
       style: {
         position: "relative"
       }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-photo-bob"
     }, /*#__PURE__*/React.createElement(Photo, {
       className: "pcs-hero-photo",
       id: "hero-townhouse",
       alt: "A row of classic English red-brick Victorian townhouses",
       h: 480,
       radius: 28,
-      eager: true
-    }), /*#__PURE__*/React.createElement("div", {
+      eager: true,
+      style: {
+        boxShadow: "0 40px 80px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.3)"
+      }
+    })), /*#__PURE__*/React.createElement("div", {
       className: "pcs-hero-anim",
       style: {
         position: "absolute",
         left: -22,
-        bottom: -22,
+        bottom: 20,
         background: "#fff",
         borderRadius: 18,
-        boxShadow: "var(--shadow-lg)",
-        padding: "16px 20px",
+        boxShadow: "0 16px 48px rgba(0,0,0,.4)",
+        padding: "14px 18px",
         display: "flex",
         alignItems: "center",
-        gap: 14,
-        maxWidth: 260,
+        gap: 12,
+        maxWidth: 240,
         animationDelay: ".62s"
       }
     }, /*#__PURE__*/React.createElement("span", {
       style: {
         flex: "none",
-        width: 44,
-        height: 44,
-        borderRadius: 12,
+        width: 42,
+        height: 42,
+        borderRadius: 11,
         background: "var(--pcs-emerald-tint)",
         display: "flex",
         alignItems: "center",
@@ -1060,16 +1079,16 @@
       }
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "handshake",
-      size: 22
+      size: 21
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       style: {
-        font: "800 20px var(--font-display)",
+        font: "800 16px var(--font-display)",
         color: "var(--pcs-ink)",
         letterSpacing: "-.01em"
       }
     }, "Whole of market"), /*#__PURE__*/React.createElement("div", {
       style: {
-        font: "500 13px var(--font-sans)",
+        font: "500 12px var(--font-sans)",
         color: "var(--text-muted)"
       }
     }, "90+ lenders, not a panel"))), /*#__PURE__*/React.createElement("div", {
@@ -1077,28 +1096,47 @@
       style: {
         position: "absolute",
         right: -14,
-        top: 24,
-        background: "#fff",
+        top: 28,
+        background: "var(--pcs-blue)",
         borderRadius: 14,
-        boxShadow: "var(--shadow-md)",
-        padding: "10px 14px",
+        boxShadow: "0 8px 24px rgba(0,42,177,.5)",
+        padding: "10px 16px",
         display: "flex",
         alignItems: "center",
         gap: 8,
         animationDelay: ".72s"
       }
     }, /*#__PURE__*/React.createElement(Icon, {
-      name: "star",
-      size: 18,
+      name: "checkCircle",
+      size: 17,
       style: {
-        color: "var(--pcs-gold)"
+        color: "var(--pcs-emerald)"
       }
     }), /*#__PURE__*/React.createElement("span", {
       style: {
-        font: "700 14px var(--font-sans)",
+        font: "700 13px var(--font-sans)",
+        color: "#fff"
+      }
+    }, "FCA regulated")), /*#__PURE__*/React.createElement("div", {
+      className: "pcs-hero-anim",
+      style: {
+        position: "absolute",
+        left: -10,
+        top: "42%",
+        background: "var(--pcs-gold)",
+        borderRadius: 10,
+        padding: "7px 14px",
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        animationDelay: ".8s"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        font: "800 13px var(--font-sans)",
         color: "var(--pcs-ink)"
       }
-    }, "Independent advice")))));
+    }, "No upfront fees")))));
   }
   W.Hero = Hero;
   function TrustStrip() {
@@ -1146,7 +1184,13 @@
     items,
     tone = "ink"
   }) {
-    const bg = tone === "blue" ? "var(--pcs-blue)" : "var(--pcs-ink)";
+    const bg = {
+      blue: "var(--pcs-blue)",
+      emerald: "var(--pcs-emerald)",
+      green: "var(--pcs-emerald)",
+      ink: "var(--pcs-ink)"
+    }[tone] || "var(--pcs-ink)";
+    const dot = tone === "emerald" || tone === "green" ? "rgba(255,255,255,.55)" : "var(--pcs-gold)";
     const row = /*#__PURE__*/React.createElement("div", {
       className: "pcs-marquee-row",
       "aria-hidden": "false"
@@ -1163,7 +1207,7 @@
       }
     }, t, /*#__PURE__*/React.createElement("span", {
       style: {
-        color: "var(--pcs-gold)",
+        color: dot,
         fontSize: 18
       },
       "aria-hidden": "true"
@@ -1607,13 +1651,13 @@
       links: [["Residential Mortgages", "mortgages"], ["Buy to Let", "buy-to-let"], ["Remortgage", "remortgage"], ["Protection", "protection"]]
     }, {
       h: "Company",
-      links: [["About Us", "about"], ["How It Works", "how-it-works"], ["Events", "events"], ["Contact", "contact"]]
+      links: [["About Us", "about"], ["Events", "events"], ["Blog", "blog"], ["Contact", "contact"]]
     }, {
       h: "Legal",
       links: [["Privacy Policy", "privacy"], ["Complaints", "complaints"], ["Cookie Policy", "cookie-policy"]]
     }, {
       h: "Tools",
-      links: [["Mortgage Calculator", "calculator"], ["Property Listings", "https://pcs.property-listings.co.uk/"], ["Blog", "blog"]]
+      links: [["Mortgage Calculator", "calculator"], ["Property Listings", "https://pcs.property-listings.co.uk/"]]
     }];
     const socials = [["facebook", "Facebook", "https://www.facebook.com/profile.php?id=61588038074490"], ["instagram", "Instagram", "https://www.instagram.com/withpcs/"], ["linkedin", "LinkedIn", "https://www.linkedin.com/company/property-clinic-solutions/"], ["tiktok", "TikTok", "https://www.tiktok.com/@propertyclinicsolutions"]];
     return /*#__PURE__*/React.createElement("footer", {
@@ -1696,20 +1740,23 @@
         flexDirection: "column",
         gap: 10
       }
-    }, c.links.map(([l, href]) => /*#__PURE__*/React.createElement("a", {
-      key: l,
-      href: href,
-      ...(/^https?:\/\//.test(href) ? {
-        target: "_blank",
-        rel: "noopener"
-      } : {}),
-      className: "pcs-foot-link",
-      style: {
-        font: "400 14px var(--font-sans)",
-        color: "rgba(255,255,255,.72)",
-        textDecoration: "none"
-      }
-    }, l)))))), /*#__PURE__*/React.createElement("div", {
+    }, c.links.map(([l, href]) => {
+      const ext = /^https?:\/\//.test(href);
+      return /*#__PURE__*/React.createElement("a", {
+        key: l,
+        href: path(href),
+        ...(ext ? {
+          target: "_blank",
+          rel: "noopener"
+        } : {}),
+        className: "pcs-foot-link",
+        style: {
+          font: "400 14px var(--font-sans)",
+          color: "rgba(255,255,255,.72)",
+          textDecoration: "none"
+        }
+      }, l);
+    }))))), /*#__PURE__*/React.createElement("div", {
       style: {
         borderTop: "1px solid rgba(255,255,255,.14)",
         marginTop: 44,
