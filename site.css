@@ -80,12 +80,12 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 .pcs-annmarquee:hover { animation-play-state: paused; }
 
 /* Scroll reveal */
-.reveal { opacity: 0; transform: translateY(12px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+.reveal { opacity: 0; transform: translateY(12px); transition: opacity .4s var(--ease-out), transform .4s var(--ease-out); }
 .reveal.reveal--in { opacity: 1; transform: none; }
 
 /* Staggered card reveals — cards in a grid cascade in once their section reveals */
 .reveal .pcs-grid-2 > *, .reveal .pcs-grid-3 > *, .reveal .pcs-grid-4 > *, .reveal .pcs-why-points > * {
-  opacity: 0; transform: translateY(16px); transition: opacity .5s var(--ease-out), transform .5s var(--ease-out); }
+  opacity: 0; transform: translateY(16px); transition: opacity .4s var(--ease-out), transform .4s var(--ease-out); }
 .reveal.reveal--in .pcs-grid-2 > *, .reveal.reveal--in .pcs-grid-3 > *, .reveal.reveal--in .pcs-grid-4 > *, .reveal.reveal--in .pcs-why-points > * {
   opacity: 1; transform: none; }
 .pcs-grid-2 > *:nth-child(2), .pcs-grid-3 > *:nth-child(2), .pcs-grid-4 > *:nth-child(2), .pcs-why-points > *:nth-child(2) { transition-delay: .07s; }
@@ -95,7 +95,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 .pcs-grid-3 > *:nth-child(6), .pcs-grid-4 > *:nth-child(6) { transition-delay: .35s; }
 
 /* Self-drawing timeline rule */
-.pcs-timeline-rule { transform: scaleX(0); transform-origin: left; transition: transform .9s var(--ease-out) .15s; }
+.pcs-timeline-rule { transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease-out) .15s; }
 .reveal--in .pcs-timeline-rule { transform: scaleX(1); }
 
 /* Stat count-up "pop" when it lands */

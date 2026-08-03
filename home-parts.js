@@ -535,6 +535,12 @@
       onScroll();
       return () => window.removeEventListener("scroll", onScroll);
     }, []);
+    /* Remember the last panel so its contents stay mounted while the panel
+       fades out. Without this the inner links unmount the instant `open`
+       clears, and you watch an empty white box fade away. */
+    const lastOpen = React.useRef(null);
+    if (open) lastOpen.current = open;
+    const shownPanel = open || lastOpen.current;
     const enter = k => {
       clearTimeout(closeTimer.current);
       setOpen(k);
@@ -704,7 +710,7 @@
         marginTop: 6,
         maxWidth: 720
       }
-    }, open === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
+    }, shownPanel === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: MORTGAGE_LINKS,
       overview: {
         label: "All mortgage services",
@@ -712,7 +718,7 @@
       },
       footnote: "Whole of market. 90+ lenders. No upfront fees.",
       onNavigate: closeAll
-    }), open === "protection" && /*#__PURE__*/React.createElement(MegaPanel, {
+    }), shownPanel === "protection" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: PROTECTION_LINKS,
       overview: {
         label: "All protection services",
@@ -720,7 +726,7 @@
       },
       footnote: "Independent across the whole UK protection market. Reviewed every year.",
       onNavigate: closeAll
-    }), open === "about" && /*#__PURE__*/React.createElement(MegaPanel, {
+    }), shownPanel === "about" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: ABOUT_LINKS,
       overview: {
         label: "Meet the team",
@@ -741,6 +747,23 @@
     const {
       Icon
     } = window.PCSIcons;
+    /* Slide in on mount, slide out before unmounting. Opening is deliberate so
+       it is slower; dismissing is a system response so it snaps. */
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const [shown, setShown] = React.useState(reduce);
+    React.useEffect(() => {
+      if (reduce) return;
+      const r = requestAnimationFrame(() => setShown(true));
+      return () => cancelAnimationFrame(r);
+    }, [reduce]);
+    const close = React.useCallback(() => {
+      if (reduce) {
+        onClose();
+        return;
+      }
+      setShown(false);
+      setTimeout(onClose, 180);
+    }, [onClose, reduce]);
     const Section = ({
       title,
       links
@@ -764,7 +787,7 @@
     }, links.map(l => /*#__PURE__*/React.createElement("a", {
       key: l.title,
       href: l.href,
-      onClick: onClose,
+      onClick: close,
       style: {
         font: "600 16px var(--font-sans)",
         color: "var(--pcs-ink)",
@@ -779,11 +802,13 @@
         zIndex: 130
       }
     }, /*#__PURE__*/React.createElement("div", {
-      onClick: onClose,
+      onClick: close,
       style: {
         position: "absolute",
         inset: 0,
-        background: "rgba(12,26,58,.45)"
+        background: "rgba(12,26,58,.45)",
+        opacity: shown ? 1 : 0,
+        transition: "opacity " + (shown ? 240 : 180) + "ms var(--ease-out)"
       }
     }), /*#__PURE__*/React.createElement("div", {
       style: {
@@ -795,7 +820,9 @@
         background: "#fff",
         boxShadow: "var(--shadow-xl)",
         overflowY: "auto",
-        padding: "18px 22px 32px"
+        padding: "18px 22px 32px",
+        transform: shown ? "translateX(0)" : "translateX(100%)",
+        transition: "transform " + (shown ? 260 : 180) + "ms var(--ease-drawer, cubic-bezier(0.32,0.72,0,1))"
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
@@ -812,7 +839,7 @@
       }
     }), /*#__PURE__*/React.createElement("button", {
       "aria-label": "Close menu",
-      onClick: onClose,
+      onClick: close,
       style: {
         background: "none",
         border: "none",

@@ -1189,14 +1189,22 @@
   K.Page = Page;
   K.initReveal = function () {
     const els = document.querySelectorAll(".reveal");
+    const show = e => e.classList.add("reveal--in");
     if (!("IntersectionObserver" in window)) {
-      els.forEach(e => e.classList.add("reveal--in"));
+      els.forEach(show);
       return;
     }
+    /* Anything already inside the first screenful is shown immediately. The
+       user is looking at it on load, so fading it in only delays the page. */
+    const fold = (window.innerHeight || 800) * 0.95;
+    const deferred = [];
+    els.forEach(e => {
+      if (e.getBoundingClientRect().top < fold) show(e);else deferred.push(e);
+    });
     const io = new IntersectionObserver(entries => {
       entries.forEach(en => {
         if (en.isIntersecting) {
-          en.target.classList.add("reveal--in");
+          show(en.target);
           io.unobserve(en.target);
         }
       });
@@ -1204,8 +1212,47 @@
       rootMargin: "0px 0px -8% 0px",
       threshold: 0.04
     });
-    els.forEach(e => io.observe(e));
-    setTimeout(() => els.forEach(e => e.classList.add("reveal--in")), 2600);
+    deferred.forEach(e => io.observe(e));
+    /* Safety net. A fast scroll, an anchor jump or a restored scroll position
+       can skip an element entirely, in which case the observer never fires and
+       the section would stay invisible for good. Sweep on scroll for anything
+       that has reached the viewport, and unbind once everything is shown. */
+    let queued = false,
+      timer = null;
+    const stop = () => {
+      window.removeEventListener("scroll", onScroll);
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    };
+    const sweep = () => {
+      queued = false;
+      const vb = window.innerHeight || 800;
+      for (let i = deferred.length - 1; i >= 0; i--) {
+        if (deferred[i].getBoundingClientRect().top < vb) {
+          show(deferred[i]);
+          io.unobserve(deferred[i]);
+          deferred.splice(i, 1);
+        }
+      }
+      if (!deferred.length) stop();
+    };
+    const onScroll = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(sweep);
+      }
+    };
+    if (deferred.length) {
+      window.addEventListener("scroll", onScroll, {
+        passive: true
+      });
+      /* The interval is the guarantee, not the optimisation: it catches
+         anything the observer and the scroll handler both miss. It stops
+         itself the moment every section has been shown. */
+      timer = setInterval(sweep, 300);
+    }
   };
 
   /* Build a FAQPage schema from rendered .faq blocks and inject once. */
