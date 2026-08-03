@@ -1,107 +1,237 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Blog · Property Clinic Solutions</title>
-<meta name="description" content="Plain-English guides on mortgages, protection, and property finance. Written by the team at Property Clinic Solutions."/>
-<link rel="canonical" href="https://propertyclinicsolutions.com/blog"/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="Blog · Property Clinic Solutions"/>
-<meta property="og:description" content="Plain-English guides on mortgages, protection, and property finance."/>
-<meta property="og:image" content="../assets/logos/pcs-logo-horizontal.svg"/>
-<link rel="icon" type="image/svg+xml" href="../assets/logos/pcs-favicon.svg"/>
-<link rel="icon" href="../assets/favicon/favicon.ico" sizes="any"/>
-<link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png"/>
-<meta name="theme-color" content="#002AB1"/>
-<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css"/>
-<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css"/>
-<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css"/>
-<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css"/>
-<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css"/>
-<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css"/>
-<link rel="stylesheet" href="../site.css?v=6"/>
+<meta name="description" content="Guides on mortgages, protection, and property finance. No jargon, no pressure, just the information you need to make better decisions." />
+<link rel="canonical" href="https://propertyclinicsolutions.com/blog" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Blog · Property Clinic Solutions" />
+<meta property="og:description" content="Guides on mortgages, protection, and property finance." />
+<meta property="og:image" content="assets/logos/pcs-logo-horizontal.svg" />
+<link rel="icon" type="image/svg+xml" href="../assets/logos/pcs-favicon.svg" />
+<link rel="icon" href="../assets/favicon/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png" />
+<meta name="theme-color" content="#002AB1" />
+
+<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
+<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
+<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css" />
+<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
+<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
+<link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
+<link rel="stylesheet" href="../site.css?v=1785777093900" />
 <style>
-.blog-hero{background:var(--pcs-ink);padding:72px 28px 64px;position:relative;overflow:hidden}
-.blog-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(0,42,177,.5) 0%,transparent 60%),radial-gradient(ellipse at 90% 20%,rgba(16,158,108,.2) 0%,transparent 50%);pointer-events:none}
-.blog-hero-i{max-width:1200px;margin:0 auto;position:relative;z-index:1}
-.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
-@media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.blog-grid{grid-template-columns:1fr}}
-.bcard{background:#fff;border-radius:16px;border:1.5px solid var(--border-subtle);overflow:hidden;text-decoration:none;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
-.bcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
-.bcard-accent{height:4px}
-.bcard-body{padding:24px;flex:1;display:flex;flex-direction:column}
-.bcard-cat{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border-radius:999px;display:inline-block;margin-bottom:14px}
-.cat-p{background:var(--pcs-emerald-tint);color:var(--pcs-emerald)}
-.cat-m{background:var(--pcs-blue-tint);color:var(--pcs-blue)}
-.bcard-title{font:800 18px/1.3 var(--font-display);color:var(--pcs-ink);letter-spacing:-.01em;margin-bottom:10px}
-.bcard-excerpt{font-size:14px;line-height:1.65;color:var(--text-muted);flex:1;margin-bottom:20px}
-.bcard-meta{display:flex;align-items:center;justify-content:space-between;font:700 11px var(--font-sans);color:var(--text-muted)}
-.bcard-read{color:var(--pcs-blue);font-weight:800;font-size:12px}
-.blog-disc{background:var(--pcs-gold-tint);border-top:1px solid rgba(219,159,31,.25);padding:20px 28px}
-.blog-disc p{font-size:12px;color:#7a5a0a;max-width:780px;margin:0 auto;text-align:center;line-height:1.6}
+  /* Article cards. Sits on the standard 1200 page width so the grid lines up
+     with the header, the footer and every other page on the site. */
+  .pcs-blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 900px) { .pcs-blog-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 580px) { .pcs-blog-grid { grid-template-columns: 1fr; } }
+
+  .pcs-bcard { background: var(--surface-page); border: 1px solid var(--border-subtle); border-radius: 18px;
+    overflow: hidden; text-decoration: none; display: flex; flex-direction: column;
+    transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out), border-color .2s var(--ease-out); }
+  .pcs-bcard:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--pcs-blue); }
+  .pcs-bcard__bar { height: 5px; }
+  .pcs-bcard__body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
+  .pcs-bcard__cat { font: 800 10.5px var(--font-sans); letter-spacing: .14em; text-transform: uppercase;
+    padding: 4px 11px; border-radius: 999px; display: inline-block; align-self: flex-start; margin-bottom: 14px; }
+  .pcs-bcard__title { font: 700 21px/1.28 var(--font-display); color: var(--pcs-ink); letter-spacing: -.01em; margin: 0 0 10px; }
+  .pcs-bcard__excerpt { font: 400 15px/1.6 var(--font-sans); color: var(--text-body); flex: 1; margin: 0 0 22px; }
+  .pcs-bcard__meta { display: flex; align-items: center; justify-content: space-between;
+    font: 600 12.5px var(--font-sans); color: var(--text-muted); }
+  .pcs-bcard__read { color: var(--pcs-blue); font: 700 14px var(--font-sans); display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Lead article spans the row on wide screens. */
+  .pcs-bcard--feature { grid-column: 1 / -1; flex-direction: row; }
+  .pcs-bcard--feature .pcs-bcard__bar { height: auto; width: 6px; }
+  .pcs-bcard--feature .pcs-bcard__body { padding: 34px 36px; }
+  .pcs-bcard--feature .pcs-bcard__title { font-size: 27px; }
+  .pcs-bcard--feature .pcs-bcard__excerpt { font-size: 16px; max-width: 700px; }
+  @media (max-width: 700px) { .pcs-bcard--feature { flex-direction: column; } .pcs-bcard--feature .pcs-bcard__bar { width: auto; height: 5px; } }
 </style>
-<script>window.__resources={logoH:"../assets/logos/pcs-logo-horizontal.svg",logoHRev:"../assets/logos/pcs-logo-horizontal-reversed.svg",logoSymbol:"../assets/logos/pcs-symbol.svg"};</script>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="../vendor/react.production.min.js"></script>
+<script src="../vendor/react-dom.production.min.js"></script>
 <script src="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="../icons.js?v=1785776581702"></script>
-<script src="../home-parts.js?v=1785776581702"></script>
-<script src="../page-kit.js?v=1785776581702"></script>
+<script src="../icons.js?v=1785777093900"></script>
+<script src="../home-parts.js?v=1785777093900"></script>
+<script src="../page-kit.js?v=1785777093900"></script>
+
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "Blog", "name": "Property Clinic Solutions Blog", "url": "https://propertyclinicsolutions.com/blog", "description": "Guides on mortgages, protection, and property finance." }
+</script>
 </head>
 <body>
 <a href="#main" class="pcs-skip">Skip to content</a>
 <div id="root"></div>
-<script type="text/babel" data-presets="react">
-const K = window.PCSKit;
+<script>const K = window.PCSKit;
+const {
+  Icon
+} = window.PCSIcons;
+const {
+  Marquee,
+  path
+} = window.PCSHome;
 
-const articles = [
-  { href:"death-in-service", cat:"p", catLabel:"Protection", accent:"var(--pcs-emerald)", title:"Why your death in service from work probably isn't enough", excerpt:"Most people assume their employer's death in service covers them. It doesn't, at least not properly. Here's what it actually is, what it isn't, and why it shouldn't be your plan.", mins:5 },
-  { href:"income-protection", cat:"p", catLabel:"Protection", accent:"var(--pcs-blue)", title:"What is income protection and do I actually need it?", excerpt:"If you stopped working tomorrow (illness, injury, anything) how long could you last on savings? Income protection is the policy nobody thinks about until it's too late.", mins:6 },
-  { href:"how-much-life-cover", cat:"p", catLabel:"Protection", accent:"var(--pcs-gold)", title:"How much life cover do I need? The honest answer", excerpt:"The \"10x your salary\" rule is lazy and often wrong. The honest answer depends on four questions about your actual situation, not a formula someone pulled from thin air.", mins:5 },
-  { href:"self-employed-mortgage", cat:"m", catLabel:"Mortgages", accent:"var(--pcs-blue)", title:"Self-employed mortgage: how lenders actually assess your income", excerpt:"Being self-employed doesn't stop you getting a mortgage. It just means lenders look at your income differently. Here's exactly what they want to see, and what trips people up.", mins:6 },
-  { href:"first-time-buyer-guide", cat:"m", catLabel:"Mortgages", accent:"var(--pcs-emerald)", title:"First-time buyer: what actually happens between offer and keys", excerpt:"Most first-time buyers know they need a deposit and a mortgage. What nobody tells you is what happens in between, and why it takes longer than you think.", mins:7 },
-];
-
-function BlogIndex() {
-  return (
-    <React.Fragment>
-      <div className="blog-hero">
-        <div className="blog-hero-i">
-          <span className="pcs-eyebrow" style={{color:"var(--pcs-emerald)"}}>Knowledge Hub</span>
-          <h1 style={{font:"900 clamp(36px,5vw,58px)/1.05 var(--font-display)",letterSpacing:"-.03em",color:"#fff",margin:"14px 0 14px"}}>We teach what<br/>most won't explain.</h1>
-          <p style={{fontSize:18,color:"rgba(255,255,255,.55)",maxWidth:520,lineHeight:1.65,margin:0}}>Plain-English guides on mortgages, protection, and property finance. No jargon. No pressure. Just the information you need to make better decisions.</p>
-        </div>
-      </div>
-
-      <section style={{background:"var(--surface-page)",padding:"60px 28px 80px"}}>
-        <div style={{maxWidth:1200,margin:"0 auto"}}>
-          <div className="blog-grid">
-            {articles.map(a => (
-              <a key={a.href} href={a.href} className="bcard">
-                <div className="bcard-accent" style={{background:a.accent}}></div>
-                <div className="bcard-body">
-                  <span className={`bcard-cat ${a.cat==='p'?'cat-p':'cat-m'}`}>{a.catLabel}</span>
-                  <div className="bcard-title">{a.title}</div>
-                  <div className="bcard-excerpt">{a.excerpt}</div>
-                  <div className="bcard-meta"><span>{a.mins} min read</span><span className="bcard-read">Read →</span></div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="blog-disc">
-        <p>⚠️ The articles on this blog are for information only and do not constitute financial advice. Your circumstances are unique. Speak to a qualified adviser before making any decisions. Property Clinic Solutions is authorised and regulated by the Financial Conduct Authority.</p>
-      </div>
-    </React.Fragment>
-  );
+/* Article list. Add new posts here; `featured` flags the lead article. */
+const CAT = {
+  Mortgages: {
+    bg: "var(--pcs-blue-tint)",
+    fg: "var(--pcs-blue)",
+    bar: "var(--pcs-blue)"
+  },
+  Protection: {
+    bg: "var(--pcs-emerald-tint)",
+    fg: "var(--pcs-emerald)",
+    bar: "var(--pcs-emerald)"
+  }
+};
+const ARTICLES = [{
+  cat: "Protection",
+  href: "blog/death-in-service",
+  read: "5 min read",
+  featured: true,
+  title: "Why your death in service from work probably isn't enough",
+  excerpt: "Most people assume their employer's death in service covers them. It doesn't, at least not properly. Here's what it actually is, what it isn't, and why it shouldn't be your only plan."
+}, {
+  cat: "Protection",
+  href: "blog/income-protection",
+  read: "6 min read",
+  title: "What is income protection and do I actually need it?",
+  excerpt: "If you stopped working tomorrow, illness, injury, anything, how long could you last on savings? Income protection is the policy nobody thinks about until it's too late."
+}, {
+  cat: "Protection",
+  href: "blog/how-much-life-cover",
+  read: "5 min read",
+  title: "How much life cover do I need? The honest answer",
+  excerpt: "The 10x your salary rule is lazy and often wrong. The honest answer depends on four questions about your actual situation, not a formula someone pulled from thin air."
+}, {
+  cat: "Mortgages",
+  href: "blog/self-employed-mortgage",
+  read: "6 min read",
+  title: "Self-employed mortgage: how lenders actually assess your income",
+  excerpt: "Being self-employed doesn't stop you getting a mortgage. It just means lenders look at your income differently. Here's exactly what they want to see, and what trips people up."
+}, {
+  cat: "Mortgages",
+  href: "blog/first-time-buyer-guide",
+  read: "7 min read",
+  title: "First-time buyer: what actually happens between offer and keys",
+  excerpt: "Most first-time buyers know they need a deposit and a mortgage. What nobody tells you is what happens in between, and why it takes longer than you think."
+}];
+function Card({
+  a
+}) {
+  const c = CAT[a.cat] || CAT.Mortgages;
+  return /*#__PURE__*/React.createElement("a", {
+    href: path(a.href),
+    className: "pcs-bcard" + (a.featured ? " pcs-bcard--feature" : "")
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pcs-bcard__bar",
+    style: {
+      background: c.bar
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "pcs-bcard__body"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "pcs-bcard__cat",
+    style: {
+      background: c.bg,
+      color: c.fg
+    }
+  }, a.cat), /*#__PURE__*/React.createElement("h2", {
+    className: "pcs-bcard__title"
+  }, a.title), /*#__PURE__*/React.createElement("p", {
+    className: "pcs-bcard__excerpt"
+  }, a.excerpt), /*#__PURE__*/React.createElement("div", {
+    className: "pcs-bcard__meta"
+  }, /*#__PURE__*/React.createElement("span", null, a.read), /*#__PURE__*/React.createElement("span", {
+    className: "pcs-bcard__read"
+  }, "Read ", /*#__PURE__*/React.createElement(Icon, {
+    name: "arrowRight",
+    size: 15
+  })))));
 }
-
-K.boot(<BlogIndex />);
+K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(K.PageHero, {
+  eyebrow: "Knowledge Hub",
+  title: "We teach what most won't explain.",
+  sub: "Guides on mortgages, protection, and property finance. No jargon. No pressure. Just the information you need to make better decisions.",
+  primary: {
+    label: "Get Started",
+    href: "get-started",
+    external: false
+  },
+  secondary: {
+    label: "See Upcoming Events",
+    href: "events",
+    external: false,
+    iconName: "calendar"
+  },
+  photo: {
+    id: "why-home",
+    alt: "A UK home interior",
+    tone: "blue",
+    badge: {
+      icon: "book",
+      title: "Written by advisers",
+      sub: "Not by a content agency",
+      tint: "var(--pcs-blue-tint)",
+      fg: "var(--pcs-blue)"
+    }
+  }
+}), /*#__PURE__*/React.createElement(K.TrustStrip, {
+  accent: "var(--pcs-blue)",
+  items: ["Written by CeMAP Advisers", "No Jargon", "Updated Regularly", "Free to Read"]
+}), /*#__PURE__*/React.createElement("section", {
+  className: "reveal",
+  style: {
+    background: "#fff",
+    padding: "80px 28px"
+  }
+}, /*#__PURE__*/React.createElement("div", {
+  style: {
+    maxWidth: 1200,
+    margin: "0 auto"
+  }
+}, /*#__PURE__*/React.createElement(K.Head, {
+  eyebrow: "Latest Articles",
+  title: "Read before you decide.",
+  accent: "var(--pcs-blue)"
+}), /*#__PURE__*/React.createElement("div", {
+  className: "pcs-blog-grid"
+}, ARTICLES.map((a, i) => /*#__PURE__*/React.createElement(Card, {
+  key: i,
+  a: a
+}))))), /*#__PURE__*/React.createElement(Marquee, {
+  tone: "blue",
+  items: ["Whole of market", "No upfront fees", "Reviewed every year", "Independent advice", "90+ lenders"]
+}), /*#__PURE__*/React.createElement("section", {
+  style: {
+    background: "var(--pcs-gold-tint)",
+    borderTop: "1px solid rgba(219,159,31,.2)",
+    padding: "26px 28px",
+    textAlign: "center"
+  }
+}, /*#__PURE__*/React.createElement("p", {
+  style: {
+    font: "400 13px/1.65 var(--font-sans)",
+    color: "#7a5a0a",
+    maxWidth: 760,
+    margin: "0 auto"
+  }
+}, "The articles on this blog are for information only and do not constitute financial advice. Your circumstances are unique, speak to a qualified adviser before making any decisions about your mortgage or protection cover.")), /*#__PURE__*/React.createElement(K.CTABand, {
+  eyebrow: "Got a Question We Haven't Covered?",
+  title: "Talk it through with a real adviser.",
+  body: "No pressure, no jargon, and no impact on your credit score. It takes about two minutes to get started.",
+  primary: {
+    label: "Get Started",
+    href: "get-started",
+    external: false
+  }
+})));
 </script>
 </body>
 </html>

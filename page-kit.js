@@ -1285,11 +1285,29 @@
     });
     document.head.appendChild(s);
   };
+
+  /* The browser resolves #hash before React has mounted, so a link like
+     /about#process landed at the top of the page. Re-run the jump once the
+     content actually exists. */
+  K.initHashScroll = function () {
+    const id = (window.location.hash || "").slice(1);
+    if (!id) return;
+    const go = () => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({
+        behavior: "auto",
+        block: "start"
+      });
+    };
+    go();
+    setTimeout(go, 260);
+  };
   K.boot = function (children) {
     ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(Page, null, children));
     setTimeout(() => {
       K.initReveal();
       K.initFaqSchema();
+      K.initHashScroll();
     }, 120);
   };
 })();
