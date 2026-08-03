@@ -598,7 +598,7 @@
       { h: "Services", links: [["Residential Mortgages", "mortgages"], ["Buy to Let", "buy-to-let"], ["Remortgage", "remortgage"], ["Protection", "protection"]] },
       { h: "Company", links: [["About Us", "about"], ["Events", "events"], ["Contact", "contact"]] },
       { h: "Legal", links: [["Privacy Policy", "privacy"], ["Complaints", "complaints"], ["Cookie Policy", "cookie-policy"]] },
-      { h: "Tools", links: [["Mortgage Calculator", "calculator"]] },
+      { h: "Tools", links: [["Mortgage Calculator", "calculator"], ["Property Listings", "https://pcs.property-listings.co.uk/"]] },
     ];
     const socials = [
       ["facebook", "Facebook", "https://www.facebook.com/profile.php?id=61588038074490"],

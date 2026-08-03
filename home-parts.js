@@ -1613,7 +1613,7 @@
       links: [["Privacy Policy", "privacy"], ["Complaints", "complaints"], ["Cookie Policy", "cookie-policy"]]
     }, {
       h: "Tools",
-      links: [["Mortgage Calculator", "calculator"], ["Blog", "blog"]]
+      links: [["Mortgage Calculator", "calculator"], ["Property Listings", "https://pcs.property-listings.co.uk/"], ["Blog", "blog"]]
     }];
     const socials = [["facebook", "Facebook", "https://www.facebook.com/profile.php?id=61588038074490"], ["instagram", "Instagram", "https://www.instagram.com/withpcs/"], ["linkedin", "LinkedIn", "https://www.linkedin.com/company/property-clinic-solutions/"], ["tiktok", "TikTok", "https://www.tiktok.com/@propertyclinicsolutions"]];
     return /*#__PURE__*/React.createElement("footer", {
@@ -1699,6 +1699,10 @@
     }, c.links.map(([l, href]) => /*#__PURE__*/React.createElement("a", {
       key: l,
       href: href,
+      ...(/^https?:\/\//.test(href) ? {
+        target: "_blank",
+        rel: "noopener"
+      } : {}),
       className: "pcs-foot-link",
       style: {
         font: "400 14px var(--font-sans)",
