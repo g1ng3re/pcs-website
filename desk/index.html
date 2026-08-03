@@ -279,6 +279,19 @@ a.cc-email:hover{color:var(--blue);text-decoration:underline}
 .s-lbl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
 .note-style .s-lbl{color:#9a6f0f}
 .s-txt{font-size:14px;line-height:1.75;color:var(--n700)}.s-txt.quote{font-style:italic}
+/* Generic library, collapsed (03/08/2026). When a client carries their own
+   wording for a step, the desk's stock cards used to stack underneath it, so a
+   personalised step still showed [£X] placeholders below the real numbers. The
+   stock cards are still there, because they are useful when a client has no
+   script, but they are now folded behind a summary and closed by default. */
+.lib{margin-top:8px}
+.lib>summary{cursor:pointer;list-style:none;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--n500);padding:9px 12px;background:var(--card);border:1px dashed var(--n300);border-radius:10px;user-select:none}
+.lib>summary::-webkit-details-marker{display:none}
+.lib>summary::marker{content:""}
+.lib>summary:before{content:"\25B8  "}
+.lib[open]>summary:before{content:"\25BE  "}
+.lib[open]>summary{margin-bottom:8px}
+.lib>summary:hover{background:var(--sunken)}
 .confirms{padding:14px 18px 18px}
 .confirms-label{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--n400);margin-bottom:10px}
 .conf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.conf-grid.solo{grid-template-columns:1fr}
@@ -1318,7 +1331,8 @@ function mData(){
         if(sec.id==='budget'&&Array.isArray(bud)&&bud.length){
           const notes=bud.map(b=>b.note).filter(Boolean).join(' ');
           out.push(Object.assign({},sec,{
-            scripts:bud.map(b=>({label:b.label||'Ask',text:b.text})),
+            scripts:bud.map(b=>({label:b.label||'Ask',text:b.text}))
+              .concat((sec.scripts||[]).map(g=>Object.assign({},g,{generic:true}))),
             note:notes||sec.note}));
           return;
         }
@@ -1335,7 +1349,7 @@ function mData(){
         const note=mine.map(x=>x.note).filter(Boolean).join(' ');
         return Object.assign({},sec,{
           note:note||sec.note,
-          scripts:own.concat(sec.scripts||[])
+          scripts:own.concat((sec.scripts||[]).map(g=>Object.assign({},g,{generic:true})))
         });
       });
     }}
@@ -1372,7 +1386,11 @@ function setMView(v){mView=v;mIdx=0;render();}
 function setMIdx(i){const n=mData().length;if(i<0||i>=n)return;mIdx=i;render();window.scrollTo({top:120,behavior:'smooth'});}
 function secCard(sec){
   const ids=sec.items.map(i=>i.id);const done=ids.filter(id=>chkOn(ckey(id))).length;const pct=Math.round(done/ids.length*100);
-  const scripts=(sec.scripts||[]).map(s=>{const q=s.text.trim().startsWith('"');return `<div class="script-card ${q?'':'note-style'}"><div class="s-lbl">${esc(s.label)}</div><div class="s-txt ${q?'quote':''}">${esc(s.text).replace(/\n/g,'<br>')}</div></div>`;}).join('');
+  const sCard=s=>{const q=s.text.trim().startsWith('"');return `<div class="script-card ${q?'':'note-style'}"><div class="s-lbl">${esc(s.label)}</div><div class="s-txt ${q?'quote':''}">${esc(s.text).replace(/\n/g,'<br>')}</div></div>`;};
+  const allS=sec.scripts||[];
+  const ownS=allS.filter(x=>!x.generic), libS=allS.filter(x=>x.generic);
+  const scripts=ownS.map(sCard).join('')
+    +(libS.length?`<details class="lib"><summary>Generic library (${libS.length}) &middot; placeholders, not their numbers</summary>${libS.map(sCard).join('')}</details>`:'');
   const solo=ids.length<=2;
   const confirms=sec.items.map(it=>`<div class="conf-btn ${chkOn(ckey(it.id))?'done':''} ${it.bold?'bold-item':''}" onclick="toggleCheck('${it.id}')"><div class="conf-inner"><div class="conf-check"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5l3 3 6-7" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="conf-text">${esc(it.text)}</span>${chkStamp(ckey(it.id))?`<span class="conf-at">${chkStamp(ckey(it.id))}</span>`:''}</div></div>`).join('');
   return `<div class="sec-card"><div class="sec-accent ${sec.compliance?'compliance':''}"></div>
