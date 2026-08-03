@@ -203,7 +203,7 @@
     className = ""
   }) {
     const grad = tone === "emerald" ? "linear-gradient(150deg,#E3F4EC,#d3ecdf)" : tone === "ink" ? "linear-gradient(150deg,#13224a,#0C1A3A)" : "linear-gradient(150deg,#E7ECFA,#dbe3f9)";
-    const src = window.__resources && window.__resources["photo_" + id] || `assets/photos/${id}.jpg`;
+    const src = window.__resources && window.__resources["photo_" + id] || path(`assets/photos/${id}.jpg`);
     return /*#__PURE__*/React.createElement("div", {
       className: className,
       style: {
@@ -215,7 +215,7 @@
         ...style
       }
     }, /*#__PURE__*/React.createElement("img", {
-      src: window.__resources && window.__resources.logoSymbol || "assets/logos/pcs-symbol.svg",
+      src: window.__resources && window.__resources.logoSymbol || path("assets/logos/pcs-symbol.svg"),
       alt: "",
       "aria-hidden": "true",
       style: {
@@ -595,7 +595,7 @@
       },
       "aria-label": "Property Clinic Solutions home"
     }, /*#__PURE__*/React.createElement("img", {
-      src: window.__resources && window.__resources.logoH || "assets/logos/pcs-logo-horizontal.svg",
+      src: window.__resources && window.__resources.logoH || path("assets/logos/pcs-logo-horizontal.svg"),
       alt: "Property Clinic Solutions",
       style: {
         height: 38
@@ -839,7 +839,7 @@
         marginBottom: 8
       }
     }, /*#__PURE__*/React.createElement("img", {
-      src: window.__resources && window.__resources.logoH || "assets/logos/pcs-logo-horizontal.svg",
+      src: window.__resources && window.__resources.logoH || path("assets/logos/pcs-logo-horizontal.svg"),
       alt: "PCS",
       style: {
         height: 32
@@ -1679,7 +1679,7 @@
         gap: 40
       }
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("img", {
-      src: window.__resources && window.__resources.logoHRev || "assets/logos/pcs-logo-horizontal-reversed.svg",
+      src: window.__resources && window.__resources.logoHRev || path("assets/logos/pcs-logo-horizontal-reversed.svg"),
       alt: "Property Clinic Solutions",
       style: {
         height: 40

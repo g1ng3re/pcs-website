@@ -980,7 +980,7 @@
         textAlign: "center"
       }
     }, /*#__PURE__*/React.createElement("img", {
-      src: window.__resources && window.__resources.logoSymbolWhite || "assets/logos/pcs-symbol-white.svg",
+      src: window.__resources && window.__resources.logoSymbolWhite || (window.PCSHome && window.PCSHome.path ? window.PCSHome.path("assets/logos/pcs-symbol-white.svg") : "assets/logos/pcs-symbol-white.svg"),
       alt: "",
       "aria-hidden": "true",
       style: {
