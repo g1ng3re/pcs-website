@@ -292,20 +292,10 @@
     href: "buildings-contents"
   }];
   const ABOUT_LINKS = [{
-    icon: "scale",
-    title: "How We Work",
-    desc: "Our process, from first call to completion.",
-    href: "about#process"
-  }, {
     icon: "book",
     title: "Blog",
     desc: "Guides on mortgages, protection and property finance.",
     href: "blog"
-  }, {
-    icon: "calendar",
-    title: "Events",
-    desc: "Empowerment Through Property and our community evenings.",
-    href: "events"
   }];
   function MegaPanel({
     links,
@@ -319,7 +309,7 @@
     return /*#__PURE__*/React.createElement("div", {
       style: {
         display: "grid",
-        gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+        gridTemplateColumns: links.length < 2 ? "minmax(0,1fr)" : "repeat(2, minmax(0,1fr))",
         gap: 4
       }
     }, overview && /*#__PURE__*/React.createElement("a", {
@@ -461,7 +451,7 @@
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "phone",
       size: 13
-    }), " Free consultation"), /*#__PURE__*/React.createElement("span", null, "Talk to an adviser for 15 minutes, no cost and no pressure · We will tell you honestly whether we can help"), /*#__PURE__*/React.createElement("span", {
+    }), " Free consultation"), /*#__PURE__*/React.createElement("span", null, "Talk to an adviser for 15 minutes at no cost · We will tell you honestly whether we can help"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -720,7 +710,7 @@
         boxShadow: "var(--shadow-lg)",
         padding: 18,
         marginTop: 6,
-        maxWidth: 720
+        maxWidth: shownPanel === "about" ? 360 : 720
       }
     }, shownPanel === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: MORTGAGE_LINKS,

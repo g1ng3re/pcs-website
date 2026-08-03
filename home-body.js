@@ -377,7 +377,7 @@
       style: {
         margin: "12px 0 0"
       }
-    }, "Three steps. No pressure at any point.")), /*#__PURE__*/React.createElement("div", {
+    }, "Three steps, start to finish.")), /*#__PURE__*/React.createElement("div", {
       className: "pcs-timeline",
       style: {
         display: "grid",
@@ -1299,7 +1299,7 @@
         maxWidth: 380,
         position: "relative"
       }
-    }, "Free 15-minute call. No pressure. We will tell you honestly whether we can help."), /*#__PURE__*/React.createElement("div", {
+    }, "Free 15-minute call. We will tell you honestly whether we can help."), /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: 26,
         position: "relative"

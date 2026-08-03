@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Blog · Property Clinic Solutions</title>
-<meta name="description" content="Guides on mortgages, protection, and property finance. No jargon, no pressure, just the information you need to make better decisions." />
+<meta name="description" content="Guides on mortgages, protection, and property finance, written by the advisers who do the work." />
 <link rel="canonical" href="https://propertyclinicsolutions.com/blog" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Blog · Property Clinic Solutions" />
@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
 <link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
 <link rel="stylesheet" href="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
-<link rel="stylesheet" href="../site.css?v=1785777487884" />
+<link rel="stylesheet" href="../site.css?v=1785778264524" />
 <style>
   /* Article cards. Sits on the standard 1200 page width so the grid lines up
      with the header, the footer and every other page on the site. */
@@ -34,6 +34,8 @@
   .pcs-bcard { background: var(--surface-page); border: 1px solid var(--border-subtle); border-radius: 18px;
     overflow: hidden; text-decoration: none; display: flex; flex-direction: column;
     transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out), border-color .2s var(--ease-out); }
+  .pcs-bcard, .pcs-bcard:hover, .pcs-bcard:focus,
+  .pcs-bcard *, .pcs-bcard:hover * { text-decoration: none; }
   .pcs-bcard:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--pcs-blue); }
   .pcs-bcard__bar { height: 5px; }
   .pcs-bcard__body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
@@ -57,9 +59,9 @@
 <script src="../vendor/react.production.min.js"></script>
 <script src="../vendor/react-dom.production.min.js"></script>
 <script src="../_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="../icons.js?v=1785777487884"></script>
-<script src="../home-parts.js?v=1785777487884"></script>
-<script src="../page-kit.js?v=1785777487884"></script>
+<script src="../icons.js?v=1785778264524"></script>
+<script src="../home-parts.js?v=1785778264524"></script>
+<script src="../page-kit.js?v=1785778264524"></script>
 
 <script type="application/ld+json">
 { "@context": "https://schema.org", "@type": "Blog", "name": "Property Clinic Solutions Blog", "url": "https://propertyclinicsolutions.com/blog", "description": "Guides on mortgages, protection, and property finance." }
@@ -158,7 +160,7 @@ function Card({
 K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(K.PageHero, {
   eyebrow: "Knowledge Hub",
   title: "We teach what most won't explain.",
-  sub: "Guides on mortgages, protection, and property finance. No jargon. No pressure. Just the information you need to make better decisions.",
+  sub: "Guides on mortgages, protection, and property finance, written by the advisers who do the work. The things most brokers never take the time to explain.",
   primary: {
     label: "Get Started",
     href: "get-started",
@@ -184,7 +186,7 @@ K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React
   }
 }), /*#__PURE__*/React.createElement(K.TrustStrip, {
   accent: "var(--pcs-blue)",
-  items: ["Written by CeMAP Advisers", "No Jargon", "Updated Regularly", "Free to Read"]
+  items: ["Written by CeMAP Advisers", "Updated Regularly", "Free to Read", "No Sign-Up Needed"]
 }), /*#__PURE__*/React.createElement("section", {
   className: "reveal",
   style: {
@@ -225,7 +227,7 @@ K.boot(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React
 }, "The articles on this blog are for information only and do not constitute financial advice. Your circumstances are unique, speak to a qualified adviser before making any decisions about your mortgage or protection cover.")), /*#__PURE__*/React.createElement(K.CTABand, {
   eyebrow: "Got a Question We Haven't Covered?",
   title: "Talk it through with a real adviser.",
-  body: "No pressure, no jargon, and no impact on your credit score. It takes about two minutes to get started.",
+  body: "A free 15-minute call, and no impact on your credit score. It takes about two minutes to get started.",
   primary: {
     label: "Get Started",
     href: "get-started",
