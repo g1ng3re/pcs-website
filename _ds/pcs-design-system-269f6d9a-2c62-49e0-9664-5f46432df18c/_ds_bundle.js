@@ -27,7 +27,7 @@ if (typeof document !== "undefined" && !document.getElementById("pcs-button-css"
     user-select:none;
   }
   .pcs-btn:hover{ background:var(--_bgh); text-decoration:none; }
-  .pcs-btn:active{ background:var(--_bgp); transform:translateY(1px); }
+  .pcs-btn:active{ background:var(--_bgp); transform:scale(0.97); }
   .pcs-btn:focus-visible{ outline:none; box-shadow:var(--focus-ring); }
   .pcs-btn[disabled],.pcs-btn[aria-disabled="true"]{ opacity:.45; cursor:not-allowed; pointer-events:none; }
 
@@ -95,7 +95,7 @@ if (typeof document !== "undefined" && !document.getElementById("pcs-iconbutton-
     transition:background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
   }
   .pcs-iconbtn:hover{ background:var(--_bgh); }
-  .pcs-iconbtn:active{ transform:translateY(1px); }
+  .pcs-iconbtn:active{ transform:scale(0.97); }
   .pcs-iconbtn:focus-visible{ outline:none; box-shadow:var(--focus-ring); }
   .pcs-iconbtn[disabled]{ opacity:.4; cursor:not-allowed; }
   .pcs-iconbtn svg{ width:1.25em; height:1.25em; display:block; }

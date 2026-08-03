@@ -34,28 +34,38 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 .pcs-foot-link:hover { color: #fff !important; }
 .pcs-social:hover { border-color: rgba(255,255,255,.5) !important; color: #fff !important; }
 .pcs-path-card { transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out), border-color .2s; }
-.pcs-path-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--pcs-blue) !important; }
-.pcs-link-row { transition: color .15s, gap .2s var(--ease-out); }
-.pcs-link-row:hover { gap: 10px; }
+.pcs-path-card:hover { box-shadow: var(--shadow-md); border-color: var(--pcs-blue) !important; }
+.pcs-link-row { transition: color .15s var(--ease-out); }
+.pcs-link-row svg { transition: transform .2s var(--ease-out); }
 
 /* Subtle micro-interactions */
 .pcs-nav-btn { position: relative; }
 .pcs-nav-btn::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 5px; height: 2px;
   background: var(--pcs-blue); border-radius: 2px; transform: scaleX(0); transform-origin: left;
   transition: transform .22s var(--ease-out); }
-.pcs-nav-btn:hover::after, .pcs-nav-btn[aria-expanded="true"]::after { transform: scaleX(1); }
+.pcs-nav-btn[aria-expanded="true"]::after { transform: scaleX(1); }
 .pcs-mega-link svg { transition: transform .2s var(--ease-out); }
-.pcs-mega-link:hover svg { transform: translateX(3px); }
 .pcs-foot-link { display: inline-block; transition: color .2s var(--ease-out), transform .2s var(--ease-out); }
-.pcs-foot-link:hover { transform: translateX(3px); }
 .pcs-social { transition: border-color .2s var(--ease-out), color .2s var(--ease-out), transform .2s var(--ease-out); }
-.pcs-social:hover { transform: translateY(-2px); }
 .faq summary { transition: background .2s var(--ease-out); }
 .faq summary:hover { background: var(--surface-sunken); }
-.pcs-img-zoom img { transition: transform .6s var(--ease-out); }
-.pcs-img-zoom:hover img { transform: scale(1.05); }
+.pcs-img-zoom img { transition: transform .3s var(--ease-out); }
 .pcs-story-card { transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out); }
-.pcs-story-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.pcs-story-card:hover { box-shadow: var(--shadow-md); }
+
+/* Motion on hover is gated: touch devices fire :hover on tap and leave the
+   element stuck in the hovered state. Colour and shadow feedback stays ungated
+   so a tap still registers visually. */
+@media (hover: hover) and (pointer: fine) {
+  .pcs-path-card:hover { transform: translateY(-3px); }
+  .pcs-link-row:hover svg { transform: translateX(4px); }
+  .pcs-nav-btn:hover::after { transform: scaleX(1); }
+  .pcs-mega-link:hover svg { transform: translateX(3px); }
+  .pcs-foot-link:hover { transform: translateX(3px); }
+  .pcs-social:hover { transform: translateY(-2px); }
+  .pcs-img-zoom:hover img { transform: scale(1.05); }
+  .pcs-story-card:hover { transform: translateY(-3px); }
+}
 
 /* Eyebrow label */
 .pcs-eyebrow { font: 700 12px var(--font-sans); letter-spacing: .14em; text-transform: uppercase; }
@@ -91,7 +101,6 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 /* Stat count-up "pop" when it lands */
 @keyframes pcs-pop { 0% { transform: scale(1); } 45% { transform: scale(1.09); } 100% { transform: scale(1); } }
 .pcs-count-pop { animation: pcs-pop .38s var(--ease-out); }
-.pcs-spotlight { transition: background-image .2s var(--ease-out); }
 
 /* Marquee pauses on hover */
 .pcs-marquee:hover { animation-play-state: paused; }
@@ -122,11 +131,13 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
   .reveal { opacity: 1 !important; transform: none !important; transition: none; }
   .reveal .pcs-grid-2 > *, .reveal .pcs-grid-3 > *, .reveal .pcs-grid-4 > *, .reveal .pcs-why-points > * { opacity: 1 !important; transform: none !important; transition: none; }
   .pcs-timeline-rule { transform: none !important; transition: none; }
-  .pcs-mega-link svg, .pcs-foot-link, .pcs-social, .pcs-img-zoom img, .pcs-story-card { transition: none !important; transform: none !important; }
+  .pcs-mega-link svg, .pcs-foot-link, .pcs-social, .pcs-img-zoom img, .pcs-story-card,
+  .pcs-path-card, .pcs-link-row svg { transition: none !important; transform: none !important; }
   .pcs-nav-btn::after { transition: none !important; }
   .pcs-marquee { animation: none; }
   .pcs-annmarquee { animation: none; }
   .faq .faq-body { transition: none; }
+  .pcs-count-pop { animation: none !important; }
   * { scroll-behavior: auto !important; }
 }
 
