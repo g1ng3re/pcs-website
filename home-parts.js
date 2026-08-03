@@ -753,8 +753,15 @@
     const [shown, setShown] = React.useState(reduce);
     React.useEffect(() => {
       if (reduce) return;
+      /* rAF gives the cleanest first frame, but it never fires in a background
+         or throttled tab, which would leave the drawer parked off-screen. The
+         timer is the fallback; setting the same state twice is a no-op. */
       const r = requestAnimationFrame(() => setShown(true));
-      return () => cancelAnimationFrame(r);
+      const t = setTimeout(() => setShown(true), 60);
+      return () => {
+        cancelAnimationFrame(r);
+        clearTimeout(t);
+      };
     }, [reduce]);
     const close = React.useCallback(() => {
       if (reduce) {
