@@ -121,12 +121,13 @@
         position: "relative"
       }
     }, /*#__PURE__*/React.createElement(Photo, {
-      className: "pcs-img-zoom",
+      className: photo.slides ? "" : "pcs-img-zoom",
       id: photo.id,
       alt: photo.alt,
       h: photo.h || 440,
       radius: 28,
       tone: photo.tone || "blue",
+      slides: photo.slides,
       eager: true
     }), photo.badge && /*#__PURE__*/React.createElement("div", {
       style: {

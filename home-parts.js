@@ -200,10 +200,24 @@
     eager = false,
     pos = "50% 50%",
     style,
-    className = ""
+    className = "",
+    slides,
+    interval = 5000
   }) {
     const grad = tone === "emerald" ? "linear-gradient(150deg,#E3F4EC,#d3ecdf)" : tone === "ink" ? "linear-gradient(150deg,#13224a,#0C1A3A)" : "linear-gradient(150deg,#E7ECFA,#dbe3f9)";
-    const src = window.__resources && window.__resources["photo_" + id] || path(`assets/photos/${id}.jpg`);
+    const resolve = key => window.__resources && window.__resources["photo_" + key] || path(`assets/photos/${key}.jpg`);
+    const frames = Array.isArray(slides) && slides.length ? slides : [{
+      id,
+      alt
+    }];
+    const [i, setI] = React.useState(0);
+    const [paused, setPaused] = React.useState(false);
+    const reduced = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false;
+    React.useEffect(() => {
+      if (frames.length < 2 || paused || reduced) return;
+      const t = setInterval(() => setI(n => (n + 1) % frames.length), interval);
+      return () => clearInterval(t);
+    }, [frames.length, paused, reduced, interval]);
     return /*#__PURE__*/React.createElement("div", {
       className: className,
       style: {
@@ -213,7 +227,9 @@
         background: grad,
         overflow: "hidden",
         ...style
-      }
+      },
+      onMouseEnter: () => setPaused(true),
+      onMouseLeave: () => setPaused(false)
     }, /*#__PURE__*/React.createElement("img", {
       src: window.__resources && window.__resources.logoSymbol || path("assets/logos/pcs-symbol.svg"),
       alt: "",
@@ -225,10 +241,12 @@
         width: 180,
         opacity: tone === "ink" ? 0.16 : 0.12
       }
-    }), /*#__PURE__*/React.createElement("img", {
-      src: src,
-      alt: alt,
-      loading: eager ? "eager" : "lazy",
+    }), frames.map((f, n) => /*#__PURE__*/React.createElement("img", {
+      key: f.id,
+      src: resolve(f.id),
+      alt: n === i ? f.alt || alt : "",
+      "aria-hidden": n === i ? undefined : "true",
+      loading: eager && n === 0 ? "eager" : "lazy",
       onError: e => {
         e.currentTarget.style.display = "none";
       },
@@ -239,9 +257,36 @@
         height: "100%",
         objectFit: "cover",
         objectPosition: pos,
-        display: "block"
+        display: "block",
+        opacity: n === i ? 1 : 0,
+        transition: reduced ? "none" : "opacity .9s ease-in-out"
       }
-    }));
+    })), frames.length > 1 && /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: "absolute",
+        right: 14,
+        bottom: 14,
+        display: "flex",
+        gap: 7,
+        zIndex: 2
+      }
+    }, frames.map((f, n) => /*#__PURE__*/React.createElement("button", {
+      key: f.id,
+      type: "button",
+      "aria-label": `Show photo ${n + 1} of ${frames.length}`,
+      "aria-current": n === i ? "true" : undefined,
+      onClick: () => setI(n),
+      style: {
+        width: 8,
+        height: 8,
+        padding: 0,
+        borderRadius: "50%",
+        cursor: "pointer",
+        border: "1px solid rgba(255,255,255,.85)",
+        background: n === i ? "#fff" : "rgba(255,255,255,.28)",
+        transition: "background .3s ease"
+      }
+    }))));
   }
   W.Photo = Photo;
   const MORTGAGE_LINKS = [{
