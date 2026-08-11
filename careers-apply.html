@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
-<link rel="stylesheet" href="site.css?v=1786463604538" />
+<link rel="stylesheet" href="site.css?v=1786464980988" />
 <style>
   .pcs-ap { max-width: 760px; margin: 0 auto; }
   .pcs-ap-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 22px;
@@ -73,9 +73,9 @@
 <script src="vendor/react-dom.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="icons.js?v=1786463604538"></script>
-<script src="home-parts.js?v=1786463604538"></script>
-<script src="page-kit.js?v=1786463604538"></script>
+<script src="icons.js?v=1786464980988"></script>
+<script src="home-parts.js?v=1786464980988"></script>
+<script src="page-kit.js?v=1786464980988"></script>
 </head>
 <body>
 <a href="#main" class="pcs-skip">Skip to content</a>
@@ -359,6 +359,32 @@ function ApplicationForm() {
       };
       const ins = await sb.from("applications").insert(row);
       if (ins.error) throw ins.error;
+
+      /* Notify the office. Supabase is the record; this is only a nudge, so it
+         is fire and forget and never blocks the applicant. Same Web3Forms
+         account the enquiry funnel uses. If it fails the application is still
+         safely stored and visible on the hiring desk. */
+      try {
+        const fd = new FormData();
+        fd.append("access_key", "57947494-94ce-4eb8-97d9-781ae263bc37");
+        fd.append("subject", "New job application: " + row.full_name + " (" + row.role + ")");
+        fd.append("from_name", "PCS careers page");
+        fd.append("Applicant", row.full_name);
+        fd.append("Role", row.role);
+        fd.append("Email", row.email);
+        fd.append("Phone", row.phone);
+        fd.append("Based in", row.location);
+        fd.append("Right to work", row.right_to_work);
+        fd.append("Hours a week", row.hours);
+        fd.append("Could start", row.start_date);
+        fd.append("CeMAP", row.cemap);
+        fd.append("CV", row.cv_name);
+        fd.append("Review at", "https://propertyclinicsolutions.com/hiring/");
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: fd
+        }).catch(function () {});
+      } catch (e) {/* never let the notification break the submission */}
       setSent(true);
       if (top.current) top.current.scrollIntoView({
         behavior: "smooth",
