@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Stay in touch · Property Clinic Solutions</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="description" content="Leave your details and a Property Clinic Solutions adviser will be in touch after the event." />
+<link rel="icon" type="image/svg+xml" href="assets/logos/pcs-favicon.svg" />
+<link rel="icon" href="assets/favicon/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+<meta name="theme-color" content="#002AB1" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="PCS Sign-up" />
+
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/fonts.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/colors.css" />
+<link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/typography.css" />
+
+<style>
+  :root {
+    --blue: var(--pcs-blue, #002AB1);
+    --ink: var(--pcs-ink, #0C1A3A);
+    --emerald: var(--pcs-emerald, #109E6C);
+    --gold: var(--pcs-gold, #DB9F1F);
+    --tint: var(--pcs-blue-tint, #E7ECFA);
+    --paper: var(--pcs-neutral-50, #F7F7F4);
+    --line: var(--pcs-neutral-300, #D3D7E0);
+    --muted: var(--pcs-neutral-600, #5A6173);
+    --body: var(--pcs-neutral-700, #3D4254);
+    --display: var(--font-display, "Archivo", system-ui, sans-serif);
+    --sans: var(--font-sans, "Hanken Grotesk", system-ui, -apple-system, sans-serif);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink); font-family: var(--sans);
+    min-height: 100vh; padding: 0 0 40px;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 18px; }
+
+  /* ---- Top bar ---- */
+  .bar { background: var(--ink); color: #fff; padding: 14px 18px; }
+  .bar-in { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+  .bar img { height: 30px; display: block; }
+  .modes { display: flex; gap: 4px; background: rgba(255,255,255,.12); border-radius: 999px; padding: 3px; }
+  .modes button {
+    border: none; background: none; color: rgba(255,255,255,.7); cursor: pointer;
+    font: 700 12.5px var(--sans); letter-spacing: .02em; padding: 7px 14px; border-radius: 999px;
+  }
+  .modes button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+
+  /* ---- Event strip ---- */
+  .event {
+    background: var(--tint); border-bottom: 1px solid rgba(0,42,177,.14);
+    font: 600 13.5px var(--sans); color: var(--blue); text-align: center; padding: 9px 18px;
+  }
+  .event button { border: none; background: none; color: var(--blue); text-decoration: underline; cursor: pointer; font: inherit; padding: 0 0 0 8px; }
+
+  /* ---- Card ---- */
+  .card {
+    background: #fff; border: 1px solid var(--pcs-neutral-200, #E6E7EC); border-radius: 22px;
+    padding: 30px 28px 28px; margin-top: 24px; box-shadow: 0 1px 2px rgba(12,26,58,.05), 0 8px 24px rgba(12,26,58,.06);
+  }
+  h1 { font: 800 30px/1.15 var(--display); letter-spacing: -.02em; margin: 0 0 8px; }
+  .lede { font: 400 16px/1.5 var(--sans); color: var(--body); margin: 0 0 26px; }
+
+  fieldset { border: none; margin: 0 0 22px; padding: 0; }
+  legend, .lbl { font: 700 14px var(--sans); color: var(--ink); padding: 0; margin: 0 0 9px; display: block; }
+  .hint { font: 400 13px var(--sans); color: var(--muted); margin: -5px 0 10px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid .full { grid-column: 1 / -1; }
+
+  input[type=text], input[type=email], input[type=tel], input[type=date], textarea {
+    width: 100%; font: 400 16px/1.4 var(--sans); color: var(--ink); background: #fff;
+    border: 1.5px solid var(--line); border-radius: 13px; padding: 14px 15px; appearance: none;
+  }
+  textarea { min-height: 86px; resize: vertical; }
+  input::placeholder, textarea::placeholder { color: var(--pcs-neutral-400, #AEB4C2); }
+  input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,42,177,.16); }
+  input[aria-invalid="true"] { border-color: var(--pcs-danger, #C8362B); }
+
+  /* ---- Chips ---- */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    border: 1.5px solid var(--line); background: #fff; border-radius: 999px; cursor: pointer;
+    font: 600 15px var(--sans); color: var(--ink); padding: 12px 18px; min-height: 48px;
+    transition: background .12s, border-color .12s, color .12s;
+  }
+  .chip:active { transform: translateY(1px); }
+  .chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,42,177,.25); }
+
+  /* ---- Consent ---- */
+  .consent { display: flex; gap: 13px; align-items: flex-start; font: 400 14.5px/1.5 var(--sans); color: var(--body); }
+  .consent input { width: 24px; height: 24px; flex: none; margin: 1px 0 0; accent-color: var(--blue); }
+  .consent a { color: var(--blue); }
+
+  /* ---- Buttons ---- */
+  .btn {
+    width: 100%; border: none; border-radius: 14px; background: var(--blue); color: #fff; cursor: pointer;
+    font: 700 17px var(--sans); padding: 18px 20px; min-height: 58px;
+  }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .btn.ghost { background: #fff; color: var(--blue); border: 1.5px solid var(--line); }
+  .btn.small { width: auto; font-size: 14px; padding: 11px 18px; min-height: 0; }
+
+  /* ---- Notices ---- */
+  .notice { border-radius: 13px; padding: 13px 16px; font: 500 14px/1.5 var(--sans); margin: 0 0 18px; }
+  .notice.warn { background: var(--pcs-gold-tint, #FBF2DB); border: 1px solid rgba(219,159,31,.45); color: var(--ink); }
+  .notice.bad { background: var(--pcs-danger-tint, #FBE9E7); border: 1px solid rgba(200,54,43,.4); color: var(--ink); }
+
+  /* ---- Done screen ---- */
+  .done { text-align: center; padding: 22px 0 10px; }
+  .tick {
+    width: 74px; height: 74px; border-radius: 50%; background: var(--pcs-emerald-tint, #E3F4EC);
+    color: var(--emerald); display: inline-flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 700;
+  }
+  .done h2 { font: 800 27px var(--display); letter-spacing: -.01em; margin: 20px 0 0; }
+  .done p { font: 400 16px/1.55 var(--sans); color: var(--body); margin: 10px auto 0; max-width: 400px; }
+
+  /* ---- Staff strip ---- */
+  .staff-strip {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    margin-top: 16px; padding: 14px 16px; background: #fff; border: 1px dashed var(--line); border-radius: 14px;
+    font: 500 13.5px var(--sans); color: var(--muted);
+  }
+  .staff-strip strong { color: var(--ink); }
+  .foot { text-align: center; font: 400 12.5px/1.6 var(--sans); color: var(--muted); margin: 20px auto 0; max-width: 520px; }
+  [hidden] { display: none !important; }
+
+  @media (max-width: 560px) {
+    .card { padding: 24px 18px 22px; border-radius: 18px; margin-top: 16px; }
+    h1 { font-size: 25px; }
+    .grid { grid-template-columns: 1fr; }
+    .wrap { padding: 0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <img src="assets/logos/pcs-logo-horizontal-reversed.svg" alt="Property Clinic Solutions"
+         onerror="this.onerror=null;this.src='assets/logos/pcs-logo-horizontal.png';" />
+    <div class="modes" role="group" aria-label="Form mode">
+      <button type="button" id="mVisitor" aria-pressed="true">Visitor</button>
+      <button type="button" id="mStaff" aria-pressed="false">Staff</button>
+    </div>
+  </div>
+</div>
+
+<div class="event" id="eventStrip"></div>
+
+<div class="wrap">
+
+  <!-- ===== FORM ===== -->
+  <div class="card" id="formCard">
+    <h1 id="title">Stay in touch.</h1>
+    <p class="lede" id="lede">Leave your details and one of our advisers will be in touch after the event. No pressure and no obligation.</p>
+
+    <div class="notice warn" id="queueNote" hidden></div>
+    <div class="notice bad" id="errNote" hidden></div>
+
+    <form id="form" novalidate>
+      <div class="grid" style="margin-bottom:22px">
+        <div>
+          <label class="lbl" for="first_name">First name</label>
+          <input id="first_name" name="first_name" type="text" autocomplete="given-name" placeholder="Jane" required />
+        </div>
+        <div>
+          <label class="lbl" for="last_name">Last name</label>
+          <input id="last_name" name="last_name" type="text" autocomplete="family-name" placeholder="Adeyemi" required />
+        </div>
+        <div>
+          <label class="lbl" for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
+        </div>
+        <div>
+          <label class="lbl" for="phone">Mobile number</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="07000 000000" required />
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>What are you interested in?</legend>
+        <p class="hint">Tap all that apply.</p>
+        <div class="chips" id="interests"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Best time to call</legend>
+        <div class="chips" id="times"></div>
+      </fieldset>
+
+      <!-- Staff-only extras -->
+      <div id="staffFields" hidden>
+        <fieldset>
+          <label class="lbl" for="captured_by">Who spoke to them</label>
+          <input id="captured_by" name="captured_by" type="text" placeholder="Your name" />
+        </fieldset>
+        <fieldset>
+          <label class="lbl" for="note">What you talked about</label>
+          <p class="hint">A line or two so the follow-up picks up where the conversation left off.</p>
+          <textarea id="note" name="note" placeholder="e.g. Buying first flat in Croydon next spring, deposit mostly saved, worried about affordability."></textarea>
+        </fieldset>
+      </div>
+
+      <fieldset>
+        <label class="consent">
+          <input type="checkbox" id="consent" name="consent" required />
+          <span>I agree that Property Clinic Solutions may contact me about mortgage and protection advice, and I accept the <a href="privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+        </label>
+      </fieldset>
+
+      <!-- Spam trap -->
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true">
+        <label for="botcheck">Leave this empty</label>
+        <input id="botcheck" name="botcheck" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button class="btn" type="submit" id="submitBtn">Send my details</button>
+    </form>
+  </div>
+
+  <!-- ===== DONE ===== -->
+  <div class="card done" id="doneCard" hidden>
+    <span class="tick">&#10003;</span>
+    <h2 id="doneTitle">Thank you. You are on the list.</h2>
+    <p id="doneMsg">One of our advisers will be in touch after the event. If you would rather reach us first, call 0333 404 0589.</p>
+    <div style="margin-top:24px"><button class="btn" type="button" id="againBtn">Add another person</button></div>
+    <p class="foot" id="resetNote"></p>
+  </div>
+
+  <!-- ===== STAFF STRIP ===== -->
+  <div class="staff-strip" id="staffStrip" hidden>
+    <span>Captured on this device today: <strong id="countToday">0</strong> &nbsp;·&nbsp; Waiting to send: <strong id="countQueue">0</strong></span>
+    <span style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn ghost small" type="button" id="retryBtn">Retry sending</button>
+      <button class="btn ghost small" type="button" id="csvBtn">Download CSV</button>
+      <button class="btn ghost small" type="button" id="eventBtn">Event settings</button>
+    </span>
+  </div>
+
+  <p class="foot">
+    Property Clinic Solutions Limited is an Appointed Representative of BSL Financial Services Ltd, which is authorised and regulated by the Financial Conduct Authority. Firm reference number 816566. We never sell your details and only use them to help with your enquiry.
+  </p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var ACCESS_KEY = "57947494-94ce-4eb8-97d9-781ae263bc37";
+  var ENDPOINT   = "https://api.web3forms.com/submit";
+  var LS_QUEUE   = "pcs_event_queue_v1";
+  var LS_LOG     = "pcs_event_log_v1";
+  var LS_EVENT   = "pcs_event_meta_v1";
+  var LS_MODE    = "pcs_event_mode_v1";
+  var LS_STAFF   = "pcs_event_staff_v1";
+
+  var INTERESTS = ["First-time buyer", "Remortgage", "Buy-to-let", "Protection and insurance", "Credit and affordability", "Just exploring"];
+  var TIMES     = ["Mornings", "Afternoons", "Evenings", "Weekends", "Anytime"];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var read = function (k, fb) { try { return JSON.parse(localStorage.getItem(k)) || fb; } catch (e) { return fb; } };
+  var write = function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+  /* ---------- Event details ---------- */
+  var qs = new URLSearchParams(location.search);
+  var meta = read(LS_EVENT, {});
+  if (qs.get("event")) meta.name = qs.get("event");
+  if (qs.get("date"))  meta.date = qs.get("date");
+  if (!meta.name) meta.name = "";
+  if (!meta.date) meta.date = new Date().toISOString().slice(0, 10);
+  write(LS_EVENT, meta);
+
+  function prettyDate(iso) {
+    var d = new Date(iso + "T12:00:00");
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  }
+
+  function paintEvent() {
+    var label = meta.name ? meta.name + " &nbsp;·&nbsp; " + prettyDate(meta.date) : "No event set";
+    $("eventStrip").innerHTML = label + (mode === "staff" ? '<button type="button" id="editEvent">Change</button>' : "");
+    var e = $("editEvent"); if (e) e.onclick = askEvent;
+  }
+
+  function askEvent() {
+    var n = prompt("Event name (shown at the top of the form):", meta.name || "");
+    if (n === null) return;
+    var d = prompt("Event date (YYYY-MM-DD):", meta.date || "");
+    if (d === null) return;
+    meta.name = n.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d.trim())) meta.date = d.trim();
+    write(LS_EVENT, meta);
+    paintEvent();
+  }
+
+  /* ---------- Mode ---------- */
+  var mode = read(LS_MODE, "visitor");
+
+  function setMode(m) {
+    mode = m; write(LS_MODE, m);
+    $("mVisitor").setAttribute("aria-pressed", String(m === "visitor"));
+    $("mStaff").setAttribute("aria-pressed", String(m === "staff"));
+    $("staffFields").hidden = m !== "staff";
+    $("staffStrip").hidden  = m !== "staff";
+    $("title").textContent = m === "staff" ? "New contact." : "Stay in touch.";
+    $("lede").textContent = m === "staff"
+      ? "Take their details while you talk. It sends straight to the office inbox and is saved on this device as a backup."
+      : "Leave your details and one of our advisers will be in touch after the event. No pressure and no obligation.";
+    $("submitBtn").textContent = m === "staff" ? "Save contact" : "Send my details";
+    var by = $("captured_by");
+    if (m === "staff" && !by.value) by.value = read(LS_STAFF, "") || "";
+    paintEvent(); paintCounts();
+  }
+
+  $("mVisitor").onclick = function () { setMode("visitor"); };
+  $("mStaff").onclick   = function () { setMode("staff"); };
+
+  /* ---------- Chips ---------- */
+  function buildChips(host, values, multi) {
+    values.forEach(function (v) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = v;
+      b.setAttribute("aria-pressed", "false");
+      b.onclick = function () {
+        var on = b.getAttribute("aria-pressed") === "true";
+        if (!multi) Array.prototype.forEach.call(host.children, function (c) { c.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", String(!on));
+      };
+      host.appendChild(b);
+    });
+  }
+  function chipValues(host) {
+    return Array.prototype.filter.call(host.children, function (c) { return c.getAttribute("aria-pressed") === "true"; })
+      .map(function (c) { return c.textContent; });
+  }
+  function clearChips(host) { Array.prototype.forEach.call(host.children, function (c) { c.setAttribute("aria-pressed", "false"); }); }
+
+  buildChips($("interests"), INTERESTS, true);
+  buildChips($("times"), TIMES, false);
+
+  /* ---------- Counts ---------- */
+  function paintCounts() {
+    var log = read(LS_LOG, []);
+    var today = new Date().toISOString().slice(0, 10);
+    $("countToday").textContent = log.filter(function (r) { return (r.capturedAt || "").slice(0, 10) === today; }).length;
+    var q = read(LS_QUEUE, []);
+    $("countQueue").textContent = q.length;
+    var note = $("queueNote");
+    if (q.length) {
+      note.hidden = false;
+      note.textContent = q.length + (q.length === 1 ? " contact is" : " contacts are") +
+        " saved on this device but not yet sent. They will send automatically once you are back online. Do not close this page or clear the browser.";
+    } else { note.hidden = true; }
+  }
+
+  /* ---------- Send ---------- */
+  function toFormData(rec) {
+    var fd = new FormData();
+    fd.append("access_key", ACCESS_KEY);
+    fd.append("subject", "Event lead: " + rec.first_name + " " + rec.last_name + " (" + (rec.event || "event") + ")");
+    fd.append("from_name", "PCS event sign-up");
+    fd.append("Event", rec.event || "");
+    fd.append("Event date", rec.event_date || "");
+    fd.append("Name", rec.first_name + " " + rec.last_name);
+    fd.append("Email", rec.email);
+    fd.append("Phone", rec.phone);
+    fd.append("Interested in", rec.interests || "Not stated");
+    fd.append("Best time to call", rec.best_time || "Not stated");
+    fd.append("Captured by", rec.captured_by || "Self sign-up");
+    fd.append("Conversation note", rec.note || "");
+    fd.append("Consent", "Agreed, " + rec.capturedAt);
+    return fd;
+  }
+
+  function send(rec) {
+    return fetch(ENDPOINT, { method: "POST", body: toFormData(rec) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { if (!d.success) throw new Error(d.message || "Rejected"); return true; });
+  }
+
+  var flushing = false;
+  function flushQueue() {
+    if (flushing) return Promise.resolve();
+    var q = read(LS_QUEUE, []);
+    if (!q.length) return Promise.resolve();
+    flushing = true;
+    var next = function () {
+      var cur = read(LS_QUEUE, []);
+      if (!cur.length) { flushing = false; paintCounts(); return Promise.resolve(); }
+      return send(cur[0]).then(function () {
+        var rest = read(LS_QUEUE, []).slice(1);
+        write(LS_QUEUE, rest); paintCounts();
+        return next();
+      }).catch(function () { flushing = false; paintCounts(); });
+    };
+    return next();
+  }
+
+  window.addEventListener("online", flushQueue);
+  setInterval(flushQueue, 30000);
+  flushQueue();
+
+  /* ---------- Validation ---------- */
+  function invalid(el, bad) { el.setAttribute("aria-invalid", bad ? "true" : "false"); return bad; }
+
+  function validate() {
+    var bad = [];
+    ["first_name", "last_name", "email", "phone"].forEach(function (k) {
+      var el = $(k);
+      var empty = !el.value.trim();
+      if (invalid(el, empty)) bad.push(k);
+    });
+    var em = $("email");
+    if (em.value.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em.value.trim())) { invalid(em, true); bad.push("email"); }
+    var ph = $("phone");
+    if (ph.value.trim() && ph.value.replace(/\D/g, "").length < 10) { invalid(ph, true); bad.push("phone"); }
+    if (!$("consent").checked) bad.push("consent");
+    return bad;
+  }
+
+  /* ---------- Submit ---------- */
+  var resetTimer = null;
+
+  $("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if ($("botcheck").value) return;
+
+    var bad = validate();
+    var err = $("errNote");
+    if (bad.length) {
+      err.hidden = false;
+      err.textContent = bad.indexOf("consent") > -1 && bad.length === 1
+        ? "Please tick the consent box so we are allowed to contact you."
+        : "Please check the highlighted fields. Name, email and mobile number are all needed.";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    err.hidden = true;
+
+    var rec = {
+      first_name: $("first_name").value.trim(),
+      last_name: $("last_name").value.trim(),
+      email: $("email").value.trim(),
+      phone: $("phone").value.trim(),
+      interests: chipValues($("interests")).join(", "),
+      best_time: chipValues($("times"))[0] || "",
+      captured_by: $("captured_by").value.trim(),
+      note: $("note").value.trim(),
+      event: meta.name,
+      event_date: meta.date,
+      capturedAt: new Date().toISOString()
+    };
+
+    if (rec.captured_by) write(LS_STAFF, rec.captured_by);
+
+    var log = read(LS_LOG, []); log.push(rec); write(LS_LOG, log);
+
+    $("submitBtn").disabled = true;
+    $("submitBtn").textContent = "Sending...";
+
+    send(rec).then(function () { finish(true); })
+      .catch(function () {
+        var q = read(LS_QUEUE, []); q.push(rec); write(LS_QUEUE, q);
+        finish(false);
+      });
+  });
+
+  function finish(sentNow) {
+    $("submitBtn").disabled = false;
+    $("submitBtn").textContent = mode === "staff" ? "Save contact" : "Send my details";
+    $("formCard").hidden = true;
+    $("doneCard").hidden = false;
+    $("doneTitle").textContent = mode === "staff" ? "Saved." : "Thank you. You are on the list.";
+    $("doneMsg").textContent = mode === "staff"
+      ? (sentNow ? "Sent to the office inbox and saved on this device." : "Saved on this device. It will send itself as soon as you have signal.")
+      : "One of our advisers will be in touch after the event. If you would rather reach us first, call 0333 404 0589.";
+    paintCounts();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    var secs = 8;
+    $("resetNote").textContent = "Ready for the next person in " + secs + " seconds.";
+    clearInterval(resetTimer);
+    resetTimer = setInterval(function () {
+      secs--;
+      if (secs <= 0) { clearInterval(resetTimer); resetForm(); }
+      else $("resetNote").textContent = "Ready for the next person in " + secs + " seconds.";
+    }, 1000);
+  }
+
+  function resetForm() {
+    clearInterval(resetTimer);
+    var keepBy = $("captured_by").value;
+    $("form").reset();
+    $("captured_by").value = keepBy;
+    clearChips($("interests")); clearChips($("times"));
+    ["first_name", "last_name", "email", "phone"].forEach(function (k) { $(k).setAttribute("aria-invalid", "false"); });
+    $("doneCard").hidden = true;
+    $("formCard").hidden = false;
+    $("errNote").hidden = true;
+    window.scrollTo({ top: 0, behavior: "auto" });
+    $("first_name").focus();
+  }
+
+  $("againBtn").onclick = resetForm;
+
+  /* ---------- Staff tools ---------- */
+  $("retryBtn").onclick = function () {
+    flushing = false;
+    flushQueue().then(paintCounts);
+  };
+
+  $("eventBtn").onclick = askEvent;
+
+  $("csvBtn").onclick = function () {
+    var log = read(LS_LOG, []);
+    if (!log.length) { alert("Nothing captured on this device yet."); return; }
+    var cols = ["capturedAt", "event", "event_date", "first_name", "last_name", "email", "phone", "interests", "best_time", "captured_by", "note"];
+    var esc = function (v) { return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"'; };
+    var csv = cols.join(",") + "\n" + log.map(function (r) { return cols.map(function (c) { return esc(r[c]); }).join(","); }).join("\n");
+    var blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "pcs-event-leads-" + (meta.date || "export") + ".csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+
+  /* ---------- Go ---------- */
+  setMode(mode);
+  paintCounts();
+})();
+</script>
+</body>
+</html>
