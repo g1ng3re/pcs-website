@@ -206,6 +206,9 @@
   }) {
     const grad = tone === "emerald" ? "linear-gradient(150deg,#E3F4EC,#d3ecdf)" : tone === "ink" ? "linear-gradient(150deg,#13224a,#0C1A3A)" : "linear-gradient(150deg,#E7ECFA,#dbe3f9)";
     const resolve = key => window.__resources && window.__resources["photo_" + key] || path(`assets/photos/${key}.jpg`);
+
+    // A slideshow is opt-in: pass `slides` as [{ id, alt }]. With one slide or
+    // none it behaves exactly like the plain single-image Photo.
     const frames = Array.isArray(slides) && slides.length ? slides : [{
       id,
       alt
@@ -341,6 +344,11 @@
     title: "Blog",
     desc: "Guides on mortgages, protection and property finance.",
     href: "blog"
+  }, {
+    icon: "users",
+    title: "Careers",
+    desc: "Join the team. One part time internship open now.",
+    href: "careers"
   }];
   function MegaPanel({
     links,
@@ -902,6 +910,9 @@
       links: [{
         title: "About Us",
         href: "about"
+      }, {
+        title: "Careers",
+        href: "careers"
       }, {
         title: "Blog",
         href: "blog"
@@ -1651,7 +1662,7 @@
       links: [["Residential Mortgages", "mortgages"], ["Buy to Let", "buy-to-let"], ["Remortgage", "remortgage"], ["Protection", "protection"]]
     }, {
       h: "Company",
-      links: [["About Us", "about"], ["Events", "events"], ["Blog", "blog"], ["Contact", "contact"]]
+      links: [["About Us", "about"], ["Careers", "careers"], ["Events", "events"], ["Blog", "blog"], ["Contact", "contact"]]
     }, {
       h: "Legal",
       links: [["Privacy Policy", "privacy"], ["Complaints", "complaints"], ["Cookie Policy", "cookie-policy"]]

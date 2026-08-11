@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Hiring Desk · PCS</title>
+<meta name="robots" content="noindex,nofollow,noarchive"/>
+<meta name="referrer" content="no-referrer"/>
+<meta name="theme-color" content="#0C1A3A"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#002AB1;--blue-h:#00239A;--blue-t:#E7ECFA;
+  --ink:#0C1A3A;--emerald:#109E6C;--emerald-t:#E3F4EC;
+  --gold:#DB9F1F;--gold-t:#FBF2DB;--red:#C0392B;--red-t:#FBE9E7;
+  --paper:#F7F7F4;--card:#FFFFFF;--sunken:#EEF0F4;
+  --n200:#E6E7EC;--n300:#D3D7E0;--n500:#7E8699;--n600:#5A6173;--n700:#3D4254;
+  --f:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+  --fd:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+body{font-family:var(--f);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+input,textarea,select{font-family:inherit;font-size:15px;color:var(--ink)}
+a{color:var(--blue)}
+
+/* ---- login ---- */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--ink)}
+.lg-card{width:min(400px,100%);background:#fff;border-radius:20px;padding:34px 32px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.lg-card h1{font:800 24px var(--fd);letter-spacing:-.02em;margin-bottom:6px}
+.lg-card p{font-size:14.5px;color:var(--n600);margin-bottom:22px}
+.fld{margin-bottom:14px}
+.fld label{display:block;font:600 13px var(--f);margin-bottom:6px}
+.fld input{width:100%;padding:12px 14px;border:1.5px solid var(--n300);border-radius:11px}
+.fld input:focus{outline:none;border-color:var(--blue)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--blue);color:#fff;border:none;
+  border-radius:11px;padding:12px 18px;font:700 15px var(--f)}
+.btn:hover{background:var(--blue-h)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--n300)}
+.btn.ghost:hover{background:var(--sunken)}
+.btn.sm{padding:8px 13px;font-size:13.5px;border-radius:9px}
+.err{background:var(--red-t);border:1px solid #F3C0C0;color:#8A1D1D;border-radius:10px;padding:11px 13px;
+  font:600 13.5px var(--f);margin-top:14px}
+
+/* ---- shell ---- */
+#app{display:none}
+header.top{background:var(--ink);color:#fff;padding:16px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+header.top h1{font:800 19px var(--fd);letter-spacing:-.01em}
+header.top .who{margin-left:auto;font-size:13.5px;color:rgba(255,255,255,.7)}
+header.top button{background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:9px;padding:8px 13px;font:600 13.5px var(--f)}
+.wrap{max-width:1180px;margin:0 auto;padding:22px}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--n200);border-radius:14px;padding:14px 16px;text-align:left;
+  transition:border-color .15s,box-shadow .15s}
+.stat:hover{border-color:var(--blue)}
+.stat[aria-pressed="true"]{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue) inset}
+.stat .n{font:800 26px var(--fd);letter-spacing:-.02em}
+.stat .l{font:600 12px var(--f);color:var(--n600);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.toolbar input{flex:1;min-width:220px;padding:11px 14px;border:1.5px solid var(--n300);border-radius:11px;background:#fff}
+.toolbar input:focus{outline:none;border-color:var(--blue)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:18px;align-items:start}
+
+/* ---- list ---- */
+.card{background:#fff;border:1px solid var(--n200);border-radius:14px;padding:15px 17px;margin-bottom:10px;
+  cursor:pointer;transition:border-color .15s}
+.card:hover{border-color:var(--blue)}
+.card.on{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue) inset}
+.card .nm{font:700 16.5px var(--fd);letter-spacing:-.01em}
+.card .mt{font-size:13.5px;color:var(--n600);margin-top:3px}
+.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:9px}
+.pill{font:700 11px var(--f);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:5px 10px}
+.p-New{background:var(--blue-t);color:var(--blue)}
+.p-Shortlist{background:var(--gold-t);color:#8A6410}
+.p-Interview{background:var(--emerald-t);color:var(--emerald)}
+.p-Offer{background:var(--emerald);color:#fff}
+.p-Rejected{background:var(--n200);color:var(--n600)}
+.stars{color:var(--gold);font-size:14px;letter-spacing:1px}
+
+/* ---- detail ---- */
+.panel{background:#fff;border:1px solid var(--n200);border-radius:16px;padding:22px 24px;position:sticky;top:18px;
+  max-height:calc(100vh - 36px);overflow-y:auto}
+.panel h2{font:800 22px var(--fd);letter-spacing:-.02em}
+.panel .sub{font-size:14px;color:var(--n600);margin-top:4px}
+.qa{border-top:1px solid var(--n200);padding:13px 0}
+.qa .q{font:700 11.5px var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--n500)}
+.qa .a{font-size:15px;line-height:1.55;margin-top:4px;white-space:pre-wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+.stagebar{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 4px}
+.stagebar button{background:#fff;border:1.5px solid var(--n300);border-radius:999px;padding:7px 13px;font:600 13.5px var(--f);color:var(--n700)}
+.stagebar button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.ratebar button{background:none;border:none;font-size:22px;color:var(--n300);padding:0 2px}
+.ratebar button.on{color:var(--gold)}
+textarea.notes{width:100%;min-height:110px;padding:12px 14px;border:1.5px solid var(--n300);border-radius:11px;
+  resize:vertical;line-height:1.5}
+textarea.notes:focus{outline:none;border-color:var(--blue)}
+.saved{font:600 13px var(--f);color:var(--emerald)}
+.empty{background:#fff;border:1px dashed var(--n300);border-radius:14px;padding:34px;text-align:center;color:var(--n600)}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .panel{position:static;max-height:none}
+  .stats{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <form class="lg-card" id="loginForm">
+    <h1>Hiring Desk</h1>
+    <p>Property Clinic Solutions. Sign in with your PCS account.</p>
+    <div class="fld"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required></div>
+    <div class="fld"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
+    <button class="btn" type="submit" style="width:100%;margin-top:6px" id="loginBtn">Sign in</button>
+    <div class="err" id="loginErr" hidden></div>
+  </form>
+</div>
+
+<div id="app">
+  <header class="top">
+    <h1>Hiring Desk</h1>
+    <span class="who" id="who"></span>
+    <button id="refresh">Refresh</button>
+    <button id="signout">Sign out</button>
+  </header>
+  <div class="wrap">
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Search name, email, town or answers">
+      <button class="btn ghost sm" id="exportCsv">Export CSV</button>
+    </div>
+    <div class="layout">
+      <div id="list"></div>
+      <div id="detail"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------------------------------------------------------------------
+   PCS Hiring Desk
+   Reads public.applications from Supabase. Everything here requires a signed-in
+   account: row level security blocks anonymous reads, so the anon key below
+   gives a visitor nothing without a password.
+   Source file lives at PCS_Website/careers-hiring.html and is copied byte for
+   byte to dist/hiring/index.html. Two-file edit, every time.
+--------------------------------------------------------------------------- */
+const CFG = { url: 'https://gxtpvguyflyiuzvvetuv.supabase.co', anonKey: 'sb_publishable_m94sNHH2ji5UJWI3W1j15Q_ZJDvw9ng' };
+const sb = window.supabase.createClient(CFG.url, CFG.anonKey);
+
+const STAGES = ['New', 'Shortlist', 'Interview', 'Offer', 'Rejected'];
+let rows = [];
+let selectedId = null;
+let filterStage = null;
+let query = '';
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const when = (iso) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' +
+         d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+};
+
+/* ---- auth ---- */
+$('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('loginBtn'); const err = $('loginErr');
+  btn.disabled = true; btn.textContent = 'Signing in…'; err.hidden = true;
+  const { error } = await sb.auth.signInWithPassword({ email: $('em').value.trim(), password: $('pw').value });
+  btn.disabled = false; btn.textContent = 'Sign in';
+  if (error) { err.textContent = error.message; err.hidden = false; return; }
+  start();
+});
+
+$('signout').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
+$('refresh').addEventListener('click', load);
+$('q').addEventListener('input', (e) => { query = e.target.value.toLowerCase().trim(); render(); });
+$('exportCsv').addEventListener('click', exportCsv);
+
+async function start() {
+  const { data } = await sb.auth.getUser();
+  if (!data || !data.user) return;
+  $('login').style.display = 'none';
+  $('app').style.display = 'block';
+  $('who').textContent = data.user.email;
+  await load();
+}
+
+async function load() {
+  const { data, error } = await sb.from('applications').select('*').order('created_at', { ascending: false });
+  if (error) { $('list').innerHTML = '<div class="empty">Could not load applications. ' + esc(error.message) + '</div>'; return; }
+  rows = data || [];
+  render();
+}
+
+/* ---- render ---- */
+function visible() {
+  return rows.filter((r) => {
+    if (filterStage && r.status !== filterStage) return false;
+    if (!query) return true;
+    const hay = [r.full_name, r.email, r.phone, r.location, r.experience, r.why_pcs, r.anything_else, r.availability]
+      .join(' ').toLowerCase();
+    return hay.indexOf(query) !== -1;
+  });
+}
+
+function render() {
+  // stats
+  const counts = { All: rows.length };
+  STAGES.forEach((s) => { counts[s] = rows.filter((r) => r.status === s).length; });
+  $('stats').innerHTML = ['All'].concat(STAGES).map((s) =>
+    '<button class="stat" data-stage="' + s + '" aria-pressed="' + ((filterStage || 'All') === s) + '">' +
+    '<div class="n">' + counts[s] + '</div><div class="l">' + s + '</div></button>'
+  ).join('');
+  Array.prototype.forEach.call($('stats').children, (b) => {
+    b.onclick = () => { const s = b.dataset.stage; filterStage = (s === 'All') ? null : s; render(); };
+  });
+
+  // list
+  const list = visible();
+  $('list').innerHTML = list.length ? list.map((r) =>
+    '<div class="card' + (r.id === selectedId ? ' on' : '') + '" data-id="' + r.id + '">' +
+      '<div class="nm">' + esc(r.full_name) + '</div>' +
+      '<div class="mt">' + esc(r.location || '') + (r.location && r.hours ? ' · ' : '') + esc(r.hours ? r.hours + ' hrs/wk' : '') + '</div>' +
+      '<div class="row">' +
+        '<span class="pill p-' + esc(r.status) + '">' + esc(r.status) + '</span>' +
+        (r.rating ? '<span class="stars">' + '★'.repeat(r.rating) + '</span>' : '') +
+        '<span class="mt" style="margin:0">' + when(r.created_at) + '</span>' +
+      '</div>' +
+    '</div>'
+  ).join('') : '<div class="empty">No applications match this view.</div>';
+
+  Array.prototype.forEach.call($('list').children, (c) => {
+    if (!c.dataset.id) return;
+    c.onclick = () => { selectedId = Number(c.dataset.id); render(); };
+  });
+
+  renderDetail();
+}
+
+function qa(q, a) {
+  if (!a) return '';
+  return '<div class="qa"><div class="q">' + esc(q) + '</div><div class="a">' + esc(a) + '</div></div>';
+}
+
+function renderDetail() {
+  const r = rows.filter((x) => x.id === selectedId)[0];
+  if (!r) { $('detail').innerHTML = '<div class="empty">Select an applicant to see their answers.</div>'; return; }
+  $('detail').innerHTML =
+    '<div class="panel">' +
+      '<h2>' + esc(r.full_name) + '</h2>' +
+      '<div class="sub">' + esc(r.role) + ' · applied ' + when(r.created_at) + '</div>' +
+      '<div class="row" style="margin-top:12px">' +
+        '<a class="btn ghost sm" href="mailto:' + esc(r.email) + '">Email</a>' +
+        (r.phone ? '<a class="btn ghost sm" href="tel:' + esc(r.phone.replace(/\s/g, '')) + '">Call</a>' : '') +
+        (r.cv_path ? '<button class="btn sm" id="cvBtn">Open CV</button>' : '') +
+      '</div>' +
+
+      '<div class="stagebar">' + STAGES.map((s) =>
+        '<button data-stage="' + s + '" aria-pressed="' + (r.status === s) + '">' + s + '</button>').join('') + '</div>' +
+
+      '<div class="row" style="margin-top:10px"><span class="q" style="font:700 11.5px var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--n500)">Rating</span>' +
+        '<span class="ratebar">' + [1, 2, 3, 4, 5].map((n) =>
+          '<button data-rate="' + n + '" class="' + (r.rating >= n ? 'on' : '') + '" aria-label="' + n + ' star">★</button>').join('') +
+        '<button data-rate="0" style="font-size:13px;color:var(--n500)">clear</button></span></div>' +
+
+      '<div class="grid2" style="margin-top:8px">' +
+        qa('Email', r.email) + qa('Phone', r.phone) +
+        qa('Based in', r.location) + qa('Right to work', r.right_to_work) +
+        qa('Currently', r.situation) + qa('Hours a week', r.hours) +
+        qa('Days available', r.availability) + qa('Could start', r.start_date) +
+        qa('CeMAP', r.cemap) + qa('Networking', r.networking) +
+      '</div>' +
+      qa('Sales or customer facing experience', r.experience) +
+      qa('Why this role and why PCS', r.why_pcs) +
+      qa('Anything else', r.anything_else) +
+      qa('CV file', r.cv_name) +
+
+      '<div class="qa"><div class="q">Private notes</div>' +
+        '<textarea class="notes" id="notes" placeholder="Interview notes, follow ups, decisions">' + esc(r.notes || '') + '</textarea>' +
+        '<div class="row"><button class="btn sm" id="saveNotes">Save notes</button><span class="saved" id="savedFlag" hidden>Saved</span>' +
+        (r.updated_at ? '<span class="mt" style="margin:0">Last updated ' + when(r.updated_at) + '</span>' : '') + '</div>' +
+      '</div>' +
+    '</div>';
+
+  Array.prototype.forEach.call($('detail').querySelectorAll('.stagebar button'), (b) => {
+    b.onclick = () => patch(r.id, { status: b.dataset.stage });
+  });
+  Array.prototype.forEach.call($('detail').querySelectorAll('.ratebar button'), (b) => {
+    b.onclick = () => patch(r.id, { rating: Number(b.dataset.rate) || null });
+  });
+  const save = $('saveNotes');
+  if (save) save.onclick = () => patch(r.id, { notes: $('notes').value }, true);
+  const cv = $('cvBtn');
+  if (cv) cv.onclick = () => openCv(r);
+}
+
+/* ---- writes ---- */
+async function patch(id, fields, quiet) {
+  fields.updated_at = new Date().toISOString();
+  const { error } = await sb.from('applications').update(fields).eq('id', id);
+  if (error) { alert('Could not save: ' + error.message); return; }
+  const r = rows.filter((x) => x.id === id)[0];
+  if (r) Object.keys(fields).forEach((k) => { r[k] = fields[k]; });
+  if (quiet) {
+    const flag = $('savedFlag');
+    if (flag) { flag.hidden = false; setTimeout(() => { flag.hidden = true; }, 1800); }
+    const r2 = rows.filter((x) => x.id === id)[0];
+    if (r2) r2.updated_at = fields.updated_at;
+    render();
+  } else {
+    render();
+  }
+}
+
+async function openCv(r) {
+  const { data, error } = await sb.storage.from('application-cvs').createSignedUrl(r.cv_path, 300);
+  if (error) { alert('Could not open the CV: ' + error.message); return; }
+  window.open(data.signedUrl, '_blank', 'noopener');
+}
+
+/* ---- export ---- */
+function exportCsv() {
+  const cols = ['created_at', 'full_name', 'email', 'phone', 'location', 'right_to_work', 'situation',
+    'hours', 'availability', 'start_date', 'cemap', 'networking', 'experience', 'why_pcs',
+    'anything_else', 'status', 'rating', 'notes', 'cv_name'];
+  const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const csv = [cols.join(',')].concat(visible().map((r) => cols.map((c) => cell(r[c])).join(','))).join('\n');
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'pcs-applications-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+/* ---- boot ---- */
+sb.auth.getSession().then(({ data }) => { if (data && data.session) start(); });
+</script>
+</body>
+</html>

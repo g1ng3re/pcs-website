@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /desk/
+Disallow: /hiring/
 
 Sitemap: https://propertyclinicsolutions.com/sitemap.xml
