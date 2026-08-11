@@ -313,6 +313,11 @@
     desc: "Lenders who assess real income properly.",
     href: "self-employed"
   }, {
+    icon: "users",
+    title: "Foreign Nationals",
+    desc: "Visa holders, settled status and ILR. A visa is not a refusal.",
+    href: "foreign-nationals"
+  }, {
     icon: "calculator",
     title: "Mortgage Calculator",
     desc: "See what you could borrow in plain numbers.",
@@ -340,14 +345,24 @@
     href: "buildings-contents"
   }];
   const ABOUT_LINKS = [{
+    icon: "users",
+    title: "About Us",
+    desc: "Who we are, how we work, and how we are regulated.",
+    href: "about"
+  }, {
     icon: "book",
     title: "Blog",
     desc: "Guides on mortgages, protection and property finance.",
     href: "blog"
   }, {
-    icon: "users",
+    icon: "calendar",
+    title: "Events",
+    desc: "Property education events, in person and online.",
+    href: "events"
+  }, {
+    icon: "cap",
     title: "Careers",
-    desc: "Join the team. One part time internship open now.",
+    desc: "Join the team. One part time role open now.",
     href: "careers"
   }];
   function MegaPanel({
@@ -763,7 +778,7 @@
         boxShadow: "var(--shadow-lg)",
         padding: 18,
         marginTop: 6,
-        maxWidth: shownPanel === "about" ? 360 : 720
+        maxWidth: 720
       }
     }, shownPanel === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: MORTGAGE_LINKS,
@@ -775,6 +790,7 @@
       onNavigate: closeAll
     }), shownPanel === "about" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: ABOUT_LINKS,
+      footnote: "Advise. Protect. Teach. For life.",
       onNavigate: closeAll
     }))))), drawer && /*#__PURE__*/React.createElement(MobileDrawer, {
       onClose: () => setDrawer(false)
@@ -1659,7 +1675,7 @@
     } = window.PCSIcons;
     const cols = [{
       h: "Services",
-      links: [["Residential Mortgages", "mortgages"], ["Buy to Let", "buy-to-let"], ["Remortgage", "remortgage"], ["Protection", "protection"]]
+      links: [["Residential Mortgages", "mortgages"], ["Buy to Let", "buy-to-let"], ["Remortgage", "remortgage"], ["Foreign Nationals", "foreign-nationals"], ["Protection", "protection"]]
     }, {
       h: "Company",
       links: [["About Us", "about"], ["Careers", "careers"], ["Events", "events"], ["Blog", "blog"], ["Contact", "contact"]]
