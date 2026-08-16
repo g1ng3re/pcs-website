@@ -1,0 +1,8 @@
+{
+  "name": "Protection Desk",
+  "short_name": "Desk",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F7F7F4",
+  "theme_color": "#0C1A3A"
+}
