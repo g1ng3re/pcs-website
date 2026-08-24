@@ -24,12 +24,13 @@ DirectoryIndex index.html
   RewriteCond %{THE_REQUEST} \s/+index(\.html)?[\s?] [NC]
   RewriteRule ^ / [R=301,L]
 
-  # --- The protection desk ---
-  # v2 replaced v1 and now lives at /desk. Anything still pointing at the old
-  # /desk2 address, including a bookmark or an iPad home screen icon, lands on
-  # the current desk rather than a 404. A permanent redirect, because it is.
+  # --- The protection desk, retired 22/08/2026 ---
+  # The app is gone. /desk/ now serves a page whose only job is to uninstall the
+  # old service worker, so an iPad that still has it on the home screen stops
+  # serving a cached copy of an app that no longer exists. Delete /desk/ and
+  # these two lines once every device has opened it at least once.
   RewriteRule ^desk2/?$ /desk/ [R=301,L]
-  RewriteRule ^desk2/(.*)$ /desk/$1 [R=301,L]
+  RewriteRule ^desk2/(.*)$ /desk/ [R=301,L]
 
   # --- 301s from old WordPress URLs (indexed by Google) to their new homes ---
   RewriteRule ^about-us/?$ /about [R=301,L]
