@@ -24,14 +24,6 @@ DirectoryIndex index.html
   RewriteCond %{THE_REQUEST} \s/+index(\.html)?[\s?] [NC]
   RewriteRule ^ / [R=301,L]
 
-  # --- The protection desk, retired 22/08/2026 ---
-  # The app is gone. /desk/ now serves a page whose only job is to uninstall the
-  # old service worker, so an iPad that still has it on the home screen stops
-  # serving a cached copy of an app that no longer exists. Delete /desk/ and
-  # these two lines once every device has opened it at least once.
-  RewriteRule ^desk2/?$ /desk/ [R=301,L]
-  RewriteRule ^desk2/(.*)$ /desk/ [R=301,L]
-
   # --- 301s from old WordPress URLs (indexed by Google) to their new homes ---
   RewriteRule ^about-us/?$ /about [R=301,L]
   RewriteRule ^mortgage-calculator/?$ /calculator [R=301,L]
