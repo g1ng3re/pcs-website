@@ -109,7 +109,8 @@
 const {
   Button,
   Input,
-  Checkbox
+  Checkbox,
+  Select
 } = window.PCSDesignSystem_269f6d;
 const {
   Icon
@@ -117,6 +118,8 @@ const {
 const {
   CALENDLY
 } = window.PCSHome;
+const SOURCE_OPTIONS = ["Recommended by a friend, relative or colleague", "Professional introducer", "Social media", "Website/search", "Email", "Advertisement", "Other"];
+const REFERRAL_SOURCES = ["Recommended by a friend, relative or colleague", "Professional introducer"];
 
 /* ---- Question definitions ---- */
 /* Each "choice" step auto-advances on selection. The final step collects contact details.
@@ -356,6 +359,7 @@ function DetailsStep({
   honeyRef
 }) {
   const STEPS = stepsFor(answers.help);
+  const [source, setSource] = React.useState("");
   return /*#__PURE__*/React.createElement("form", {
     onSubmit: onSubmit,
     noValidate: false
@@ -429,6 +433,27 @@ function DetailsStep({
     name: "message",
     className: "pcs-textarea",
     placeholder: "A sentence or two about your situation. No detail needed yet."
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "full"
+  }, /*#__PURE__*/React.createElement(Select, {
+    label: "How did you hear about us?",
+    name: "How did you hear about us",
+    required: true,
+    placeholder: "Please choose one",
+    value: source,
+    onChange: e => setSource(e.target.value),
+    options: SOURCE_OPTIONS
+  })), REFERRAL_SOURCES.indexOf(source) > -1 && /*#__PURE__*/React.createElement("div", {
+    className: "full"
+  }, /*#__PURE__*/React.createElement(Input, {
+    label: "Who recommended Property Clinic Solutions to you?",
+    name: "Who recommended us",
+    placeholder: "Their name or business name",
+    hint: "Optional. Please enter their name or business name.",
+    leftIcon: /*#__PURE__*/React.createElement(Icon, {
+      name: "users",
+      size: 18
+    })
   })), /*#__PURE__*/React.createElement("div", {
     className: "full",
     style: {
