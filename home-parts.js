@@ -782,7 +782,7 @@
       }
     }, shownPanel === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: MORTGAGE_LINKS,
-      footnote: "Whole of market. 90+ lenders. No mortgage broker fee before completion.",
+      footnote: "Whole of market. 90+ lenders.",
       onNavigate: closeAll
     }), shownPanel === "protection" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: PROTECTION_LINKS,
@@ -1170,7 +1170,7 @@
     const {
       Icon
     } = window.PCSIcons;
-    const items = ["Whole of Market", "90+ Lenders", "No Mortgage Broker Fee Before Completion", "Independent Advice"];
+    const items = ["Whole of Market", "90+ Lenders", "Independent Advice"];
     return /*#__PURE__*/React.createElement("section", {
       className: "pcs-truststrip",
       style: {

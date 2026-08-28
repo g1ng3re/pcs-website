@@ -797,6 +797,11 @@
     const trackRef = React.useRef(null);
     const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Property+Clinic+Solutions";
     const reviews = [{
+      name: "Mike Dara",
+      date: "2026-08-28",
+      rating: 5,
+      text: "I had an excellent experience working with my mortgage broker from start to finish. The whole mortgage process was made much easier and less stressful thanks to their professionalism, knowledge, and constant support. They were always available to answer my questions, explained everything clearly, and guided me through every step of the process. I really appreciated the effort and dedication they put into helping me secure my mortgage. I would highly recommend them to anyone looking for a reliable, professional, and supportive mortgage broker. Thank you again for all your help!"
+    }, {
       name: "d a",
       date: "2026-07-08",
       rating: 5,
