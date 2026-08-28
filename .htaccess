@@ -33,6 +33,10 @@ DirectoryIndex index.html
   RewriteRule ^cookies-policy/?$ /cookie-policy [R=301,L]
   RewriteRule ^privacy-policy/?$ /privacy [R=301,L]
   RewriteRule ^resources/?$ /blog [R=301,L]
+  RewriteRule ^personal/?$ / [R=301,L]
+  RewriteRule ^how-it-works/?$ /mortgages [R=301,L]
+  # Old WP dated permalinks (/2025/08/19/slug/) -> blog
+  RewriteRule ^[0-9]{4}/[0-9]{2}/[0-9]{2}/ /blog [R=301,L]
   # Old WP privacy page reached via query string (/?page_id=3)
   RewriteCond %{QUERY_STRING} (^|&)page_id=3(&|$)
   RewriteRule ^$ /privacy? [R=301,L]
