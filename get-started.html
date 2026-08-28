@@ -550,8 +550,14 @@ function Funnel() {
       fd.append("Enquiry type", lead);
       STEPS.slice(1, -1).forEach(s => fd.append(s.email, answers[s.key] || ""));
       for (const [k, v] of src.entries()) fd.append(k, v);
+      // Adviser attribution from the signature link (?utm_content=name)
+      const params = new URLSearchParams(window.location.search);
+      const adviser = params.get("utm_content");
+      const via = params.get("utm_source");
+      if (adviser) fd.append("Referring adviser", adviser);
+      if (via) fd.append("Came from", via);
       fd.append("access_key", "57947494-94ce-4eb8-97d9-781ae263bc37");
-      fd.append("subject", "New website enquiry: " + lead);
+      fd.append("subject", "New website enquiry: " + lead + (adviser ? " (via " + adviser + ")" : ""));
       fd.append("from_name", "Property Clinic Solutions website");
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
