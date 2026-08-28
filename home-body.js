@@ -153,8 +153,8 @@
     const W2 = window.PCSHome;
     const points = [{
       icon: "shield",
-      title: "Independent and FCA regulated",
-      body: "Authorised and regulated through our principal firm. Independent across both mortgages and protection."
+      title: "Regulated advice",
+      body: "Property Clinic Solutions is an Appointed Representative of BSL Financial Services Ltd, which is authorised and regulated by the Financial Conduct Authority."
     }, {
       icon: "scale",
       title: "Whole of market access",
@@ -162,7 +162,7 @@
     }, {
       icon: "users",
       title: "Specialist in complex cases",
-      body: "Self-employed, contractor day rates, adverse credit, unusual properties. We do not turn people away."
+      body: "Self-employed, contractor day rates, adverse credit, unusual properties. We regularly help clients with complex circumstances and assess every enquiry individually."
     }, {
       icon: "cap",
       title: "Education built in",
@@ -348,8 +348,8 @@
     }, {
       n: "2",
       icon: "search",
-      title: "Whole of market research",
-      body: "We compare 90+ lenders or insurers and bring you the options that genuinely fit your situation, with the reasoning behind each."
+      title: "Mortgage research",
+      body: "We compare suitable mortgages and protection policies available through our service and explain the rates, criteria, costs and trade-offs clearly."
     }, {
       n: "3",
       icon: "handshake",
@@ -1010,7 +1010,14 @@
     }, "See all our reviews on Google ", /*#__PURE__*/React.createElement(Icon, {
       name: "arrowRight",
       size: 17
-    })))));
+    }))), /*#__PURE__*/React.createElement("p", {
+      style: {
+        font: "400 13px/1.6 var(--font-sans)",
+        color: "var(--text-muted)",
+        margin: "18px 0 0",
+        maxWidth: 720
+      }
+    }, "Reviews describe individual clients' experiences. Mortgage availability and outcomes depend on personal circumstances, lender criteria and status.")));
   }
   W.ClientStories = ClientStories;
 

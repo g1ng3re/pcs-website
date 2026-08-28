@@ -315,7 +315,7 @@
   }, {
     icon: "users",
     title: "Foreign Nationals",
-    desc: "Visa holders, settled status and ILR. A visa is not a refusal.",
+    desc: "Visa holders, settled status and ILR. A visa does not automatically prevent you from getting a mortgage.",
     href: "foreign-nationals"
   }, {
     icon: "calculator",
@@ -782,7 +782,7 @@
       }
     }, shownPanel === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: MORTGAGE_LINKS,
-      footnote: "Whole of market. 90+ lenders. No upfront fees.",
+      footnote: "Whole of market. 90+ lenders. No mortgage broker fee before completion.",
       onNavigate: closeAll
     }), shownPanel === "protection" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: PROTECTION_LINKS,
@@ -1041,7 +1041,7 @@
         margin: "20px 0 0",
         animationDelay: ".42s"
       }
-    }, "Independent UK mortgages and protection for first-time buyers, self-employed, landlords, and every case in between. For life, not just one transaction."), /*#__PURE__*/React.createElement("div", {
+    }, "Clear mortgage and protection advice for first-time buyers, homeowners, self-employed professionals, landlords and people with more complex circumstances. Support for this decision and the ones that follow."), /*#__PURE__*/React.createElement("div", {
       className: "pcs-hero-anim",
       style: {
         display: "flex",
@@ -1170,7 +1170,7 @@
     const {
       Icon
     } = window.PCSIcons;
-    const items = ["Whole of Market", "90+ Lenders", "No Upfront Fees", "Independent Advice"];
+    const items = ["Whole of Market", "90+ Lenders", "No Mortgage Broker Fee Before Completion", "Independent Advice"];
     return /*#__PURE__*/React.createElement("section", {
       className: "pcs-truststrip",
       style: {
