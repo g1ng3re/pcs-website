@@ -797,6 +797,11 @@
     const trackRef = React.useRef(null);
     const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Property+Clinic+Solutions";
     const reviews = [{
+      name: "R Haq",
+      date: "2026-09-08",
+      rating: 5,
+      text: "I cannot recommend Property Clinic Solutions highly enough, and in particular, Emmanuel, who has been absolutely outstanding throughout my property finance journey. What started as a particularly complex matter, with numerous challenges and obstacles along the way, was handled with an exceptional level of knowledge, professionalism and determination. Emmanuel took the time to understand my circumstances, what I was trying to achieve and the wider picture, rather than simply treating it as another mortgage application. What truly sets Emmanuel apart is his accessibility and responsiveness. He was always contactable, consistently prompt with his replies (evening out of hours!!) and never made me feel as though I was chasing for an update. No matter how complicated the situation became, he always seemed to have a solution or a practical way forward. Even when faced with the most complex issues, his approach was never simply “it can’t be done” - it was about finding out how it could be done. His knowledge, persistence and ability to navigate the complexities of the process made a tremendous difference. He remained proactive, approachable and committed to getting the matter over the line, even when the challenges seemed never-ending. I’m extremely grateful for all the hard work, support and genuine personal attention. Emmanuel has earned my complete confidence, and I would have no hesitation in recommending him and Property Clinic Solutions to anyone looking for a knowledgeable, reliable and genuinely dedicated mortgage broker. Thank you again, Emmanuel. It has been a pleasure working with you, and I look forward to working together on many more property transactions in the future!"
+    }, {
       name: "Mike Dara",
       date: "2026-08-28",
       rating: 5,
