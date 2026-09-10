@@ -349,9 +349,6 @@ const NEED_MAP = {
     help: "Protection & insurance",
     coverType: "Buildings and contents"
   },
-  "mortgage": {
-    help: "Buying a home"
-  },
   "first-time-buyer": {
     help: "Buying a home",
     purchaseType: "My first home"
@@ -362,7 +359,15 @@ const NEED_MAP = {
   },
   "remortgage": {
     help: "Remortgaging"
-  }
+  },
+  "self-employed": {
+    employment: "Self-employed"
+  },
+  /* Hub and tool pages do not imply a branch, so they lock nothing. The tag is
+     still worth carrying: it is recorded on the enquiry as "Enquiry page". */
+  "mortgage": {},
+  "foreign-national": {},
+  "calculator": {}
 };
 const prefillFromUrl = () => {
   try {
@@ -567,7 +572,7 @@ function DetailsStep({
   }, submitting ? "Sending…" : "Send my enquiry")));
 }
 function Funnel() {
-  const locked = React.useRef(prefillFromUrl() || {}).current;
+  const [locked, setLocked] = React.useState(() => prefillFromUrl() || {});
   const [step, setStep] = React.useState(0);
   const [answers, setAnswers] = React.useState({
     ...locked
@@ -589,6 +594,14 @@ function Funnel() {
       behavior: "smooth",
       block: "nearest"
     });
+  };
+
+  /* Escape hatch. A prefilled step is skipped, so without this a visitor who
+     arrived from the wrong page could not get back to it. */
+  const clearContext = () => {
+    setLocked({});
+    setAnswers({});
+    goTo(0);
   };
   const advancing = React.useRef(false);
   const pick = (key, value) => {
@@ -620,6 +633,8 @@ function Funnel() {
       const params = new URLSearchParams(window.location.search);
       const adviser = params.get("utm_content");
       const via = params.get("utm_source");
+      const need = params.get("need");
+      if (need) fd.append("Enquiry page", need);
       if (adviser) fd.append("Referring adviser", adviser);
       if (via) fd.append("Came from", via);
       fd.append("access_key", "57947494-94ce-4eb8-97d9-781ae263bc37");
@@ -723,7 +738,11 @@ function Funnel() {
   }, Object.keys(locked).map(k => /*#__PURE__*/React.createElement("span", {
     className: "pcs-recap__chip",
     key: k
-  }, locked[k]))), isDetails ? /*#__PURE__*/React.createElement("div", {
+  }, locked[k])), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: clearContext,
+    className: "pcs-recap__reset"
+  }, "Not what you need?")), isDetails ? /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 26
     }
