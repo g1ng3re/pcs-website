@@ -348,7 +348,7 @@
     }, {
       n: "2",
       icon: "search",
-      title: "Mortgage research",
+      title: "Research",
       body: "We compare suitable mortgages and protection policies available through our service and explain the rates, criteria, costs and trade-offs clearly."
     }, {
       n: "3",
