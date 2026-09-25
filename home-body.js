@@ -443,13 +443,13 @@
     })), steps.map((s, i) => /*#__PURE__*/React.createElement("div", {
       key: s.n,
       "data-step": true,
-      className: "pcs-step" + (i < lit ? " is-lit" : ""),
+      className: "pcs-hww-step" + (i < lit ? " is-lit" : ""),
       style: {
         position: "relative",
         zIndex: 1
       }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "pcs-step-dot",
+      className: "pcs-hww-dot",
       style: {
         width: 72,
         height: 72,

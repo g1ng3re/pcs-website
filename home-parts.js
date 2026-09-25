@@ -519,9 +519,7 @@
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "phone",
       size: 13
-    }), " Free consultation"), /*#__PURE__*/React.createElement("span", {
-      className: "pcs-annbar-copy"
-    }, "Talk to an adviser for 15 minutes at no cost"), /*#__PURE__*/React.createElement("span", {
+    }), " Free consultation"), /*#__PURE__*/React.createElement("span", null, "Talk to an adviser for 15 minutes at no cost · We will tell you honestly whether we can help"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -532,7 +530,13 @@
     }, "Get started ", /*#__PURE__*/React.createElement(Icon, {
       name: "arrowRight",
       size: 13
-    })));
+    })), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "var(--pcs-gold)",
+        padding: "0 4px"
+      },
+      "aria-hidden": "true"
+    }, "·"));
     return /*#__PURE__*/React.createElement("div", {
       style: {
         background: "var(--pcs-ink)",
@@ -548,13 +552,17 @@
         textDecoration: "none"
       }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "pcs-annbar",
+      className: "pcs-annmarquee",
       style: {
         display: "flex",
-        justifyContent: "center",
-        padding: "9px 48px 9px 14px"
+        width: "max-content",
+        padding: "9px 0"
       }
-    }, /*#__PURE__*/React.createElement(Seg, null))), /*#__PURE__*/React.createElement("button", {
+    }, Array.from({
+      length: 6
+    }).map((_, i) => /*#__PURE__*/React.createElement(Seg, {
+      key: i
+    })))), /*#__PURE__*/React.createElement("button", {
       "aria-label": "Dismiss announcement",
       onClick: dismiss,
       style: {
@@ -679,10 +687,11 @@
       style: {
         maxWidth: 1200,
         margin: "0 auto",
-        padding: "12px 28px",
+        padding: scrolled ? "7px 28px" : "12px 28px",
         display: "flex",
         alignItems: "center",
-        gap: 22
+        gap: 22,
+        transition: "padding .3s cubic-bezier(0.22, 1, 0.36, 1)"
       }
     }, /*#__PURE__*/React.createElement("a", {
       href: "/",
@@ -695,8 +704,12 @@
     }, /*#__PURE__*/React.createElement("img", {
       src: window.__resources && window.__resources.logoH || path("assets/logos/pcs-logo-horizontal.svg"),
       alt: "Property Clinic Solutions",
+      className: "pcs-logo",
       style: {
-        height: 38
+        height: 38,
+        transformOrigin: "left center",
+        transform: scrolled ? "scale(.84)" : "none",
+        transition: "transform .3s cubic-bezier(0.22, 1, 0.36, 1)"
       }
     })), /*#__PURE__*/React.createElement("nav", {
       className: "pcs-nav",
@@ -1281,6 +1294,7 @@
         padding: "0 22px"
       }
     }, i > 0 && /*#__PURE__*/React.createElement("span", {
+      className: "pcs-strip-dot",
       style: {
         color: dot,
         fontSize: 18

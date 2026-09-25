@@ -130,8 +130,8 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary .chev { flex: none; width: 24px; height: 24px; transition: transform .2s var(--ease-out); color: var(--pcs-blue); }
 .faq[open] summary .chev { transform: rotate(180deg); }
-.faq .faq-body { padding: 0 22px; max-height: 0; overflow: hidden; transition: max-height .22s var(--ease-out), padding .22s var(--ease-out); }
-.faq[open] .faq-body { max-height: 460px; padding: 0 22px 22px; }
+.faq .faq-body { padding: 0 22px 22px; overflow: hidden; }
+.faq.is-closing summary .chev { transform: none; }
 .faq .faq-body p { margin: 0; font: 400 15.5px/1.65 var(--font-sans); color: var(--text-body); }
 
 /* Comparison table */
@@ -198,7 +198,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 .pcs-rev-track > * { scroll-snap-align: start; }
 .pcs-strip { display: flex; justify-content: center; flex-wrap: wrap; }
 .pcs-strip .pcs-marquee-row { flex-wrap: wrap; justify-content: center; row-gap: 8px; }
-@media (max-width: 640px) { .pcs-annbar-copy { display: none; } }
+
 @media (prefers-reduced-transparency: reduce) {
   header { background: var(--surface-page, #f7f7f4) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 }
@@ -248,11 +248,11 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 
 /* How we work: scroll-linked timeline (25/09/2026) */
 .pcs-tl-fill { position: absolute; inset: 0; background: var(--pcs-blue); transform-origin: left center; will-change: transform; }
-.pcs-step-dot { background: #fff; color: var(--pcs-blue); box-shadow: 0 0 0 1px var(--border-default) inset;
+.pcs-hww-dot { background: #fff; color: var(--pcs-blue); box-shadow: 0 0 0 1px var(--border-default) inset;
   transform: scale(.92); transition: background .35s ease, color .35s ease, transform .45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .35s ease; }
-.pcs-step.is-lit .pcs-step-dot { background: var(--pcs-blue); color: #fff; transform: scale(1); box-shadow: var(--shadow-brand); }
-.pcs-step h3, .pcs-step p { transition: opacity .35s ease; opacity: .55; }
-.pcs-step.is-lit h3, .pcs-step.is-lit p { opacity: 1; }
+.pcs-hww-step.is-lit .pcs-hww-dot { background: var(--pcs-blue); color: #fff; transform: scale(1); box-shadow: var(--shadow-brand); }
+.pcs-hww-step h3, .pcs-hww-step p { transition: opacity .35s ease; opacity: .55; }
+.pcs-hww-step.is-lit h3, .pcs-hww-step.is-lit p { opacity: 1; }
 @media (max-width: 920px) { .pcs-tl-track { display: none; } }
 
 /* Card icon nudge on hover, press response on touch (25/09/2026) */
@@ -262,6 +262,13 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 }
 .pcs-grid-3 > *:has(.pcs-card-ico):active, .pcs-path-card:active { transform: scale(.98) !important; transition: transform .1s ease-out !important; }
 @media (prefers-reduced-motion: reduce) {
-  .pcs-card-ico, .pcs-step-dot, .pcs-step h3, .pcs-step p { transition: none !important; }
+  .pcs-card-ico, .pcs-hww-dot, .pcs-hww-step h3, .pcs-hww-step p { transition: none !important; }
   .pcs-grid-3 > *:hover .pcs-card-ico, .pcs-path-card:hover .pcs-card-ico { transform: none !important; }
+}
+
+/* Trust strip on phones: one item per line, no separators (25/09/2026) */
+@media (max-width: 640px) {
+  .pcs-strip .pcs-marquee-row { flex-direction: column; row-gap: 4px; }
+  .pcs-strip .pcs-marquee-row > span { font-size: 18px !important; padding: 0 16px !important; gap: 0 !important; }
+  .pcs-strip-dot { display: none; }
 }

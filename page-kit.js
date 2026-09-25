@@ -912,6 +912,51 @@
     const {
       Icon
     } = window.PCSIcons;
+    /* Open and close to the answer's real height rather than a fixed cap, so
+       long answers are never clipped and short ones do not lag. */
+    const onToggleClick = e => {
+      const d = e.currentTarget.parentElement,
+        body = d.querySelector(".faq-body");
+      if (!body || !body.animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      e.preventDefault();
+      if (d._anim) d._anim.cancel();
+      const opts = {
+        duration: 280,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+      };
+      if (!d.open) {
+        d.open = true;
+        const h = body.scrollHeight;
+        d._anim = body.animate([{
+          height: "0px",
+          opacity: 0
+        }, {
+          height: h + "px",
+          opacity: 1
+        }], opts);
+        d._anim.onfinish = () => {
+          d._anim = null;
+        };
+      } else {
+        const h = body.offsetHeight;
+        d.classList.add("is-closing");
+        d._anim = body.animate([{
+          height: h + "px",
+          opacity: 1
+        }, {
+          height: "0px",
+          opacity: 0
+        }], {
+          ...opts,
+          duration: 220
+        });
+        d._anim.onfinish = () => {
+          d.open = false;
+          d.classList.remove("is-closing");
+          d._anim = null;
+        };
+      }
+    };
     return /*#__PURE__*/React.createElement("section", {
       className: "reveal",
       style: {
@@ -934,7 +979,9 @@
       className: "faq",
       key: i,
       open: i === 0
-    }, /*#__PURE__*/React.createElement("summary", null, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React.createElement("summary", {
+      onClick: onToggleClick
+    }, /*#__PURE__*/React.createElement("span", {
       "data-faq-q": true
     }, q), /*#__PURE__*/React.createElement(Icon, {
       name: "chevronDown",
