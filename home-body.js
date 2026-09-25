@@ -611,6 +611,205 @@
   }
   W.Education = Education;
 
+  /* 5b — Upcoming events. Cards drop off automatically the day after their
+     date, and the whole section hides when nothing is left. Keep in step with
+     the MoreEvents list on events.html. */
+  const UPCOMING = [{
+    date: "2026-10-10",
+    tag: "In person",
+    tagTone: "blue",
+    price: "Free",
+    img: "assets/photos/black-history-month-flyer.jpg",
+    title: "Black History Month",
+    when: "Saturday 10 October, 11:00am",
+    where: "Sherwood Park Hall, Mitcham"
+  }, {
+    date: "2026-10-17",
+    tag: "In person",
+    tagTone: "blue",
+    price: "Ticketed",
+    img: "assets/photos/uk-black-business-show-logo.jpg",
+    imgFit: "contain",
+    title: "UK Black Business Show",
+    when: "Saturday 17 October, 9:00am",
+    where: "ExCeL London"
+  }, {
+    date: "2026-10-18",
+    tag: "Online",
+    tagTone: "emerald",
+    price: "Free",
+    img: "assets/photos/first-time-landlord-flyer.jpg",
+    title: "First Time Landlord",
+    when: "Sunday 18 October, 6:00pm",
+    where: "Online",
+    href: "https://www.eventbrite.co.uk/e/first-time-landlord-tickets-2002241294611?lid=qpplj5ya16y0"
+  }];
+  function UpcomingEvents() {
+    const {
+      Button,
+      Badge
+    } = window.PCSDesignSystem_269f6d;
+    const {
+      Icon
+    } = window.PCSIcons;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const items = UPCOMING.filter(e => new Date(e.date + "T00:00:00") >= today);
+    if (!items.length) return null;
+    return /*#__PURE__*/React.createElement("section", {
+      id: "upcoming-events",
+      className: "reveal",
+      style: {
+        background: "var(--surface-sunken)",
+        padding: "80px 28px",
+        scrollMarginTop: 80
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxWidth: 1200,
+        margin: "0 auto"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "flex-end",
+        gap: 20,
+        flexWrap: "wrap",
+        marginBottom: 32
+      }
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Eyebrow, null, "On The Calendar"), /*#__PURE__*/React.createElement("h2", {
+      className: "pcs-h2",
+      style: {
+        margin: "12px 0 0"
+      }
+    }, "Upcoming events.")), /*#__PURE__*/React.createElement(Button, {
+      variant: "outline",
+      href: "events#upcoming",
+      rightIcon: /*#__PURE__*/React.createElement(Icon, {
+        name: "arrowRight",
+        size: 18
+      })
+    }, "See All Events")), /*#__PURE__*/React.createElement("div", {
+      className: "pcs-grid-3",
+      style: {
+        display: "grid",
+        gridTemplateColumns: "repeat(3,1fr)",
+        gap: 22
+      }
+    }, items.map(e => /*#__PURE__*/React.createElement("article", {
+      key: e.title,
+      style: {
+        background: "#fff",
+        border: "1px solid var(--border-subtle)",
+        borderRadius: 18,
+        padding: 22,
+        display: "flex",
+        flexDirection: "column",
+        boxShadow: "var(--shadow-sm)"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-img-zoom",
+      style: {
+        height: 160,
+        marginBottom: 16,
+        borderRadius: 12,
+        overflow: "hidden",
+        background: "var(--pcs-ink)"
+      }
+    }, /*#__PURE__*/React.createElement("img", {
+      src: e.img,
+      alt: e.title,
+      loading: "lazy",
+      style: {
+        width: "100%",
+        height: "100%",
+        objectFit: e.imgFit || "cover",
+        objectPosition: e.imgFit === "contain" ? "center" : "center top",
+        display: "block"
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 8,
+        marginBottom: 14
+      }
+    }, /*#__PURE__*/React.createElement(Badge, {
+      tone: e.tagTone,
+      variant: "outline"
+    }, e.tag), /*#__PURE__*/React.createElement(Badge, {
+      tone: "gold",
+      variant: "outline"
+    }, e.price)), /*#__PURE__*/React.createElement("h3", {
+      style: {
+        font: "700 19px var(--font-display)",
+        color: "var(--pcs-ink)",
+        margin: 0,
+        letterSpacing: "-.01em"
+      }
+    }, e.title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        margin: "12px 0 0"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 9,
+        font: "500 14px/1.4 var(--font-sans)",
+        color: "var(--text-body)"
+      }
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "calendar",
+      size: 17,
+      style: {
+        color: "var(--pcs-blue)",
+        flex: "none",
+        marginTop: 1
+      }
+    }), " ", e.when), /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 9,
+        font: "500 14px/1.4 var(--font-sans)",
+        color: "var(--text-body)"
+      }
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "mapPin",
+      size: 17,
+      style: {
+        color: "var(--pcs-blue)",
+        flex: "none",
+        marginTop: 1
+      }
+    }), " ", e.where)), /*#__PURE__*/React.createElement("a", {
+      href: e.href || "events#upcoming",
+      ...(e.href ? {
+        target: "_blank",
+        rel: "noopener"
+      } : {}),
+      className: "pcs-link-row",
+      style: {
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 7,
+        marginTop: "auto",
+        paddingTop: 18,
+        font: "700 14.5px var(--font-sans)",
+        color: "var(--pcs-blue)",
+        textDecoration: "none"
+      }
+    }, e.href ? "Book your place" : "See details", " ", /*#__PURE__*/React.createElement(Icon, {
+      name: "arrowRight",
+      size: 16
+    })))))));
+  }
+  W.UpcomingEvents = UpcomingEvents;
+
   /* Filled star (the icon set's star is an outline; reviews want a solid gold star). */
   function Star({
     on
