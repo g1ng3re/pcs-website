@@ -232,3 +232,16 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
   opacity: var(--dim, 0); pointer-events: none; border-radius: inherit; }
 .pcs-editions.is-stacked { display: block !important; position: sticky; overflow: hidden; border-radius: 24px; }
 .pcs-editions.is-stacked > article { position: absolute; top: 0; left: 0; right: 0; will-change: transform; }
+
+/* ETP gallery mosaic + reveal (25/09/2026) */
+.pcs-gallery { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 230px; grid-auto-flow: dense; gap: 18px; }
+.pcs-gal-item { grid-column: span var(--c, 1); grid-row: span var(--r, 1); min-width: 0; }
+.pcs-gallery.is-armed .pcs-gal-item { clip-path: inset(9% 7% 9% 7% round 20px); opacity: 0;
+  transition: clip-path 1s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms), opacity .5s ease var(--d, 0ms); }
+.pcs-gallery.is-armed .pcs-gal-item img { transform: scale(1.14); transition: transform 1.3s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms); }
+.pcs-gallery.is-armed .pcs-gal-item.is-in { clip-path: inset(0 0 0 0 round 20px); opacity: 1; }
+.pcs-gallery.is-armed .pcs-gal-item.is-in img { transform: scale(1); }
+.pcs-gallery.is-armed .pcs-gal-item.is-in .pcs-img-zoom:hover img { transform: scale(1.05); transition-delay: 0ms; }
+@media (max-width: 920px) { .pcs-gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 190px; gap: 12px; } .pcs-gal-item { grid-row: span 1; } }
+@media (max-width: 520px) { .pcs-gallery { grid-auto-rows: 150px; } }
+@media (prefers-reduced-motion: reduce) { .pcs-gallery .pcs-gal-item, .pcs-gallery .pcs-gal-item img { clip-path: none !important; opacity: 1 !important; transform: none !important; transition: none !important; } }
