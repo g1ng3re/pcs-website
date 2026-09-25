@@ -114,7 +114,7 @@
       size: 28
     })), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 22px var(--font-display)",
+        font: "700 22px/1.2 var(--font-display)",
         letterSpacing: "-.01em",
         color: "var(--pcs-ink)",
         margin: "18px 0 0"
@@ -247,7 +247,7 @@
       size: 22
     })), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 18px var(--font-display)",
+        font: "700 18px/1.2 var(--font-display)",
         color: "var(--pcs-ink)",
         margin: "14px 0 0"
       }
@@ -432,7 +432,7 @@
       }
     }, "Step ", s.n)), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 22px var(--font-display)",
+        font: "700 22px/1.2 var(--font-display)",
         color: "var(--pcs-ink)",
         margin: "4px 0 0",
         letterSpacing: "-.01em"
@@ -742,7 +742,7 @@
       variant: "outline"
     }, e.price)), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 19px var(--font-display)",
+        font: "700 19px/1.2 var(--font-display)",
         color: "var(--pcs-ink)",
         margin: 0,
         letterSpacing: "-.01em"
@@ -1081,46 +1081,6 @@
         behavior: "smooth"
       });
     };
-    /* Gentle continuous auto-scroll. Pauses on hover, touch and keyboard focus,
-       and is skipped entirely under reduced motion. The cards are duplicated so
-       the loop is seamless. */
-    React.useEffect(() => {
-      const el = trackRef.current;
-      if (!el) return;
-      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      let paused = false,
-        raf;
-      const pause = () => {
-        paused = true;
-      };
-      const resume = () => {
-        paused = false;
-      };
-      el.addEventListener("mouseenter", pause);
-      el.addEventListener("mouseleave", resume);
-      el.addEventListener("touchstart", pause, {
-        passive: true
-      });
-      el.addEventListener("focusin", pause);
-      el.addEventListener("focusout", resume);
-      const tick = () => {
-        if (!paused) {
-          el.scrollLeft += 0.6;
-          const half = el.scrollWidth / 2;
-          if (el.scrollLeft >= half) el.scrollLeft -= half;
-        }
-        raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-      return () => {
-        cancelAnimationFrame(raf);
-        el.removeEventListener("mouseenter", pause);
-        el.removeEventListener("mouseleave", resume);
-        el.removeEventListener("touchstart", pause);
-        el.removeEventListener("focusin", pause);
-        el.removeEventListener("focusout", resume);
-      };
-    }, []);
     return /*#__PURE__*/React.createElement("section", {
       className: "reveal",
       style: {
@@ -1194,9 +1154,12 @@
         display: "flex",
         gap: 22,
         overflowX: "auto",
-        padding: "4px 2px 10px"
+        padding: "4px 2px 10px",
+        scrollSnapType: "x mandatory",
+        overscrollBehaviorX: "contain",
+        WebkitOverflowScrolling: "touch"
       }
-    }, reviews.concat(reviews).map((r, i) => /*#__PURE__*/React.createElement(ReviewCard, {
+    }, reviews.map((r, i) => /*#__PURE__*/React.createElement(ReviewCard, {
       key: i,
       r: r
     })))), /*#__PURE__*/React.createElement("div", {
@@ -1318,7 +1281,7 @@
       size: 24
     })), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 19px var(--font-display)",
+        font: "700 19px/1.2 var(--font-display)",
         color: "var(--pcs-ink)",
         margin: "16px 0 0",
         letterSpacing: "-.01em"

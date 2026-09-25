@@ -519,7 +519,9 @@
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "phone",
       size: 13
-    }), " Free consultation"), /*#__PURE__*/React.createElement("span", null, "Talk to an adviser for 15 minutes at no cost · We will tell you honestly whether we can help"), /*#__PURE__*/React.createElement("span", {
+    }), " Free consultation"), /*#__PURE__*/React.createElement("span", {
+      className: "pcs-annbar-copy"
+    }, "Talk to an adviser for 15 minutes at no cost"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -530,13 +532,7 @@
     }, "Get started ", /*#__PURE__*/React.createElement(Icon, {
       name: "arrowRight",
       size: 13
-    })), /*#__PURE__*/React.createElement("span", {
-      style: {
-        color: "var(--pcs-gold)",
-        padding: "0 4px"
-      },
-      "aria-hidden": "true"
-    }, "·"));
+    })));
     return /*#__PURE__*/React.createElement("div", {
       style: {
         background: "var(--pcs-ink)",
@@ -552,17 +548,13 @@
         textDecoration: "none"
       }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "pcs-annmarquee",
+      className: "pcs-annbar",
       style: {
         display: "flex",
-        width: "max-content",
-        padding: "9px 0"
+        justifyContent: "center",
+        padding: "9px 48px 9px 14px"
       }
-    }, Array.from({
-      length: 6
-    }).map((_, i) => /*#__PURE__*/React.createElement(Seg, {
-      key: i
-    })))), /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React.createElement(Seg, null))), /*#__PURE__*/React.createElement("button", {
       "aria-label": "Dismiss announcement",
       onClick: dismiss,
       style: {
@@ -677,7 +669,11 @@
       "aria-expanded": open === key,
       "aria-haspopup": "true",
       onClick: () => {
-        window.location.href = path(key);
+        clearTimeout(closeTimer.current);
+        setOpen(open === key ? null : key);
+      },
+      onKeyDown: e => {
+        if (e.key === "Escape") setOpen(null);
       },
       style: {
         display: "inline-flex",
@@ -782,10 +778,18 @@
       }
     }, shownPanel === "mortgages" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: MORTGAGE_LINKS,
+      overview: {
+        label: "All mortgages",
+        href: "mortgages"
+      },
       footnote: "Whole of market. 90+ lenders.",
       onNavigate: closeAll
     }), shownPanel === "protection" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: PROTECTION_LINKS,
+      overview: {
+        label: "All protection",
+        href: "protection"
+      },
       footnote: "Independent across the whole UK protection market. Reviewed every year.",
       onNavigate: closeAll
     }), shownPanel === "about" && /*#__PURE__*/React.createElement(MegaPanel, {
@@ -1015,21 +1019,18 @@
     }, /*#__PURE__*/React.createElement("span", {
       className: "pcs-hero-anim",
       style: {
-        color: "var(--pcs-blue)",
         display: "inline-block",
         animationDelay: ".12s"
       }
     }, "We advise."), " ", /*#__PURE__*/React.createElement("span", {
       className: "pcs-hero-anim",
       style: {
-        color: "var(--pcs-emerald)",
         display: "inline-block",
         animationDelay: ".22s"
       }
     }, "We protect."), " ", /*#__PURE__*/React.createElement("span", {
       className: "pcs-hero-anim",
       style: {
-        color: "var(--pcs-ink)",
         display: "inline-block",
         animationDelay: ".32s"
       }
@@ -1219,9 +1220,8 @@
     }[tone] || "var(--pcs-ink)";
     const dot = tone === "emerald" || tone === "green" ? "rgba(255,255,255,.55)" : "var(--pcs-gold)";
     const row = /*#__PURE__*/React.createElement("div", {
-      className: "pcs-marquee-row",
-      "aria-hidden": "false"
-    }, items.concat(items).map((t, i) => /*#__PURE__*/React.createElement("span", {
+      className: "pcs-marquee-row"
+    }, items.map((t, i) => /*#__PURE__*/React.createElement("span", {
       key: i,
       style: {
         display: "inline-flex",
@@ -1232,13 +1232,13 @@
         color: "rgba(255,255,255,.92)",
         padding: "0 22px"
       }
-    }, t, /*#__PURE__*/React.createElement("span", {
+    }, i > 0 && /*#__PURE__*/React.createElement("span", {
       style: {
         color: dot,
         fontSize: 18
       },
       "aria-hidden": "true"
-    }, "·"))));
+    }, "·"), t)));
     return /*#__PURE__*/React.createElement("section", {
       style: {
         background: bg,
@@ -1246,7 +1246,7 @@
         padding: "20px 0"
       }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "pcs-marquee"
+      className: "pcs-strip"
     }, row));
   }
   W.Marquee = Marquee;
@@ -1469,6 +1469,9 @@
         localStorage.setItem(NP_KEY, "1");
       } catch (e) {}
     }, []);
+
+    /* Earned, not ambushed: only once the visitor has read most of the page,
+       and never on top of an unanswered cookie banner. */
     React.useEffect(() => {
       try {
         const path = location.pathname.replace(/\.html$/, "");
@@ -1477,8 +1480,21 @@
       } catch (e) {
         return;
       }
-      const t = setTimeout(() => setOpen(true), 9000);
-      return () => clearTimeout(t);
+      const onScroll = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        if (max <= 0 || window.scrollY / max < 0.6) return;
+        try {
+          if (!localStorage.getItem("pcs-cookie-consent-v1")) return;
+        } catch (e) {
+          return;
+        }
+        window.removeEventListener("scroll", onScroll);
+        setOpen(true);
+      };
+      window.addEventListener("scroll", onScroll, {
+        passive: true
+      });
+      return () => window.removeEventListener("scroll", onScroll);
     }, []);
     React.useEffect(() => {
       if (!open) return;

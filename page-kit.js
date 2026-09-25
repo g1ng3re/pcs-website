@@ -378,7 +378,7 @@
       size: 23
     })), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 19px var(--font-display)",
+        font: "700 19px/1.2 var(--font-display)",
         letterSpacing: "-.01em",
         color: dark ? "#fff" : "var(--pcs-ink)",
         margin: 0
@@ -484,7 +484,7 @@
       size: 26
     })), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 21px var(--font-display)",
+        font: "700 21px/1.2 var(--font-display)",
         color: "var(--pcs-ink)",
         margin: 0,
         letterSpacing: "-.01em"
@@ -620,7 +620,7 @@
       }
     }, "Step ", i + 1), /*#__PURE__*/React.createElement("h3", {
       style: {
-        font: "700 20px var(--font-display)",
+        font: "700 20px/1.2 var(--font-display)",
         color: "var(--pcs-ink)",
         margin: "3px 0 0",
         letterSpacing: "-.01em"
