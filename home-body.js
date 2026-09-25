@@ -99,6 +99,7 @@
       interactive: true,
       padding: 30
     }, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-card-ico",
       style: {
         width: 56,
         height: 56,
@@ -356,6 +357,43 @@
       title: "We handle the rest",
       body: "Application, paperwork, and lender liaison all the way to completion. Then we stay in touch and review your cover or rate annually."
     }];
+    /* The line fills with the scroll and each step lights as the line reaches
+       it (desktop). On one column, each step lights as it reaches the middle
+       of the screen. Reduced motion shows the finished state. */
+    const tlRef = React.useRef(null);
+    const [prog, setProg] = React.useState(0);
+    const [lit, setLit] = React.useState(0);
+    React.useEffect(() => {
+      const tl = tlRef.current;
+      if (!tl) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setProg(1);
+        setLit(steps.length);
+        return;
+      }
+      const onScroll = () => {
+        const vh = window.innerHeight;
+        const kids = Array.from(tl.querySelectorAll("[data-step]"));
+        if (window.innerWidth > 920) {
+          const r = tl.getBoundingClientRect();
+          const p = Math.min(1, Math.max(0, (vh * 0.78 - r.top) / (vh * 0.4)));
+          setProg(p);
+          setLit(p <= 0 ? 0 : p < 0.5 ? 1 : p < 1 ? 2 : 3);
+        } else {
+          setProg(0);
+          setLit(kids.filter(k => k.getBoundingClientRect().top < vh * 0.62).length);
+        }
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, {
+        passive: true
+      });
+      window.addEventListener("resize", onScroll);
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      };
+    }, []);
     return /*#__PURE__*/React.createElement("section", {
       className: "reveal",
       style: {
@@ -378,6 +416,7 @@
         margin: "12px 0 0"
       }
     }, "Three steps, start to finish.")), /*#__PURE__*/React.createElement("div", {
+      ref: tlRef,
       className: "pcs-timeline",
       style: {
         display: "grid",
@@ -386,33 +425,38 @@
         position: "relative"
       }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "pcs-timeline-rule",
+      className: "pcs-tl-track",
       style: {
         position: "absolute",
         top: 36,
-        left: "16%",
-        right: "16%",
+        left: 36,
+        right: "calc(33.333% - 54.67px)",
         height: 2,
         background: "var(--border-default)",
         zIndex: 0
       }
-    }), steps.map(s => /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-tl-fill",
+      style: {
+        transform: "scaleX(" + prog + ")"
+      }
+    })), steps.map((s, i) => /*#__PURE__*/React.createElement("div", {
       key: s.n,
+      "data-step": true,
+      className: "pcs-step" + (i < lit ? " is-lit" : ""),
       style: {
         position: "relative",
         zIndex: 1
       }
     }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-step-dot",
       style: {
         width: 72,
         height: 72,
         borderRadius: "50%",
-        background: "var(--pcs-blue)",
-        color: "#fff",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        boxShadow: "var(--shadow-brand)",
         border: "4px solid var(--surface-page)"
       }
     }, /*#__PURE__*/React.createElement(Icon, {
@@ -1265,6 +1309,7 @@
         flexDirection: "column"
       }
     }, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-card-ico",
       style: {
         width: 50,
         height: 50,
