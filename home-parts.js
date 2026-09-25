@@ -353,7 +353,7 @@
     icon: "book",
     title: "Blog",
     desc: "Guides on mortgages, protection and property finance.",
-    href: "blog"
+    href: "blog/"
   }, {
     icon: "calendar",
     title: "Events",
@@ -931,7 +931,7 @@
         href: "careers"
       }, {
         title: "Blog",
-        href: "blog"
+        href: "blog/"
       }, {
         title: "Events",
         href: "events"
@@ -1678,7 +1678,7 @@
       links: [["Residential Mortgages", "mortgages"], ["Buy to Let", "buy-to-let"], ["Remortgage", "remortgage"], ["Foreign Nationals", "foreign-nationals"], ["Protection", "protection"]]
     }, {
       h: "Company",
-      links: [["About Us", "about"], ["Careers", "careers"], ["Events", "events"], ["Blog", "blog"], ["Contact", "contact"]]
+      links: [["About Us", "about"], ["Careers", "careers"], ["Events", "events"], ["Blog", "blog/"], ["Contact", "contact"]]
     }, {
       h: "Legal",
       links: [["Privacy Policy", "privacy"], ["Complaints", "complaints"], ["Cookie Policy", "cookie-policy"]]
