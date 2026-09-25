@@ -578,6 +578,54 @@
     })));
   }
   W.AnnouncementBar = AnnouncementBar;
+
+  /* Phone-only action bar: Call and Get started within thumb reach.
+     Appears once the header CTA has scrolled away and the cookie banner has
+     been answered (both sit at the bottom edge). Hidden on the enquiry pages
+     themselves. */
+  function MobileActionBar() {
+    const {
+      Icon
+    } = window.PCSIcons;
+    const [show, setShow] = React.useState(false);
+    const hidden = /\/(get-started|contact)(\.html)?\/?$/.test(location.pathname);
+    React.useEffect(() => {
+      if (hidden) return;
+      const check = () => {
+        let consent = false;
+        try {
+          consent = !!localStorage.getItem("pcs-cookie-consent-v1");
+        } catch (e) {
+          consent = true;
+        }
+        setShow(consent && window.scrollY > 400);
+      };
+      window.addEventListener("scroll", check, {
+        passive: true
+      });
+      check();
+      return () => window.removeEventListener("scroll", check);
+    }, []);
+    if (hidden) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "pcs-actionbar" + (show ? " is-shown" : ""),
+      "aria-hidden": !show
+    }, /*#__PURE__*/React.createElement("a", {
+      href: "tel:03334040589",
+      className: "pcs-actionbar__call",
+      tabIndex: show ? 0 : -1
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "phone",
+      size: 18
+    }), " Call"), /*#__PURE__*/React.createElement("a", {
+      href: path("get-started"),
+      className: "pcs-actionbar__go",
+      tabIndex: show ? 0 : -1
+    }, "Get started ", /*#__PURE__*/React.createElement(Icon, {
+      name: "arrowRight",
+      size: 18
+    })));
+  }
   function Header() {
     const {
       Button
@@ -798,7 +846,7 @@
       onNavigate: closeAll
     }))))), drawer && /*#__PURE__*/React.createElement(MobileDrawer, {
       onClose: () => setDrawer(false)
-    }));
+    }), /*#__PURE__*/React.createElement(MobileActionBar, null));
   }
   W.Header = Header;
   function MobileDrawer({

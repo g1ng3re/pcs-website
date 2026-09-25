@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/spacing.css" />
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/tokens/base.css" />
 <link rel="stylesheet" href="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/styles.css" />
-<link rel="stylesheet" href="site.css?v=1790344872604" />
+<link rel="stylesheet" href="site.css?v=1790345228832" />
 <style>
   /* ---- Multi-step enquiry funnel ---- */
   .pcs-funnel { max-width: 680px; margin: 0 auto; }
@@ -97,9 +97,9 @@
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
 <script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="icons.js?v=1790344872604"></script>
-<script src="home-parts.js?v=1790344872604"></script>
-<script src="page-kit.js?v=1790344872604"></script>
+<script src="icons.js?v=1790345228832"></script>
+<script src="home-parts.js?v=1790345228832"></script>
+<script src="page-kit.js?v=1790345228832"></script>
 
 <script type="application/ld+json">
 { "@context": "https://schema.org", "@type": "FinancialService", "name": "Property Clinic Solutions Limited", "areaServed": "GB", "url": "https://propertyclinicsolutions.com/get-started", "telephone": "+44 333 404 0589", "email": "info@propertyclinicsolutions.com", "address": { "@type": "PostalAddress", "streetAddress": "1 Mychell House, Pincott Road", "addressLocality": "London", "postalCode": "SW19 2NN", "addressCountry": "GB" } }
@@ -436,7 +436,7 @@ function DetailsStep({
     className: "pcs-fn-q"
   }, "Almost there — how do we reach you?"), /*#__PURE__*/React.createElement("p", {
     className: "pcs-fn-sub"
-  }, "A member of the team will normally contact you within one working day. We use your information to respond to your enquiry and provide the services you request. We do not sell your personal information."), /*#__PURE__*/React.createElement("div", {
+  }, "We use your information to respond to your enquiry and provide the services you request. We do not sell your personal information."), /*#__PURE__*/React.createElement("div", {
     className: "pcs-recap",
     "aria-label": "Your answers so far"
   }, STEPS.slice(0, -1).map(s => answers[s.key] ? /*#__PURE__*/React.createElement("span", {
@@ -563,7 +563,22 @@ function DetailsStep({
     }
   }, error), /*#__PURE__*/React.createElement("div", {
     className: "pcs-fn-nav"
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 7,
+      font: "600 14px/1.4 var(--font-sans)",
+      color: "var(--text-muted)"
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "clock",
+    size: 16,
+    style: {
+      color: "var(--pcs-emerald)",
+      flex: "none"
+    }
+  }), " We reply within one working day"), /*#__PURE__*/React.createElement(Button, {
     type: "submit",
     size: "lg",
     disabled: submitting,
