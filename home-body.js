@@ -896,7 +896,8 @@
   }
   W.revAge = revAge;
   function ReviewCard({
-    r
+    r,
+    dup
   }) {
     const {
       Avatar
@@ -911,6 +912,8 @@
     return /*#__PURE__*/React.createElement("article", {
       "data-rev": true,
       className: "pcs-story-card",
+      "aria-hidden": dup ? "true" : undefined,
+      inert: dup ? "" : undefined,
       style: {
         flex: "0 0 clamp(280px, 80vw, 360px)",
         scrollSnapAlign: "start",
@@ -1073,6 +1076,70 @@
       rating: 5,
       text: "The absolute best. Demonstrated in-depth knowledge of the processes, very warm attitude, courteous and professional. I highly recommend."
     }];
+    /* Continuous scroll through the reviews. Pauses while the pointer is over
+       the carousel (arrows included) and carries on when it leaves. On touch it
+       pauses while a finger is down and resumes shortly after. The list is
+       doubled so the loop is seamless; the copy is hidden from screen readers.
+       Off under reduced motion. */
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    React.useEffect(() => {
+      const el = trackRef.current;
+      if (!el || reduceMotion) return;
+      const zone = el.parentElement;
+      let paused = false,
+        raf,
+        pos = el.scrollLeft,
+        last = performance.now(),
+        resumeT;
+      const pause = () => {
+        clearTimeout(resumeT);
+        paused = true;
+      };
+      const resume = delay => {
+        clearTimeout(resumeT);
+        resumeT = setTimeout(() => {
+          pos = el.scrollLeft;
+          paused = false;
+        }, delay || 0);
+      };
+      const onEnter = e => {
+        if (e.pointerType !== "touch") pause();
+      };
+      const onLeave = e => {
+        if (e.pointerType !== "touch") resume(0);
+      };
+      const onTouchStart = () => pause();
+      const onTouchEnd = () => resume(1800);
+      zone.addEventListener("pointerenter", onEnter);
+      zone.addEventListener("pointerleave", onLeave);
+      el.addEventListener("touchstart", onTouchStart, {
+        passive: true
+      });
+      el.addEventListener("touchend", onTouchEnd, {
+        passive: true
+      });
+      const tick = now => {
+        const dt = Math.min(64, now - last);
+        last = now;
+        if (!paused) {
+          if (Math.abs(el.scrollLeft - pos) > 2) pos = el.scrollLeft;
+          pos += dt * 0.035;
+          const half = el.scrollWidth / 2;
+          if (pos >= half) pos -= half;
+          el.scrollLeft = pos;
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      return () => {
+        cancelAnimationFrame(raf);
+        clearTimeout(resumeT);
+        zone.removeEventListener("pointerenter", onEnter);
+        zone.removeEventListener("pointerleave", onLeave);
+        el.removeEventListener("touchstart", onTouchStart);
+        el.removeEventListener("touchend", onTouchEnd);
+      };
+    }, []);
     const scroll = dir => {
       const el = trackRef.current;
       if (!el) return;
@@ -1157,13 +1224,16 @@
         gap: 22,
         overflowX: "auto",
         padding: "4px 2px 10px",
-        scrollSnapType: "x mandatory",
         overscrollBehaviorX: "contain",
         WebkitOverflowScrolling: "touch"
       }
     }, reviews.map((r, i) => /*#__PURE__*/React.createElement(ReviewCard, {
       key: i,
       r: r
+    })), !reduceMotion && reviews.map((r, i) => /*#__PURE__*/React.createElement(ReviewCard, {
+      key: "d" + i,
+      r: r,
+      dup: true
     })))), /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: 26

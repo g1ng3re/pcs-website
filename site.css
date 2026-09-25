@@ -286,12 +286,14 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 @keyframes pcs-line-up { from { transform: translateY(110%); } to { transform: none; } }
 
 /* FAQ: open answer is clearly highlighted (25/09/2026) */
-.faq { transition: border-color .25s ease, box-shadow .25s ease; }
+.faq { transition: border-color .15s ease, box-shadow .15s ease; }
 .faq[open]:not(.is-closing) { border-color: var(--pcs-blue); box-shadow: 0 10px 30px rgba(12,42,177,.08); }
 .faq[open]:not(.is-closing) summary { color: var(--pcs-blue); }
-.faq[open] .faq-body p { animation: pcs-faq-in .45s cubic-bezier(0.22, 1, 0.36, 1) both .05s; }
+.faq[open] .faq-body p { animation: pcs-faq-in .22s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes pcs-faq-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   .pcs-hero-word, .faq[open] .faq-body p { animation: none !important; }
 }
+
+

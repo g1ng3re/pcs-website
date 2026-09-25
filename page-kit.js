@@ -918,14 +918,45 @@
     const onToggleClick = e => {
       const d = e.currentTarget.parentElement,
         body = d.querySelector(".faq-body");
-      if (!body || !body.animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const instant = !body || !body.animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (instant) {
+        if (!d.open && d.parentElement) Array.from(d.parentElement.querySelectorAll("details.faq[open]")).forEach(x => {
+          if (x !== d) x.open = false;
+        });
+        return;
+      }
       e.preventDefault();
       if (d._anim) d._anim.cancel();
       const opts = {
-        duration: 280,
+        duration: 190,
         easing: "cubic-bezier(0.22, 1, 0.36, 1)"
       };
+      const close = x => {
+        const b = x.querySelector(".faq-body");
+        if (x._anim) x._anim.cancel();
+        x.classList.add("is-closing");
+        x._anim = b.animate([{
+          height: b.offsetHeight + "px",
+          opacity: 1
+        }, {
+          height: "0px",
+          opacity: 0
+        }], {
+          ...opts,
+          duration: 150
+        });
+        x._anim.onfinish = () => {
+          x.open = false;
+          x.classList.remove("is-closing");
+          x._anim = null;
+        };
+      };
       if (!d.open) {
+        /* Opening one answer closes any other open in the same list. */
+        const list = d.parentElement;
+        if (list) Array.from(list.querySelectorAll("details.faq[open]")).forEach(x => {
+          if (x !== d) close(x);
+        });
         d.open = true;
         const h = body.scrollHeight;
         d._anim = body.animate([{
@@ -939,23 +970,7 @@
           d._anim = null;
         };
       } else {
-        const h = body.offsetHeight;
-        d.classList.add("is-closing");
-        d._anim = body.animate([{
-          height: h + "px",
-          opacity: 1
-        }, {
-          height: "0px",
-          opacity: 0
-        }], {
-          ...opts,
-          duration: 220
-        });
-        d._anim.onfinish = () => {
-          d.open = false;
-          d.classList.remove("is-closing");
-          d._anim = null;
-        };
+        close(d);
       }
     };
     return /*#__PURE__*/React.createElement("section", {
