@@ -6,6 +6,125 @@
   const W = window.PCSHome = window.PCSHome || {};
   const CALENDLY = "https://calendly.com/propertyclinicsolutions/free-consultation";
   W.CALENDLY = CALENDLY;
+
+  /* ---- Scroll-lit steps, shared by the homepage and every K.Timeline ----
+     Measures the step dots. If they sit in one row, a horizontal line joins
+     them; in one column (phones), a vertical line. The line fills with the
+     scroll and each step lights as the fill reaches it. Grids that wrap onto
+     several rows get no line and light step by step. Reduced motion shows the
+     finished state. */
+  function useSteps(ref) {
+    const [prog, setProg] = React.useState(0);
+    const [lit, setLit] = React.useState(0);
+    const [track, setTrack] = React.useState(null);
+    React.useEffect(() => {
+      const el = ref.current;
+      if (!el) return;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const dots = () => Array.from(el.querySelectorAll("[data-dot]"));
+      let geo = null;
+      const measure = () => {
+        const d = dots(),
+          g = el.getBoundingClientRect();
+        if (d.length < 2) {
+          geo = null;
+          setTrack(null);
+          return;
+        }
+        const c = d.map(x => {
+          const r = x.getBoundingClientRect();
+          return {
+            x: r.left + r.width / 2 - g.left,
+            y: r.top + r.height / 2 - g.top
+          };
+        });
+        const sameRow = c.every(p => Math.abs(p.y - c[0].y) < 4);
+        const sameCol = c.every(p => Math.abs(p.x - c[0].x) < 4);
+        const last = c[c.length - 1];
+        geo = sameRow ? {
+          o: "h",
+          x: c[0].x,
+          y: c[0].y,
+          len: last.x - c[0].x
+        } : sameCol ? {
+          o: "v",
+          x: c[0].x,
+          y: c[0].y,
+          len: last.y - c[0].y
+        } : null;
+        setTrack(geo);
+      };
+      const update = () => {
+        const n = dots().length,
+          vh = window.innerHeight;
+        if (reduce) {
+          setProg(1);
+          setLit(n);
+          return;
+        }
+        const g = el.getBoundingClientRect();
+        if (geo && geo.o === "h") {
+          const p = Math.min(1, Math.max(0, (vh * 0.78 - g.top) / (vh * 0.4)));
+          setProg(p);
+          setLit(p <= 0 ? 0 : Math.min(n, 1 + Math.floor(p * (n - 1) + 1e-6)));
+        } else {
+          const line = vh * 0.62;
+          if (geo && geo.o === "v") setProg(Math.min(1, Math.max(0, (line - (g.top + geo.y)) / geo.len)));else setProg(0);
+          setLit(dots().filter(x => x.getBoundingClientRect().top < line).length);
+        }
+      };
+      const relayout = () => {
+        measure();
+        update();
+      };
+      relayout();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+      window.addEventListener("load", relayout);
+      window.addEventListener("resize", relayout);
+      window.addEventListener("scroll", update, {
+        passive: true
+      });
+      return () => {
+        window.removeEventListener("load", relayout);
+        window.removeEventListener("resize", relayout);
+        window.removeEventListener("scroll", update);
+      };
+    }, []);
+    return {
+      prog,
+      lit,
+      track
+    };
+  }
+  W.useSteps = useSteps;
+  function StepTrack({
+    track,
+    prog
+  }) {
+    if (!track) return null;
+    const h = track.o === "h";
+    return /*#__PURE__*/React.createElement("div", {
+      className: "pcs-tl-track",
+      "aria-hidden": "true",
+      style: h ? {
+        left: track.x,
+        top: track.y - 1,
+        width: track.len,
+        height: 2
+      } : {
+        left: track.x - 1,
+        top: track.y,
+        height: track.len,
+        width: 2
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-tl-fill",
+      style: {
+        transform: (h ? "scaleX(" : "scaleY(") + prog + ")"
+      }
+    }));
+  }
+  W.StepTrack = StepTrack;
   /* Ticketing link for the featured event (Empowerment Through Property). */
   const EVENTBRITE = "https://www.eventbrite.com/e/empowerment-through-property-landlord-expo-wealth-meets-health-tickets-1990065361066?lid=zj5izzdshlrl";
   W.EVENTBRITE = EVENTBRITE;
@@ -519,7 +638,7 @@
     }, /*#__PURE__*/React.createElement(Icon, {
       name: "phone",
       size: 13
-    }), " Free consultation"), /*#__PURE__*/React.createElement("span", null, "Talk to an adviser for 15 minutes at no cost · We will tell you honestly whether we can help"), /*#__PURE__*/React.createElement("span", {
+    }), " Free consultation"), /*#__PURE__*/React.createElement("span", null, "Talk to an adviser for 15 minutes at no cost"), /*#__PURE__*/React.createElement("span", {
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -680,14 +799,15 @@
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
         borderBottom: scrolled || open ? "1px solid var(--border-subtle)" : "1px solid transparent",
-        transition: "background .25s, border-color .25s"
+        boxShadow: scrolled ? "0 8px 28px rgba(12,26,58,.09)" : "none",
+        transition: "background .25s, border-color .25s, box-shadow .3s"
       },
       onMouseLeave: leave
     }, /*#__PURE__*/React.createElement("div", {
       style: {
         maxWidth: 1200,
         margin: "0 auto",
-        padding: scrolled ? "7px 28px" : "12px 28px",
+        padding: scrolled ? "5px 28px" : "12px 28px",
         display: "flex",
         alignItems: "center",
         gap: 22,
@@ -708,7 +828,7 @@
       style: {
         height: 38,
         transformOrigin: "left center",
-        transform: scrolled ? "scale(.84)" : "none",
+        transform: scrolled ? "scale(.76)" : "none",
         transition: "transform .3s cubic-bezier(0.22, 1, 0.36, 1)"
       }
     })), /*#__PURE__*/React.createElement("nav", {
@@ -1078,24 +1198,30 @@
         margin: "18px 0 0"
       }
     }, /*#__PURE__*/React.createElement("span", {
-      className: "pcs-hero-anim",
+      className: "pcs-hero-line"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-hero-word",
       style: {
-        display: "inline-block",
-        animationDelay: ".12s"
+        color: "var(--pcs-blue)",
+        animationDelay: ".1s"
       }
-    }, "We advise."), " ", /*#__PURE__*/React.createElement("span", {
-      className: "pcs-hero-anim",
+    }, "We advise.")), " ", /*#__PURE__*/React.createElement("span", {
+      className: "pcs-hero-line"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-hero-word",
       style: {
-        display: "inline-block",
-        animationDelay: ".22s"
+        color: "var(--pcs-emerald)",
+        animationDelay: ".24s"
       }
-    }, "We protect."), " ", /*#__PURE__*/React.createElement("span", {
-      className: "pcs-hero-anim",
+    }, "We protect.")), " ", /*#__PURE__*/React.createElement("span", {
+      className: "pcs-hero-line"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-hero-word",
       style: {
-        display: "inline-block",
-        animationDelay: ".32s"
+        color: "var(--pcs-ink)",
+        animationDelay: ".38s"
       }
-    }, "We teach.")), /*#__PURE__*/React.createElement("p", {
+    }, "We teach."))), /*#__PURE__*/React.createElement("p", {
       className: "pcs-body pcs-hero-anim",
       style: {
         fontSize: 18.5,

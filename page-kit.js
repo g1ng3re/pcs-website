@@ -554,6 +554,13 @@
     } = window.PCSIcons;
     const n = steps.length;
     const cols = n <= 3 ? n : n === 4 ? 4 : 3;
+    const tlRef = React.useRef(null);
+    const H = window.PCSHome;
+    const {
+      prog,
+      lit,
+      track
+    } = H.useSteps(tlRef);
     return /*#__PURE__*/React.createElement("section", {
       className: "reveal",
       style: {
@@ -571,41 +578,35 @@
       lead: lead,
       accent: accent
     }), /*#__PURE__*/React.createElement("div", {
-      className: "pcs-timeline",
+      ref: tlRef,
+      className: "pcs-timeline pcs-hww",
       style: {
+        "--acc": accent,
         display: "grid",
         gridTemplateColumns: "repeat(" + cols + ",1fr)",
         gap: 26,
         position: "relative"
       }
-    }, cols === n && /*#__PURE__*/React.createElement("div", {
-      className: "pcs-timeline-rule",
-      style: {
-        position: "absolute",
-        top: 32,
-        left: 100 / n / 2 + "%",
-        right: 100 / n / 2 + "%",
-        height: 2,
-        background: "var(--border-default)",
-        zIndex: 0
-      }
+    }, /*#__PURE__*/React.createElement(H.StepTrack, {
+      track: track,
+      prog: prog
     }), steps.map((s, i) => /*#__PURE__*/React.createElement("div", {
       key: i,
+      className: "pcs-hww-step" + (i < lit ? " is-lit" : ""),
       style: {
         position: "relative",
         zIndex: 1
       }
     }, /*#__PURE__*/React.createElement("div", {
+      "data-dot": true,
+      className: "pcs-hww-dot",
       style: {
         width: 64,
         height: 64,
         borderRadius: "50%",
-        background: accent,
-        color: "#fff",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        boxShadow: "var(--shadow-brand)",
         border: "4px solid " + bg,
         font: "800 24px var(--font-display)"
       }

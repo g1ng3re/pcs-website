@@ -246,14 +246,21 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 @media (max-width: 520px) { .pcs-gallery { grid-auto-rows: 150px; } }
 @media (prefers-reduced-motion: reduce) { .pcs-gallery .pcs-gal-item, .pcs-gallery .pcs-gal-item img { clip-path: none !important; opacity: 1 !important; transform: none !important; transition: none !important; } }
 
-/* How we work: scroll-linked timeline (25/09/2026) */
-.pcs-tl-fill { position: absolute; inset: 0; background: var(--pcs-blue); transform-origin: left center; will-change: transform; }
-.pcs-hww-dot { background: #fff; color: var(--pcs-blue); box-shadow: 0 0 0 1px var(--border-default) inset;
-  transform: scale(.92); transition: background .35s ease, color .35s ease, transform .45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .35s ease; }
-.pcs-hww-step.is-lit .pcs-hww-dot { background: var(--pcs-blue); color: #fff; transform: scale(1); box-shadow: var(--shadow-brand); }
-.pcs-hww-step h3, .pcs-hww-step p { transition: opacity .35s ease; opacity: .55; }
-.pcs-hww-step.is-lit h3, .pcs-hww-step.is-lit p { opacity: 1; }
-@media (max-width: 920px) { .pcs-tl-track { display: none; } }
+/* Scroll-lit steps, all pages (25/09/2026) */
+.pcs-tl-track { position: absolute; background: var(--border-default); z-index: 0; border-radius: 2px; }
+.pcs-tl-fill { position: absolute; inset: 0; background: var(--acc, var(--pcs-blue)); transform-origin: left top; border-radius: 2px; }
+.pcs-hww-dot { background: #fff; color: var(--acc, var(--pcs-blue)); box-shadow: 0 0 0 2px var(--border-default) inset;
+  transform: scale(.9); transition: background .4s ease, color .4s ease, transform .5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .4s ease; }
+.pcs-hww-step.is-lit .pcs-hww-dot { background: var(--acc, var(--pcs-blue)); color: #fff; transform: scale(1);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--acc, #0c2ab1) 14%, transparent), var(--shadow-brand); }
+.pcs-hww-step > :not(.pcs-hww-dot) { transition: opacity .4s ease; opacity: .45; }
+.pcs-hww-step.is-lit > :not(.pcs-hww-dot) { opacity: 1; }
+@media (max-width: 920px) {
+  .pcs-hww-step { display: grid; grid-template-columns: auto 1fr; column-gap: 18px; align-items: start; }
+  .pcs-hww-step > .pcs-hww-dot { grid-row: 1 / span 4; }
+  .pcs-hww-step > :nth-child(2) { margin-top: 6px !important; }
+  .pcs-hww .pcs-tl-track { z-index: 0; }
+}
 
 /* Card icon nudge on hover, press response on touch (25/09/2026) */
 .pcs-card-ico { transition: transform .3s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -262,7 +269,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
 }
 .pcs-grid-3 > *:has(.pcs-card-ico):active, .pcs-path-card:active { transform: scale(.98) !important; transition: transform .1s ease-out !important; }
 @media (prefers-reduced-motion: reduce) {
-  .pcs-card-ico, .pcs-hww-dot, .pcs-hww-step h3, .pcs-hww-step p { transition: none !important; }
+  .pcs-card-ico, .pcs-hww-dot, .pcs-hww-step > * { transition: none !important; }
   .pcs-grid-3 > *:hover .pcs-card-ico, .pcs-path-card:hover .pcs-card-ico { transform: none !important; }
 }
 
@@ -271,4 +278,20 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
   .pcs-strip .pcs-marquee-row { flex-direction: column; row-gap: 4px; }
   .pcs-strip .pcs-marquee-row > span { font-size: 18px !important; padding: 0 16px !important; gap: 0 !important; }
   .pcs-strip-dot { display: none; }
+}
+
+/* Hero headline: each line rises out of a mask (25/09/2026) */
+.pcs-hero-line { display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; }
+.pcs-hero-word { display: inline-block; animation: pcs-line-up .95s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes pcs-line-up { from { transform: translateY(110%); } to { transform: none; } }
+
+/* FAQ: open answer is clearly highlighted (25/09/2026) */
+.faq { transition: border-color .25s ease, box-shadow .25s ease; }
+.faq[open]:not(.is-closing) { border-color: var(--pcs-blue); box-shadow: 0 10px 30px rgba(12,42,177,.08); }
+.faq[open]:not(.is-closing) summary { color: var(--pcs-blue); }
+.faq[open] .faq-body p { animation: pcs-faq-in .45s cubic-bezier(0.22, 1, 0.36, 1) both .05s; }
+@keyframes pcs-faq-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pcs-hero-word, .faq[open] .faq-body p { animation: none !important; }
 }
