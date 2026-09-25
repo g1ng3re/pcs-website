@@ -41,6 +41,8 @@ DirectoryIndex index.html
   # Old WP privacy page reached via query string (/?page_id=3)
   RewriteCond %{QUERY_STRING} (^|&)page_id=3(&|$)
   RewriteRule ^$ /privacy? [R=301,L]
+  # Old WP lead-magnet PDF (First Time Buyer Playbook) is withdrawn: 410 Gone so Google drops it
+  RewriteRule ^wp-content/uploads/2026/05/The_First_Time_Buyer_Playbook\.pdf$ - [G,L]
   # Anything under the old WP internals has no static equivalent -> home
   RewriteRule ^(wp-admin|wp-content|wp-includes|wp-json)(/|$) / [R=301,L]
   RewriteRule ^wp-login\.php$ / [R=301,L]
