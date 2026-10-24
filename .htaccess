@@ -63,6 +63,23 @@ DirectoryIndex index.html
   RewriteRule ^(.+?)/?$ $1.html [L]
 </IfModule>
 
+# Security headers. HSTS deliberately omits includeSubDomains so any mail or
+# panel subdomain still on plain HTTP keeps working.
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Content-Security-Policy "upgrade-insecure-requests; frame-ancestors 'self'"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always unset X-Powered-By
+</IfModule>
+
+# Block dotfiles and build leftovers from being served
+<FilesMatch "^\.|\.(md|sh|bak|log|sql|env|ini)$">
+  Require all denied
+</FilesMatch>
+
 # Cache static assets
 <IfModule mod_expires.c>
   ExpiresActive On
