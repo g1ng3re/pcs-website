@@ -645,6 +645,15 @@
     when: "Sunday 18 October, 6:00pm",
     where: "Online",
     href: "https://www.eventbrite.co.uk/e/first-time-landlord-tickets-2002241294611?lid=qpplj5ya16y0"
+  }, {
+    date: "2026-11-21",
+    tag: "In person",
+    tagTone: "blue",
+    price: "Free",
+    img: "assets/photos/property-problem-solutions-flyer.jpg",
+    title: "Property Problem Solutions",
+    when: "Saturday 21 November, 11:00am",
+    where: "Sherwood Park Hall, Mitcham"
   }];
   function UpcomingEvents() {
     const {
