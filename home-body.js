@@ -1001,6 +1001,11 @@
     const trackRef = React.useRef(null);
     const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Property+Clinic+Solutions";
     const reviews = [{
+      name: "Sowedi Masaba",
+      date: "2026-10-22",
+      rating: 5,
+      text: "Excellent service from Emmanuel at Property Clinic! He was professional, understanding and very supportive throughout the entire process. He helped speed up my property purchase and made everything smooth and stress-free. Highly recommended!"
+    }, {
       name: "Allen Mukuwa",
       date: "2026-10-12",
       rating: 5,
