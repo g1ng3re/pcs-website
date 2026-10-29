@@ -1010,6 +1010,11 @@
     const trackRef = React.useRef(null);
     const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Property+Clinic+Solutions";
     const reviews = [{
+      name: "Roselyne Osibona",
+      date: "2026-10-29",
+      rating: 5,
+      text: "Very Excellent Service, Wonderful Customer Sevice."
+    }, {
       name: "Sowedi Masaba",
       date: "2026-10-22",
       rating: 5,
