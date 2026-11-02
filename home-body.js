@@ -1010,6 +1010,11 @@
     const trackRef = React.useRef(null);
     const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Property+Clinic+Solutions";
     const reviews = [{
+      name: "Taiwo Adio",
+      date: "2026-11-02",
+      rating: 5,
+      text: "Property Clinic has been incredibly helpful in handling my mortgage applications within a short period of time. Their communication is excellent, and they provide consistent reassurance, guidance and support throughout the entire process. They are professional, efficient and genuinely committed to helping their clients. I have been very impressed with the service they provide and would highly recommend them. Thank you, Property Clinic, for making the process so smooth and stress-free!"
+    }, {
       name: "Roselyne Osibona",
       date: "2026-10-29",
       rating: 5,
