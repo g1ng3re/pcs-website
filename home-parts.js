@@ -427,6 +427,16 @@
     desc: "Standard BTL, HMOs, limited company and portfolios.",
     href: "buy-to-let"
   }, {
+    icon: "users",
+    title: "HMO Mortgages",
+    desc: "Specialist finance for houses in multiple occupation.",
+    href: "hmo-mortgages"
+  }, {
+    icon: "building",
+    title: "Portfolio Landlords",
+    desc: "Four or more mortgaged properties, financed as a whole.",
+    href: "portfolio-landlord-mortgages"
+  }, {
     icon: "user",
     title: "Self-Employed Mortgages",
     desc: "Lenders who assess real income properly.",
@@ -1877,18 +1887,22 @@
     const {
       Icon
     } = window.PCSIcons;
-    const cols = [{
-      h: "Services",
-      links: [["Residential Mortgages", "mortgages"], ["Buy to Let", "buy-to-let"], ["Remortgage", "remortgage"], ["Foreign Nationals", "foreign-nationals"], ["Protection", "protection"]]
+    const cols = [
+    /* Every service page is linked here as well as in the dropdowns. The
+       dropdown panels only render when opened, so crawlers reach the deeper
+       pages through the footer (SEO pass, 11/11/2026). */
+    {
+      h: "Mortgages",
+      links: [["Residential Mortgages", "mortgages"], ["First-Time Buyers", "first-time-buyers"], ["Self-Employed", "self-employed"], ["Remortgage", "remortgage"], ["Buy to Let", "buy-to-let"], ["HMO Mortgages", "hmo-mortgages"], ["Portfolio Landlords", "portfolio-landlord-mortgages"], ["Foreign Nationals", "foreign-nationals"]]
+    }, {
+      h: "Protection",
+      links: [["All Protection", "protection"], ["Life Insurance", "life-insurance"], ["Critical Illness", "critical-illness"], ["Income Protection", "income-protection"], ["Buildings and Contents", "buildings-contents"]]
     }, {
       h: "Company",
-      links: [["About Us", "about"], ["Careers", "careers"], ["Events", "events"], ["Blog", "blog/"], ["Contact", "contact"]]
+      links: [["About Us", "about"], ["Careers", "careers"], ["Events", "events"], ["Blog", "blog/"], ["Contact", "contact"], ["Mortgage Calculator", "calculator"], ["Property Listings", "https://pcs.property-listings.co.uk/"]]
     }, {
       h: "Legal",
       links: [["Privacy Policy", "privacy"], ["Complaints", "complaints"], ["Cookie Policy", "cookie-policy"]]
-    }, {
-      h: "Tools",
-      links: [["Mortgage Calculator", "calculator"], ["Property Listings", "https://pcs.property-listings.co.uk/"]]
     }];
     const socials = [["facebook", "Facebook", "https://www.facebook.com/profile.php?id=61588038074490"], ["instagram", "Instagram", "https://www.instagram.com/withpcs/"], ["linkedin", "LinkedIn", "https://www.linkedin.com/company/property-clinic-solutions/"], ["tiktok", "TikTok", "https://www.tiktok.com/@propertyclinicsolutions"]];
     return /*#__PURE__*/React.createElement("footer", {

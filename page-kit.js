@@ -902,6 +902,34 @@
   }
   K.Split = Split;
 
+  /* ---- FAQ structured data ----
+     Built from the same items the accordion shows, so the schema can never
+     drift from the visible copy. The prerender bakes it into the static HTML.
+     Only plain-string answers are included. */
+  function faqSchema(items) {
+    const qa = (items || []).filter(([q, a]) => typeof q === "string" && typeof a === "string");
+    if (!qa.length) return null;
+    const data = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: qa.map(([q, a]) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: a
+        }
+      }))
+    };
+    return /*#__PURE__*/React.createElement("script", {
+      type: "application/ld+json",
+      "data-faq-schema": "",
+      dangerouslySetInnerHTML: {
+        __html: JSON.stringify(data).replace(/</g, "\\u003c")
+      }
+    });
+  }
+
   /* ---- FAQ accordion ---- */
   function FAQ({
     eyebrow,
@@ -989,7 +1017,7 @@
       title: title,
       accent: accent,
       max: 760
-    }), /*#__PURE__*/React.createElement("div", {
+    }), faqSchema(items), /*#__PURE__*/React.createElement("div", {
       "data-faq-list": true
     }, items.map(([q, a], i) => /*#__PURE__*/React.createElement("details", {
       className: "faq",
@@ -1326,6 +1354,9 @@
   K.initFaqSchema = function () {
     const qs = document.querySelectorAll("[data-faq-q]");
     if (!qs.length) return;
+    /* K.FAQ now renders its own schema inside #root, which the prerender bakes
+       into the static HTML. Skip this runtime copy so Google never sees two. */
+    if (document.querySelector("script[data-faq-schema]")) return;
     const main = [];
     document.querySelectorAll(".faq").forEach(f => {
       const q = f.querySelector("[data-faq-q]"),
