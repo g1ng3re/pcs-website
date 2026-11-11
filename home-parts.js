@@ -981,7 +981,7 @@
         label: "All protection",
         href: "protection"
       },
-      footnote: "Independent across the whole UK protection market. Reviewed every year.",
+      footnote: "Whole of market protection advice. Reviewed every year.",
       onNavigate: closeAll
     }), shownPanel === "about" && /*#__PURE__*/React.createElement(MegaPanel, {
       links: ABOUT_LINKS,
@@ -1361,14 +1361,14 @@
         font: "700 14px var(--font-sans)",
         color: "var(--pcs-ink)"
       }
-    }, "Independent advice")))));
+    }, "Regulated advice")))));
   }
   W.Hero = Hero;
   function TrustStrip() {
     const {
       Icon
     } = window.PCSIcons;
-    const items = ["Whole of Market", "90+ Lenders", "Independent Advice"];
+    const items = ["Whole of Market", "90+ Lenders", "Regulated Advice"];
     return /*#__PURE__*/React.createElement("section", {
       className: "pcs-truststrip",
       style: {
@@ -1943,7 +1943,7 @@
         marginTop: 10,
         maxWidth: 280
       }
-    }, "Independent property finance and education for individuals, families, and investors across the UK."), /*#__PURE__*/React.createElement("div", {
+    }, "Property finance and education for individuals, families, and investors across the UK."), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         gap: 10,

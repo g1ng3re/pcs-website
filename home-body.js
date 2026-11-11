@@ -37,7 +37,7 @@
       icon: "shield",
       tone: "emerald",
       title: "Protection",
-      body: "Life cover, critical illness, income protection, and home insurance, built around your real situation. Independent recommendations across the whole market, reviewed every year.",
+      body: "Life cover, critical illness, income protection, and home insurance, built around your real situation. Recommendations across the whole market, reviewed every year.",
       link: "Explore Protection",
       href: "protection"
     }, {
@@ -207,7 +207,7 @@
         marginTop: 14,
         maxWidth: 380
       }
-    }, "We are not a comparison website. We are not tied to a panel. We are an independent brokerage that stays with you across every transaction, every review, and every stage of your property journey."), /*#__PURE__*/React.createElement("div", {
+    }, "We are not a comparison website. We are not tied to a panel. We are a brokerage that stays with you across every transaction, every review, and every stage of your property journey."), /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: 26
       }
@@ -1325,7 +1325,7 @@
     }, {
       icon: "shield",
       title: "Protection first",
-      body: "Life cover, critical illness, income protection. Independent advice across the full UK protection market.",
+      body: "Life cover, critical illness, income protection. Advice across the full UK protection market.",
       link: "Explore Protection",
       href: "protection"
     }];
