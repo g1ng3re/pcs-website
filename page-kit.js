@@ -6,6 +6,8 @@
   const CALENDLY = window.PCSHome && window.PCSHome.CALENDLY || "https://calendly.com/propertyclinicsolutions/free-consultation";
   const RISK = "Your home may be repossessed if you do not keep up repayments on your mortgage.";
   K.RISK = RISK;
+  /* Buy-to-let promotions: most BTL lending is outside FCA regulation (added 11/11/2026). */
+  K.BTL_REG = "Most buy-to-let mortgages are not regulated by the Financial Conduct Authority.";
   const MAX = 1200;
   function cta(c) {
     if (!c) return null;

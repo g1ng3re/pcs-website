@@ -2023,9 +2023,13 @@
       }
     }, RISK)), /*#__PURE__*/React.createElement("p", {
       style: {
+        margin: "0 0 10px"
+      }
+    }, "Most buy-to-let mortgages are not regulated by the Financial Conduct Authority."), /*#__PURE__*/React.createElement("p", {
+      style: {
         margin: "0 0 14px"
       }
-    }, "If you have a complaint we have been unable to resolve, you can refer it to the Financial Ombudsman Service. Visit financial-ombudsman.org.uk or call 0800 023 4567."), /*#__PURE__*/React.createElement("p", {
+    }, "If we cannot resolve a complaint, you may be entitled to refer it to the Financial Ombudsman Service. Full details are available on request and at financial-ombudsman.org.uk."), /*#__PURE__*/React.createElement("p", {
       style: {
         margin: 0,
         color: "rgba(255,255,255,.45)"
