@@ -452,7 +452,7 @@
       }
     }, items.map((it, i) => /*#__PURE__*/React.createElement("a", {
       key: i,
-      href: (window.PCSHome && window.PCSHome.path ? window.PCSHome.path(it.href) : it.href) || "#",
+      href: it.href ? window.PCSHome && window.PCSHome.path ? window.PCSHome.path(it.href) : it.href : undefined,
       className: "pcs-path-card",
       style: {
         background: bg === "#fff" ? "var(--surface-page)" : "#fff",
