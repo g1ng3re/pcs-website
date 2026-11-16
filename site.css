@@ -340,3 +340,15 @@ p, li, blockquote { text-wrap: pretty; }
    submit), never on a fresh page. */
 .pcs-input:user-invalid, .pcs-select:user-invalid, .pcs-inp:user-invalid, .pcs-ta:user-invalid, .pcs-sel:user-invalid { border-color: var(--pcs-danger); }
 .pcs-input:user-invalid:focus, .pcs-select:user-invalid:focus, .pcs-inp:user-invalid:focus-visible, .pcs-ta:user-invalid:focus-visible, .pcs-sel:user-invalid:focus-visible { box-shadow: 0 0 0 4px rgba(200,54,43,.18); }
+
+/* Cookie banner, compact on phones: no icon, tighter padding and type,
+   the three buttons share one row. */
+@media (max-width: 560px) {
+  .pcs-cookie { left: 10px !important; right: 10px !important; bottom: 10px !important; }
+  .pcs-cookie__card { padding: 14px 16px !important; border-radius: 16px !important; }
+  .pcs-cookie__icon { display: none !important; }
+  .pcs-cookie__title { font-size: 15px !important; }
+  .pcs-cookie__text { font-size: 13px !important; line-height: 1.45 !important; margin-top: 3px !important; }
+  .pcs-cookie__actions { gap: 8px !important; margin-top: 12px !important; flex-wrap: nowrap !important; }
+  .pcs-cookie__actions > * { flex: 1 1 0; min-width: 0; padding-left: 8px !important; padding-right: 8px !important; justify-content: center; white-space: nowrap; }
+}

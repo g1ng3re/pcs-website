@@ -1551,6 +1551,7 @@
       role: "dialog",
       "aria-label": "Cookie preferences",
       "aria-modal": "false",
+      className: "pcs-cookie",
       style: {
         position: "fixed",
         left: 16,
@@ -1561,6 +1562,7 @@
         justifyContent: "center"
       }
     }, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-cookie__card",
       style: {
         width: "min(560px, 100%)",
         background: "#fff",
@@ -1576,6 +1578,7 @@
         alignItems: "flex-start"
       }
     }, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-cookie__icon",
       style: {
         flex: "none",
         width: 40,
@@ -1591,17 +1594,25 @@
       name: "lock",
       size: 20
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "pcs-cookie__title",
       style: {
         font: "700 17px var(--font-display)",
         color: "var(--pcs-ink)"
       }
     }, "We value your privacy"), /*#__PURE__*/React.createElement("p", {
+      className: "pcs-cookie__text",
       style: {
         font: "400 14px/1.55 var(--font-sans)",
         color: "var(--text-muted)",
         margin: "6px 0 0"
       }
-    }, "We use cookies to run the site and, with your consent, to understand how it is used. You can accept all, reject all, or choose. See our Cookie Policy."))), expanded && /*#__PURE__*/React.createElement("div", {
+    }, "We use cookies to run the site and, with your consent, to understand how it is used. See our ", /*#__PURE__*/React.createElement("a", {
+      href: path("cookie-policy"),
+      style: {
+        color: "var(--pcs-blue)",
+        fontWeight: 600
+      }
+    }, "Cookie Policy"), "."))), expanded && /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: 14
       }
@@ -1623,6 +1634,7 @@
       label: "Marketing",
       desc: "Used to make any advertising more relevant to you."
     })), /*#__PURE__*/React.createElement("div", {
+      className: "pcs-cookie__actions",
       style: {
         display: "flex",
         gap: 10,
