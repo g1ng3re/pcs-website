@@ -68,7 +68,7 @@
   textarea { min-height: 86px; resize: vertical; }
   input::placeholder, textarea::placeholder { color: var(--pcs-neutral-400, #AEB4C2); }
   input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,42,177,.16); }
-  input[aria-invalid="true"] { border-color: var(--pcs-danger, #C8362B); }
+  input[aria-invalid="true"], input:user-invalid, textarea:user-invalid { border-color: var(--pcs-danger, #C8362B); }
 
   .chips { display: flex; flex-wrap: wrap; gap: 10px; }
   .chip {

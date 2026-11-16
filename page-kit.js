@@ -1287,7 +1287,10 @@
   K.initReveal = function () {
     const els = document.querySelectorAll(".reveal");
     const show = e => e.classList.add("reveal--in");
-    if (!("IntersectionObserver" in window)) {
+    /* Browsers with view timelines run the reveals in CSS (site.css), so
+       mark everything shown and skip the observer and safety net. */
+    const cssDriven = window.CSS && CSS.supports && CSS.supports("animation-timeline: view()");
+    if (cssDriven || !("IntersectionObserver" in window)) {
       els.forEach(show);
       return;
     }

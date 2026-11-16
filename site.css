@@ -308,3 +308,35 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
    paragraphs avoid a lone last word. Ignored by older browsers. */
 h1, h2, h3, h4 { text-wrap: balance; }
 p, li, blockquote { text-wrap: pretty; }
+
+/* Scroll reveals driven by the browser's view timeline. Each section fades in
+   over the first ~140px it travels into the screen, so a fast scroll, an anchor
+   jump or a restored scroll position can never leave it hidden, and no script
+   has to watch the page. Cards in a grid start slightly later in turn, which
+   keeps the cascade. Browsers without view timelines keep the script version
+   (K.initReveal). Fill is backwards only: once a fade ends, the normal
+   .reveal--in styles take over, so card hover effects keep working.
+   Reduced motion still shows everything at once. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes pcs-reveal-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    @keyframes pcs-rule-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .reveal, .reveal .pcs-grid-2 > *, .reveal .pcs-grid-3 > *, .reveal .pcs-grid-4 > *, .reveal .pcs-why-points > * {
+      animation: pcs-reveal-in linear backwards; animation-timeline: view(); animation-range: entry 0px entry 140px; }
+    .reveal .pcs-grid-2 > *:nth-child(2), .reveal .pcs-grid-3 > *:nth-child(2), .reveal .pcs-grid-4 > *:nth-child(2), .reveal .pcs-why-points > *:nth-child(2) { animation-range: entry 20px entry 160px; }
+    .reveal .pcs-grid-2 > *:nth-child(3), .reveal .pcs-grid-3 > *:nth-child(3), .reveal .pcs-grid-4 > *:nth-child(3), .reveal .pcs-why-points > *:nth-child(3) { animation-range: entry 40px entry 180px; }
+    .reveal .pcs-grid-2 > *:nth-child(4), .reveal .pcs-grid-3 > *:nth-child(4), .reveal .pcs-grid-4 > *:nth-child(4), .reveal .pcs-why-points > *:nth-child(4) { animation-range: entry 60px entry 200px; }
+    .pcs-timeline-rule { animation: pcs-rule-draw linear backwards; animation-timeline: view(); animation-range: entry 40% cover 45%; }
+  }
+}
+
+/* Page-to-page navigation cross-fades instead of flashing white. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+}
+
+/* Form fields turn red only after the visitor has typed in them (or tried to
+   submit), never on a fresh page. */
+.pcs-input:user-invalid, .pcs-select:user-invalid, .pcs-inp:user-invalid, .pcs-ta:user-invalid, .pcs-sel:user-invalid { border-color: var(--pcs-danger); }
+.pcs-input:user-invalid:focus, .pcs-select:user-invalid:focus, .pcs-inp:user-invalid:focus-visible, .pcs-ta:user-invalid:focus-visible, .pcs-sel:user-invalid:focus-visible { box-shadow: 0 0 0 4px rgba(200,54,43,.18); }
