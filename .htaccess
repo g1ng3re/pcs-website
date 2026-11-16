@@ -104,6 +104,7 @@ DirectoryIndex index.html
   ExpiresByType image/svg+xml "access plus 1 month"
   ExpiresByType font/ttf "access plus 1 year"
   ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/x-font-ttf "access plus 1 year"
   ExpiresByType font/woff "access plus 1 year"
   ExpiresByType application/x-javascript "access plus 1 month"
   ExpiresByType image/jpeg "access plus 1 month"
