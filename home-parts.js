@@ -1248,7 +1248,7 @@
         animationDelay: ".42s"
       }
     }, "Clear mortgage and protection advice for first-time buyers, homeowners, self-employed professionals, landlords and people with more complex circumstances. Support for this decision and the ones that follow."), /*#__PURE__*/React.createElement("div", {
-      className: "pcs-hero-anim",
+      className: "pcs-hero-anim pcs-hero-ctas",
       style: {
         display: "flex",
         gap: 12,
