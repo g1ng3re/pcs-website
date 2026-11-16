@@ -360,3 +360,32 @@ p, li, blockquote { text-wrap: pretty; }
   .pcs-ann__tag { font-size: 10px !important; letter-spacing: .12em !important; }
   .pcs-ann__close { width: 34px !important; }
 }
+
+/* Mobile polish, 16/11/2026 ---------------------------------------------- */
+/* Nothing may widen the page sideways (a decorative logo did on Contact).
+   clip, unlike hidden, keeps the sticky header working. */
+html, body { overflow-x: clip; }
+/* Grid items may shrink below their longest word, so a long email address
+   wraps instead of pushing its card past the screen edge. */
+.pcs-cta-grid > *, .pcs-grid-2 > *, .pcs-grid-3 > *, .pcs-grid-4 > * { min-width: 0; }
+a[href^="mailto:"] { overflow-wrap: anywhere; }
+/* Photo slideshow dots keep their 8px look but get a finger-sized hit area. */
+button[aria-label^="Show photo"] { position: relative; }
+button[aria-label^="Show photo"]::after { content: ""; position: absolute; inset: -12px -4px; }
+
+@media (max-width: 620px) {
+  /* Footer: brand block on top, then link groups two across instead of one
+     long column; links get more height so they are easier to tap. */
+  .pcs-footer-grid { grid-template-columns: 1fr 1fr !important; gap: 28px 18px !important; }
+  .pcs-footer-grid > :first-child { grid-column: 1 / -1; }
+  .pcs-foot-link { padding: 4px 0; }
+  /* Calmer vertical rhythm: section padding 80-88px becomes 56px. */
+  main section[style*="padding: 80px 28px"], main section[style*="padding: 88px 28px"], main section[style*="padding: 72px 28px"] {
+    padding-top: 56px !important; padding-bottom: 56px !important; }
+}
+@media (max-width: 480px) {
+  /* Closing call-to-action panels: less padding, and the button runs full
+     width on one line instead of wrapping into a two or three line pill. */
+  div.pcs-spotlight { padding: 40px 22px !important; border-radius: 22px !important; }
+  div.pcs-spotlight .pcs-btn { width: 100%; justify-content: center; white-space: nowrap !important; font-size: 16px !important; padding-left: 18px !important; padding-right: 18px !important; }
+}
