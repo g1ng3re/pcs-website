@@ -274,6 +274,9 @@
   function ScrollProgress() {
     const ref = React.useRef(null);
     React.useEffect(() => {
+      /* Browsers with scroll-driven animations run the bar in CSS
+         (.pcs-scroll-progress in site.css), off the main thread. */
+      if (window.CSS && CSS.supports && CSS.supports("animation-timeline: scroll()")) return;
       const onScroll = () => {
         const d = document.documentElement;
         const max = d.scrollHeight - d.clientHeight;
@@ -292,6 +295,7 @@
     }, []);
     return /*#__PURE__*/React.createElement("div", {
       ref: ref,
+      className: "pcs-scroll-progress",
       "aria-hidden": "true",
       style: {
         position: "fixed",
@@ -369,6 +373,7 @@
       alt: n === i ? f.alt || alt : "",
       "aria-hidden": n === i ? undefined : "true",
       loading: eager && n === 0 ? "eager" : "lazy",
+      fetchpriority: eager && n === 0 ? "high" : undefined,
       onError: e => {
         e.currentTarget.style.display = "none";
       },

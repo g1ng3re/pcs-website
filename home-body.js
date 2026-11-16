@@ -1010,6 +1010,11 @@
     const trackRef = React.useRef(null);
     const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Property+Clinic+Solutions";
     const reviews = [{
+      name: "Dale Marvell",
+      date: "2026-11-13",
+      rating: 5,
+      text: "Met Emmanuel my Broker by chance and it turned out to be the best thing that could happen. I got told i could not get a mortgage on the property i lived in so gave up. Emmanuel then got involved and we now own our own property. His communication and explaining everything all the way the through was amazing and was always there to answer any questions when needed. Thankful for using property clinic solutions."
+    }, {
       name: "Vivian Ampomah",
       date: "2026-11-04",
       rating: 5,

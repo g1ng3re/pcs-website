@@ -296,4 +296,15 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
   .pcs-hero-word, .faq[open] .faq-body p { animation: none !important; }
 }
 
+/* Scroll progress bar: driven by the browser's scroll timeline where supported
+   (the script in ScrollProgress stands down). Animations override the inline
+   scaleX(0) start value. */
+@keyframes pcs-scroll-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@supports (animation-timeline: scroll()) {
+  .pcs-scroll-progress { animation: pcs-scroll-grow linear both; animation-timeline: scroll(root block); }
+}
 
+/* Headings break into even lines instead of leaving one word on its own;
+   paragraphs avoid a lone last word. Ignored by older browsers. */
+h1, h2, h3, h4 { text-wrap: balance; }
+p, li, blockquote { text-wrap: pretty; }
