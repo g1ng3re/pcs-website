@@ -222,7 +222,9 @@
         running = true;
         const start = performance.now();
         const tick = now => {
-          const t = Math.min(1, (now - start) / duration);
+          /* Clamp at 0: the first frame can be stamped a hair before start,
+             which made the count briefly show "-0+". */
+          const t = Math.min(1, Math.max(0, (now - start) / duration));
           const e = 1 - Math.pow(1 - t, 3);
           if (t < 1) {
             setDisp(fmt(target * e));

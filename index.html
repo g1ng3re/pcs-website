@@ -380,14 +380,32 @@
     .pcs-grid-3:has(> :last-child:nth-child(3n+2)) > :last-child { grid-column: 4 / span 2; }
   }
   
+
+  /* Tablet layout (621 to 860px), 16/11/2026. Cards stay two across instead of
+     collapsing to one stretched card per row, a lone last card is centred, and
+     the footer brand block sits on its own row above the link groups. */
+  @media (min-width: 621px) and (max-width: 860px) {
+    .pcs-grid-2, .pcs-grid-3 { grid-template-columns: 1fr 1fr !important; }
+    .pcs-grid-2 > :last-child:nth-child(odd):not([style*="grid-column"]),
+    .pcs-grid-3 > :last-child:nth-child(odd):not([style*="grid-column"]) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 11px); }
+    .pcs-footer-grid > :first-child { grid-column: 1 / -1; }
+  }
+  /* Trust strip on tablets: when the three phrases cannot fit one line they
+     wrap cleanly, without a separator dot stranded at the start of a line. */
+  @media (min-width: 641px) and (max-width: 980px) {
+    .pcs-strip .pcs-marquee-row { column-gap: 28px; }
+    .pcs-strip .pcs-marquee-row > span { font-size: 19px !important; padding: 0 !important; gap: 0 !important; }
+    .pcs-strip-dot { display: none; }
+  }
+  
 </style>
 
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
 <script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="icons.js?v=1794831338731"></script>
-<script src="home-parts.js?v=1794831338731"></script>
-<script src="home-body.js?v=1794831338731"></script>
+<script src="icons.js?v=1794832268752"></script>
+<script src="home-parts.js?v=1794832268752"></script>
+<script src="home-body.js?v=1794832268752"></script>
 
 <script type="application/ld+json">
 {
