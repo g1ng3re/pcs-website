@@ -631,6 +631,7 @@
     };
     if (!show) return null;
     const Seg = () => /*#__PURE__*/React.createElement("span", {
+      className: "pcs-ann__seg",
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -641,6 +642,7 @@
         color: "rgba(255,255,255,.92)"
       }
     }, /*#__PURE__*/React.createElement("span", {
+      className: "pcs-ann__tag",
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -699,6 +701,7 @@
     })))), /*#__PURE__*/React.createElement("button", {
       "aria-label": "Dismiss announcement",
       onClick: dismiss,
+      className: "pcs-ann__close",
       style: {
         position: "absolute",
         right: 0,

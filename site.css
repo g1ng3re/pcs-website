@@ -352,3 +352,11 @@ p, li, blockquote { text-wrap: pretty; }
   .pcs-cookie__actions { gap: 8px !important; margin-top: 12px !important; flex-wrap: nowrap !important; }
   .pcs-cookie__actions > * { flex: 1 1 0; min-width: 0; padding-left: 8px !important; padding-right: 8px !important; justify-content: center; white-space: nowrap; }
 }
+
+/* Announcement bar, slimmer on phones: smaller type and padding. */
+@media (max-width: 560px) {
+  .pcs-annmarquee { padding: 6px 0 !important; }
+  .pcs-ann__seg { font-size: 12.5px !important; gap: 9px !important; padding: 0 10px !important; }
+  .pcs-ann__tag { font-size: 10px !important; letter-spacing: .12em !important; }
+  .pcs-ann__close { width: 34px !important; }
+}
