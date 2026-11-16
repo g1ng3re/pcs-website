@@ -355,14 +355,39 @@
     .pcs-ann__tag { font-size: 11px !important; }
   }
   
+
+  /* Lone cards on the last row of a grid sit centred instead of hugging the
+     left edge with a gap beside them (desktop and tablet only; phones stack).
+   Items that already span the full row (form fields) are left alone. */
+  @media (min-width: 861px) {
+    .pcs-grid-2 > :last-child:nth-child(odd):not([style*="grid-column"]) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 10px); }
+    .pcs-why-points > :last-child:nth-child(odd):not([style*="grid-column"]) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 1px); }
+  }
+  @media (min-width: 621px) and (max-width: 980px) {
+  .pcs-grid-4 > :last-child:nth-child(odd):not([style*="grid-column"]) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 11px); }
+}
+@media (min-width: 861px) and (max-width: 980px) {
+    .pcs-grid-3 > :last-child:nth-child(odd):not([style*="grid-column"]) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 11px); }
+  }
+  @media (min-width: 981px) {
+    /* One left over: put it in the middle column. */
+    .pcs-grid-3 > :last-child:nth-child(3n+1):not([style*="grid-column"]) { grid-column: 2; }
+    /* Two left over: six half-width tracks, so the pair can sit centred at the
+       same card width as the rows above. */
+    .pcs-grid-3:has(> :last-child:nth-child(3n+2)) { grid-template-columns: repeat(6, 1fr) !important; }
+    .pcs-grid-3:has(> :last-child:nth-child(3n+2)) > * { grid-column: span 2; }
+    .pcs-grid-3:has(> :last-child:nth-child(3n+2)) > :nth-last-child(2) { grid-column: 2 / span 2; }
+    .pcs-grid-3:has(> :last-child:nth-child(3n+2)) > :last-child { grid-column: 4 / span 2; }
+  }
+  
 </style>
 
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
 <script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="icons.js?v=1794830451648"></script>
-<script src="home-parts.js?v=1794830451648"></script>
-<script src="home-body.js?v=1794830451648"></script>
+<script src="icons.js?v=1794831338731"></script>
+<script src="home-parts.js?v=1794831338731"></script>
+<script src="home-body.js?v=1794831338731"></script>
 
 <script type="application/ld+json">
 {
