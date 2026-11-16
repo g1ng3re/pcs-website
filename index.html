@@ -6,6 +6,7 @@
 <title>Mortgage and Protection Broker in London | Property Clinic Solutions</title>
 <meta name="description" content="Whole of market mortgage and protection broker based in London. First-time buyers, self-employed, buy-to-let landlords and complex cases. Free initial call." />
 <link rel="canonical" href="https://propertyclinicsolutions.com/" />
+<meta property="og:url" content="https://propertyclinicsolutions.com/" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Property Clinic Solutions · We advise. We protect. We teach." />
 <meta property="og:description" content="UK mortgage and protection advice. Whole of market, 90+ lenders." />
@@ -398,14 +399,19 @@
     .pcs-strip-dot { display: none; }
   }
   
+
+  /* Hero entrance plays once, on the pre-rendered HTML (see the pcs-prerendered
+     flag set just before React mounts). */
+  .pcs-prerendered .pcs-hero-anim, .pcs-prerendered .pcs-hero-photo { animation: none !important; opacity: 1 !important; transform: none !important; }
+  
 </style>
 
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
 <script src="_ds/pcs-design-system-269f6d9a-2c62-49e0-9664-5f46432df18c/_ds_bundle.js"></script>
-<script src="icons.js?v=1794832268752"></script>
-<script src="home-parts.js?v=1794832268752"></script>
-<script src="home-body.js?v=1794832268752"></script>
+<script src="icons.js?v=1794833657545"></script>
+<script src="home-parts.js?v=1794833657545"></script>
+<script src="home-body.js?v=1794833657545"></script>
 
 <script type="application/ld+json">
 {
@@ -470,6 +476,11 @@ function App() {
     items: ["Regulated advice", "Access to 90+ lenders", "Personal recommendations"]
   }), /*#__PURE__*/React.createElement(Education, null), /*#__PURE__*/React.createElement(UpcomingEvents, null), /*#__PURE__*/React.createElement(ClientStories, null), /*#__PURE__*/React.createElement(FindYourPath, null), /*#__PURE__*/React.createElement(Newsletter, null)), /*#__PURE__*/React.createElement(Footer, null), /*#__PURE__*/React.createElement(CookieBanner, null));
 }
+/* The page arrives pre-rendered, so the hero has already played its entrance
+   on that HTML. React rebuilds the DOM rather than reusing it; without this
+   flag the rebuilt hero would start invisible and fade in a second time,
+   which delayed the largest paint on slow phones by about two seconds. */
+if (document.getElementById("root").firstElementChild) document.documentElement.classList.add("pcs-prerendered");
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
 
 /* Scroll reveal — reveals on intersect, with a safety net so nothing stays hidden. */
