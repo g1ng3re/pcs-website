@@ -369,9 +369,6 @@ html, body { overflow-x: clip; }
    wraps instead of pushing its card past the screen edge. */
 .pcs-cta-grid > *, .pcs-grid-2 > *, .pcs-grid-3 > *, .pcs-grid-4 > * { min-width: 0; }
 a[href^="mailto:"] { overflow-wrap: anywhere; }
-/* Photo slideshow dots keep their 8px look but get a finger-sized hit area. */
-button[aria-label^="Show photo"] { position: relative; }
-button[aria-label^="Show photo"]::after { content: ""; position: absolute; inset: -12px -4px; }
 
 @media (max-width: 620px) {
   /* Footer: brand block on top, then link groups two across instead of one
@@ -437,3 +434,32 @@ button[aria-label^="Show photo"]::after { content: ""; position: absolute; inset
   .pcs-strip .pcs-marquee-row > span { font-size: 19px !important; padding: 0 !important; gap: 0 !important; }
   .pcs-strip-dot { display: none; }
 }
+
+/* Accessibility, 16/11/2026 (axe-core, WCAG 2.2 AA) ----------------------- */
+/* Small text in brand green or gold failed contrast (green 3.2-3.4:1, gold
+   2.2:1; 4.5:1 needed). It now uses the design system's own darker shades:
+   --pcs-emerald-press (5.6:1) and the darker gold already used on the blog
+   (5.4:1). Large headings keep the brighter brand colours, which pass at
+   their size, and text on the dark navy sections is left alone. */
+.pcs-eyebrow[style*="var(--pcs-emerald)"]:not([style*="background: var(--pcs-ink)"] *):not(.pcs-hero-dark *),
+.pcs-hww-step [style*="color: var(--pcs-emerald)"],
+.pcs-bcard__cat[style*="color: var(--pcs-emerald)"], .art-cat, .pcs-role__tag--open,
+p[style*="color: var(--pcs-emerald)"], div[style*="color: var(--pcs-emerald)"]:not(h1 *):not(h2 *),
+span[style*="color: var(--pcs-emerald)"]:not(h1 *):not(h2 *):not(.pcs-hero-title *) { color: var(--pcs-emerald-press) !important; }
+.pcs-eyebrow[style*="var(--pcs-gold)"]:not([style*="background: var(--pcs-ink)"] *):not(.pcs-hero-dark *) { color: #8A6310 !important; }
+/* White text on brand green buttons and avatars: 3.4:1 becomes 5.6:1. */
+.pcs-btn--secondary { --_bg: var(--pcs-emerald-press) !important; --_bgh: #096645 !important; --_bgp: #07573B !important; }
+.pcs-avatar[style*="var(--pcs-emerald)"] { background: var(--pcs-emerald-press) !important; }
+.pcs-avatar[style*="var(--pcs-gold)"] { background: #8A6310 !important; }
+/* "How we work" steps: text below the scroll line was dimmed to 45%, too
+   faint to read. Text now stays full strength; the dots and the drawing line
+   still light up as you scroll. */
+.pcs-hww-step > :not(.pcs-hww-dot) { opacity: 1 !important; }
+/* Links inside sentences are underlined, so they do not rely on colour. */
+main p a:not([class]), main li a:not([class]) { text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+
+/* Gold or green small labels that use .pcs-label rather than .pcs-eyebrow. */
+.pcs-label[style*="var(--pcs-gold)"]:not([style*="background: var(--pcs-ink)"] *):not(.pcs-hero-dark *) { color: #8A6310 !important; }
+.pcs-label[style*="var(--pcs-emerald)"]:not([style*="background: var(--pcs-ink)"] *):not(.pcs-hero-dark *) { color: var(--pcs-emerald-press) !important; }
+/* Green trust strip: white text needs the darker green below "large text" size. */
+section[style*="background: var(--pcs-emerald)"]:has(> .pcs-strip) { background: var(--pcs-emerald-press) !important; }

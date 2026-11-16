@@ -672,7 +672,10 @@
     }), /*#__PURE__*/React.createElement("div", {
       style: {
         overflowX: "auto"
-      }
+      },
+      tabIndex: 0,
+      role: "region",
+      "aria-label": title ? `Table: ${title}` : "Table"
     }, /*#__PURE__*/React.createElement("table", {
       className: "pcs-table"
     }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, head.map((h, i) => /*#__PURE__*/React.createElement("th", {
@@ -1224,7 +1227,10 @@
         overflowX: "auto",
         border: "1px solid var(--pcs-line, #e6e8ef)",
         borderRadius: 12
-      }
+      },
+      tabIndex: 0,
+      role: "region",
+      "aria-label": sec.h ? `Table: ${sec.h}` : "Table"
     }, /*#__PURE__*/React.createElement("table", {
       style: {
         borderCollapse: "collapse",
@@ -1280,9 +1286,9 @@
       CookieBanner,
       NewsletterPopup
     } = window.PCSHome;
-    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Header, null), /*#__PURE__*/React.createElement("main", {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(CookieBanner, null), /*#__PURE__*/React.createElement(Header, null), /*#__PURE__*/React.createElement("main", {
       id: "main"
-    }, children), /*#__PURE__*/React.createElement(Footer, null), /*#__PURE__*/React.createElement(CookieBanner, null), NewsletterPopup && /*#__PURE__*/React.createElement(NewsletterPopup, null));
+    }, children), /*#__PURE__*/React.createElement(Footer, null), NewsletterPopup && /*#__PURE__*/React.createElement(NewsletterPopup, null));
   }
   K.Page = Page;
   K.initReveal = function () {

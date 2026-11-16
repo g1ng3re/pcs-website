@@ -393,10 +393,10 @@
     })), frames.length > 1 && /*#__PURE__*/React.createElement("div", {
       style: {
         position: "absolute",
-        right: 14,
-        bottom: 14,
+        right: 6,
+        bottom: 6,
         display: "flex",
-        gap: 7,
+        gap: 0,
         zIndex: 2
       }
     }, frames.map((f, n) => /*#__PURE__*/React.createElement("button", {
@@ -406,16 +406,26 @@
       "aria-current": n === i ? "true" : undefined,
       onClick: () => setI(n),
       style: {
+        width: 24,
+        height: 24,
+        padding: 0,
+        border: 0,
+        background: "transparent",
+        cursor: "pointer",
+        display: "grid",
+        placeItems: "center"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      "aria-hidden": "true",
+      style: {
         width: 8,
         height: 8,
-        padding: 0,
         borderRadius: "50%",
-        cursor: "pointer",
         border: "1px solid rgba(255,255,255,.85)",
         background: n === i ? "#fff" : "rgba(255,255,255,.28)",
         transition: "background .3s ease"
       }
-    }))));
+    })))));
   }
   W.Photo = Photo;
   const MORTGAGE_LINKS = [{
@@ -632,8 +642,11 @@
       setShow(false);
     };
     if (!show) return null;
-    const Seg = () => /*#__PURE__*/React.createElement("span", {
+    const Seg = ({
+      hidden
+    }) => /*#__PURE__*/React.createElement("span", {
       className: "pcs-ann__seg",
+      "aria-hidden": hidden ? "true" : undefined,
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -675,7 +688,8 @@
       },
       "aria-hidden": "true"
     }, "·"));
-    return /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React.createElement("aside", {
+      "aria-label": "Announcement",
       style: {
         background: "var(--pcs-ink)",
         color: "#fff",
@@ -684,7 +698,6 @@
       }
     }, /*#__PURE__*/React.createElement("a", {
       href: path("get-started"),
-      "aria-label": "Book a free 15-minute consultation with a Property Clinic Solutions adviser",
       style: {
         display: "block",
         textDecoration: "none"
@@ -699,7 +712,8 @@
     }, Array.from({
       length: 6
     }).map((_, i) => /*#__PURE__*/React.createElement(Seg, {
-      key: i
+      key: i,
+      hidden: i > 0
     })))), /*#__PURE__*/React.createElement("button", {
       "aria-label": "Dismiss announcement",
       onClick: dismiss,
@@ -784,6 +798,7 @@
     const [drawer, setDrawer] = React.useState(false);
     const [scrolled, setScrolled] = React.useState(false);
     const closeTimer = React.useRef(null);
+    const burgerRef = React.useRef(null);
     React.useEffect(() => {
       const onScroll = () => setScrolled(window.scrollY > 80);
       window.addEventListener("scroll", onScroll, {
@@ -801,6 +816,51 @@
     const enter = k => {
       clearTimeout(closeTimer.current);
       setOpen(k);
+    };
+    /* Keyboard support for the dropdowns. The panel sits after the whole nav
+       row in the page, so Tab alone would skip it: opening from the keyboard
+       moves focus to the first link, Escape returns to the button, and
+       tabbing out of the panel closes it. */
+    const megaRef = React.useRef(null);
+    const btnRefs = React.useRef({});
+    const kbOpen = React.useRef(null);
+    React.useEffect(() => {
+      if (!open || kbOpen.current !== open) return;
+      kbOpen.current = null;
+      const t = setTimeout(() => {
+        const a = megaRef.current && megaRef.current.querySelector("a");
+        if (a) a.focus();
+      }, 30);
+      return () => clearTimeout(t);
+    }, [open]);
+    const onBtnKey = key => e => {
+      if (e.key === "Escape") {
+        setOpen(null);
+        return;
+      }
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+        e.preventDefault();
+        clearTimeout(closeTimer.current);
+        if (open === key && e.key !== "ArrowDown") {
+          setOpen(null);
+          return;
+        }
+        kbOpen.current = key;
+        setOpen(key);
+      }
+    };
+    const onPanelKey = e => {
+      if (e.key === "Escape") {
+        const k = open;
+        setOpen(null);
+        if (k && btnRefs.current[k]) btnRefs.current[k].focus();
+      }
+    };
+    const onPanelBlur = e => {
+      const to = e.relatedTarget;
+      if (!to || !megaRef.current || megaRef.current.contains(to)) return;
+      if (to.classList && to.classList.contains("pcs-nav-btn") && to.getAttribute("aria-haspopup")) return;
+      setOpen(null);
     };
     const leave = () => {
       closeTimer.current = setTimeout(() => setOpen(null), 140);
@@ -869,13 +929,15 @@
       className: "pcs-nav-btn",
       "aria-expanded": open === key,
       "aria-haspopup": "true",
+      "aria-controls": "pcs-mega-panel",
+      ref: el => {
+        btnRefs.current[key] = el;
+      },
       onClick: () => {
         clearTimeout(closeTimer.current);
         setOpen(open === key ? null : key);
       },
-      onKeyDown: e => {
-        if (e.key === "Escape") setOpen(null);
-      },
+      onKeyDown: onBtnKey(key),
       style: {
         display: "inline-flex",
         alignItems: "center",
@@ -936,6 +998,9 @@
     }, "Get Started"), /*#__PURE__*/React.createElement("button", {
       className: "pcs-burger",
       "aria-label": "Open menu",
+      "aria-expanded": drawer,
+      "aria-haspopup": "dialog",
+      ref: burgerRef,
       onClick: () => setDrawer(true),
       style: {
         display: "none",
@@ -950,16 +1015,22 @@
       size: 26
     })))), /*#__PURE__*/React.createElement("div", {
       className: "pcs-mega",
+      id: "pcs-mega-panel",
+      ref: megaRef,
       onMouseEnter: () => clearTimeout(closeTimer.current),
+      onKeyDown: onPanelKey,
+      onBlur: onPanelBlur,
       style: {
         position: "absolute",
         left: 0,
         right: 0,
         top: "100%",
         pointerEvents: open ? "auto" : "none",
+        /* hidden (after the fade) takes the closed panel's links out of the Tab order */
+        visibility: open ? "visible" : "hidden",
         opacity: open ? 1 : 0,
         transform: open ? "translateY(0)" : "translateY(-8px)",
-        transition: "opacity .18s var(--ease-out), transform .18s var(--ease-out)"
+        transition: "opacity .18s var(--ease-out), transform .18s var(--ease-out), visibility 0s linear " + (open ? "0s" : ".18s")
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
@@ -998,7 +1069,10 @@
       footnote: "Advise. Protect. Teach. For life.",
       onNavigate: closeAll
     }))))), drawer && /*#__PURE__*/React.createElement(MobileDrawer, {
-      onClose: () => setDrawer(false)
+      onClose: () => {
+        setDrawer(false);
+        if (burgerRef.current) burgerRef.current.focus();
+      }
     }), /*#__PURE__*/React.createElement(MobileActionBar, null));
   }
   W.Header = Header;
@@ -1035,6 +1109,33 @@
       setShown(false);
       setTimeout(onClose, 180);
     }, [onClose, reduce]);
+    const panelRef = React.useRef(null);
+    React.useEffect(() => {
+      const panel = panelRef.current;
+      const first = panel && panel.querySelector("button");
+      if (first) first.focus();
+      const onKey = e => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          close();
+          return;
+        }
+        if (e.key !== "Tab" || !panel) return;
+        const items = [...panel.querySelectorAll("a[href], button")];
+        if (!items.length) return;
+        const a = items[0],
+          z = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === a) {
+          e.preventDefault();
+          z.focus();
+        } else if (!e.shiftKey && document.activeElement === z) {
+          e.preventDefault();
+          a.focus();
+        }
+      };
+      document.addEventListener("keydown", onKey);
+      return () => document.removeEventListener("keydown", onKey);
+    }, [close]);
     const Section = ({
       title,
       links
@@ -1082,6 +1183,10 @@
         transition: "opacity " + (shown ? 240 : 180) + "ms var(--ease-out)"
       }
     }), /*#__PURE__*/React.createElement("div", {
+      ref: panelRef,
+      role: "dialog",
+      "aria-modal": "true",
+      "aria-label": "Menu",
       style: {
         position: "absolute",
         top: 0,
@@ -2054,7 +2159,7 @@
     }, "If we cannot resolve a complaint, you may be entitled to refer it to the Financial Ombudsman Service. Full details are available on request and at financial-ombudsman.org.uk."), /*#__PURE__*/React.createElement("p", {
       style: {
         margin: 0,
-        color: "rgba(255,255,255,.45)"
+        color: "rgba(255,255,255,.58)"
       }
     }, "© ", new Date().getFullYear(), " Property Clinic Solutions Limited. All rights reserved."))));
   }
